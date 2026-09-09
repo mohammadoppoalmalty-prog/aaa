@@ -22,9 +22,13 @@ describe('restoration, as the player sees it', () => {
     expect(early.canopyScale).toBeGreaterThan(start.canopyScale);
   });
 
-  it('leaves the world genuinely bare at zero', () => {
+  it('leaves the world bare at zero, but still visible', () => {
     const start = full(0);
-    expect(start.fogFar).toBeLessThanOrEqual(24);
+    /* The trees stand between 12 m and 66 m out. Fog that closes before the
+       first of them makes a ruined forest indistinguishable from an empty
+       field — the failure a screenshot caught and no assertion had. */
+    expect(start.fogFar).toBeGreaterThan(20);
+    expect(start.fogFar).toBeLessThan(90);
     expect(start.fireflies).toBe(0);
     // Some canopy, or the forest reads as dead ground rather than winter.
     expect(start.canopy).toBeGreaterThan(0);

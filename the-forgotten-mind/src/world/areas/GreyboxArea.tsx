@@ -5,7 +5,8 @@ import { RigidBody } from '@react-three/rapier';
 import type * as THREE from 'three';
 import { tokens } from '@/generated/tokens';
 import { bindRestoration } from '../systems/restoration';
-import { AREA_SPECS, type AreaSpec } from './manifest';
+import { type AreaSpec } from './manifest';
+import { exitRing } from './layout';
 import { ExitMarker } from './ExitMarker';
 
 /**
@@ -67,18 +68,10 @@ export function GreyboxArea({ spec, landmarks: showLandmarks = true }: { spec: A
   }, [spec.id, width, depth, interior]);
 
   /* Exits sit on the rim, spread around it, so a player can see every way out
-     from the middle of the area — the single most useful property of a blockout. */
-  const exits = useMemo(() => {
-    const list = AREA_SPECS[spec.id].exits;
-    const radius = Math.min(width, depth) * 0.42;
-    return list.map((exit, index) => {
-      const angle = (index / list.length) * Math.PI * 2 - Math.PI / 2;
-      return {
-        to: exit,
-        position: [Math.cos(angle) * radius, 0, Math.sin(angle) * radius] as [number, number, number],
-      };
-    });
-  }, [spec.id, width, depth]);
+     from the middle of the area — the single most useful property of a blockout.
+     The ring is shared with whatever dresses the area, so a door and the building
+     built around it cannot end up in different places. */
+  const exits = useMemo(() => exitRing(spec), [spec]);
 
   return (
     <group>

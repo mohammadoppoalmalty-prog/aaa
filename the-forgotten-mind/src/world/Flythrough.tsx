@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import { getRestoration } from './systems/restoration';
 import { stats } from './stats';
 
 /**
@@ -24,6 +25,10 @@ export interface PerfReport {
   readonly p99: number;
   readonly maxDrawCalls: number;
   readonly maxTriangles: number;
+  /* How restored the world was while it was measured. Restoration decides how
+     much of the world is drawn — canopy, fog distance, lit windows — so a frame
+     time without it is a number no one can reproduce or compare. */
+  readonly restoration: number;
 }
 
 declare global {
@@ -67,7 +72,7 @@ export function Flythrough({ seconds = 90 }: { seconds?: number }) {
   useEffect(() => {
     window.__tfmPerf = {
       done: false, frames: 0, seconds: 0, fps: 0,
-      p50: 0, p95: 0, p99: 0, maxDrawCalls: 0, maxTriangles: 0,
+      p50: 0, p95: 0, p99: 0, maxDrawCalls: 0, maxTriangles: 0, restoration: 0,
     };
   }, []);
 
@@ -105,6 +110,7 @@ export function Flythrough({ seconds = 90 }: { seconds?: number }) {
       p99: percentile(sorted, 0.99),
       maxDrawCalls: maxCalls.current,
       maxTriangles: maxTris.current,
+      restoration: getRestoration(),
     };
   });
 

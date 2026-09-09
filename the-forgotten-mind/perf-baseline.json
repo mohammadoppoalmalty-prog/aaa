@@ -1,26 +1,41 @@
 {
-  "memory-forest": {
-    "done": true,
-    "frames": 7030,
-    "seconds": 90.00239999999852,
-    "fps": 78.10902820369364,
-    "p50": 12.399999998509884,
-    "p95": 20.099999997764826,
-    "p99": 25.399999998509884,
-    "maxDrawCalls": 20,
-    "maxTriangles": 9326,
-    "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00005917) Direct3D11 vs_5_0 ps_5_0, D3D11)"
-  },
   "gate": {
     "done": true,
-    "frames": 8069,
-    "seconds": 90.01090000000224,
-    "fps": 89.6446985865023,
-    "p50": 10.899999998509884,
-    "p95": 18.099999997764826,
-    "p99": 23.100000001490116,
+    "frames": 2471,
+    "seconds": 30.000900000002236,
+    "fps": 82.3641957407883,
+    "p50": 11.600000001490116,
+    "p95": 19.5,
+    "p99": 25.199999999254942,
     "maxDrawCalls": 19,
     "maxTriangles": 640,
+    "restoration": 1,
+    "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00005917) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "memory-forest": {
+    "done": true,
+    "frames": 2097,
+    "seconds": 30.016900000002234,
+    "fps": 69.86064516988243,
+    "p50": 13.099999997764826,
+    "p95": 23.300000000745058,
+    "p99": 31.200000002980232,
+    "maxDrawCalls": 20,
+    "maxTriangles": 9326,
+    "restoration": 1,
+    "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00005917) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "village": {
+    "done": true,
+    "frames": 2434,
+    "seconds": 30.00410000000149,
+    "fps": 81.12224662629038,
+    "p50": 11.700000002980232,
+    "p95": 18.5,
+    "p99": 24.5,
+    "maxDrawCalls": 20,
+    "maxTriangles": 2022,
+    "restoration": 1,
     "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00005917) Direct3D11 vs_5_0 ps_5_0, D3D11)"
   }
 }

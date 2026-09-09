@@ -47,7 +47,8 @@ real career content in `content/`.
 | **Phase 1** — the Overture (screen 00): heals as you scroll, doors pinned throughout | ✅ |
 | **Phase 1** — the Memory Forest: LUMA arrives and speaks, Light Echo in its scene, the cat | ✅ |
 | **Phase 1** — the Forest heals: canopy, fog and fireflies driven by restoration | ✅ 20 draw calls fully restored, against a budget of 180 |
-| Phase 1 · art pass — the Village as a place, and real art for the Forest | ⬜ |
+| **Phase 1** — the Village as a place: a building per way out, lit windows as its meter | ✅ 20 draw calls |
+| Phase 1 · art pass — real art for the Forest and Village | ⬜ |
 | Phase 1 · the cat, the Overture, LUMA's arrival, the other 13 puzzles | ⬜ |
 
 ## Getting started
@@ -141,7 +142,18 @@ time and peak draw calls. Two separate questions, deliberately not conflated:
 ```bash
 npm run perf -- --area memory-forest          # the heaviest area, fully restored
 npm run perf -- --area memory-forest --bare   # and the same area at 0%
+node scripts/shot.mjs --area village          # and look at it
 ```
+
+The report states the restoration it **measured**, not the one that was asked
+for. Restoration decides how much of the world exists — canopy, fog distance,
+lit windows — so a run that silently measured a bare world would read as a
+regression against a full one.
+
+Runs default to thirty seconds. Ninety-second runs on a laptop iGPU throttle:
+the same commit measured 21 ms p95 over 20 s and 35 ms over 90 s, a 60%
+"regression" that was entirely heat. Baselines are only comparable within one
+duration, and the script refuses to compare across them.
 
 It compares **p50**, not p95: two runs of identical code move p95 by tens of
 percent, and a gate that goes red on a rerun is a gate that gets switched off.

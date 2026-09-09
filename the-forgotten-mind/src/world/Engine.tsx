@@ -9,6 +9,10 @@ import { PerfHud, PerfSampler } from './PerfHud';
 import { Blockout } from './greybox/Blockout';
 import { GreyboxArea } from './areas/GreyboxArea';
 import { MemoryForest } from './areas/MemoryForest';
+import { ForgottenVillage } from './areas/ForgottenVillage';
+
+/** Areas with real dressing. The rest are still honest grey-box blockouts. */
+const DRESSED = new Set<AreaId>(['memory-forest', 'village']);
 import { AREA_SPECS, type AreaId } from './areas/manifest';
 import { providePuzzleRewards, useGame } from '@/state/game';
 import { PlayerController } from './entities/PlayerController';
@@ -152,9 +156,9 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
 
         <Suspense fallback={null}>
           <Physics gravity={[0, -18, 0]} timeStep="vary">
-            {/* The Forest is dressed, so it does not want the generic massing
-                the other eighteen blockouts still use. */}
-            <GreyboxArea key={area.id} spec={area} landmarks={area.id !== 'memory-forest'} />
+            {/* A dressed area does not want the generic massing on top of it;
+                the other seventeen blockouts still do. */}
+            <GreyboxArea key={area.id} spec={area} landmarks={!DRESSED.has(area.id)} />
             {area.id === 'memory-forest' ? <MemoryForest /> : null}
             {/* The controller calibration geometry — steps at and above the
                 autostep height, ramps either side of the slope limit — lives in
@@ -171,10 +175,13 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
             ) : null}
 
             {area.id === 'village' ? (
-              <FountainAnchor
-                solved={fountainState === 'solved' || fountainState === 'skipped'}
-                onOpen={() => setGrateOpen(true)}
-              />
+              <>
+                <ForgottenVillage fountainRunning={fountainState === 'solved' || fountainState === 'skipped'} />
+                <FountainAnchor
+                  solved={fountainState === 'solved' || fountainState === 'skipped'}
+                  onOpen={() => setGrateOpen(true)}
+                />
+              </>
             ) : null}
 
             {/* Off the path, in the Forest, doing nothing at all. */}

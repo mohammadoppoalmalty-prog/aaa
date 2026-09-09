@@ -4,9 +4,18 @@
    nightly and on every PR touching src/world/.
 
    Usage:
-     node scripts/perf-regression.mjs                 # 90s, full budgets
-     node scripts/perf-regression.mjs --seconds 15    # a quick local pass
-     node scripts/perf-regression.mjs --update        # rewrite the baseline
+     node scripts/perf-regression.mjs                       # 30s, this area's baseline
+     node scripts/perf-regression.mjs --area memory-forest  # the heaviest area
+     node scripts/perf-regression.mjs --bare                # the same area at 0%
+     node scripts/perf-regression.mjs --update              # rewrite its baseline
+     node scripts/perf-regression.mjs --seconds 90 --strict # what CI runs
+
+   On run length: the default is thirty seconds because a laptop iGPU throttles
+   under sustained load, and p95 drifts with it. Measured on this machine, the
+   same commit reported 21 ms over 20 s and 35 ms over 90 s — a 60% "regression"
+   that was entirely heat. Compare like with like: a baseline recorded at one
+   duration says nothing about a run at another, and the script refuses to
+   compare across durations for that reason.
 
    The budgets assume a fixed CI machine with a real GPU. A software renderer
    (SwiftShader, most CI containers, this developer's sandbox) cannot meet them
@@ -27,7 +36,7 @@ const arg = (name, fallback) => {
 };
 const has = (name) => process.argv.includes(`--${name}`);
 
-const SECONDS = Number(arg('seconds', process.env.PERF_SECONDS ?? 90));
+const SECONDS = Number(arg('seconds', process.env.PERF_SECONDS ?? 30));
 /* Which area to fly through, and how healed it is while doing so. A budget is
    only meaningful against the heaviest thing the world can show, and for this
    project that is a fully restored area rather than a bare one. */
@@ -142,6 +151,15 @@ console.log(`  duration     ${report.seconds.toFixed(1)} s over ${report.frames}
 console.log(`  fps          ${report.fps.toFixed(1)}`);
 console.log(`  p50 / p95 / p99   ${ms(report.p50)} / ${ms(report.p95)} / ${ms(report.p99)}`);
 console.log(`  draw calls   ${report.maxDrawCalls} peak   ·   triangles ${(report.maxTriangles / 1000).toFixed(0)}k peak`);
+/* Reported from inside the running world rather than from the flag that asked
+   for it: restoration decides how much geometry exists, so a run that silently
+   measured a bare world would otherwise look like a regression in a full one. */
+console.log(`  restoration  ${(report.restoration * 100).toFixed(0)}% (measured, not requested)`);
+if (Math.abs(report.restoration - RESTORED) > 0.02) {
+  console.log(`
+  ⚠ asked for ${RESTORED * 100}% restoration and measured ${(report.restoration * 100).toFixed(0)}% —`);
+  console.log('    this run is not comparable with a baseline recorded at a different one.');
+}
 
 /* Baselines are keyed by area. The Gate is an empty plaza and a restored Forest
    is a hundred and twenty trees; comparing one against the other says nothing,
