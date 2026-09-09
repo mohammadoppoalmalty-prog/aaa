@@ -44,6 +44,8 @@ real career content in `content/`.
 | **Phase 1** — pause menu: fast travel, settings, save code in and out, begin again | ✅ |
 | **Phase 1** — `/accessibility`, stating per surface what is met and what is not | ✅ |
 | **Phase 1** — the Fountain, playable, and the cat | ✅ |
+| **Phase 1** — the Overture (screen 00): heals as you scroll, doors pinned throughout | ✅ |
+| **Phase 1** — the Memory Forest: LUMA arrives and speaks, Light Echo in its scene, the cat | ✅ |
 | Phase 1 · art pass — the Forest and the Village as places, not blockouts | ⬜ |
 | Phase 1 · the cat, the Overture, LUMA's arrival, the other 13 puzzles | ⬜ |
 
@@ -54,7 +56,8 @@ npm install
 npm run dev          # tokens are rebuilt first, automatically
 ```
 
-- `/` — the title screen, two doors, zero client JavaScript
+- `/` — the Overture: what this is, who made it, and three doors that are never more than a click away
+- `/enter` — the plain gate (screen 01) for a returning visitor
 - `/world` — the grey-box. `WASD` move · `Shift` run · `Q`/`E` or right-drag turn · `H` perf HUD
 - `/debug` — quality tiers, switches, and the live palette
 - `/world?debug=1` — the in-world inspector: restoration scrub, tier switch, disposal readout (` ` ` to hide)

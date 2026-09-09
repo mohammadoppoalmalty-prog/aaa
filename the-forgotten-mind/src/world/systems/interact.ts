@@ -36,7 +36,12 @@ export function registerInteractable(item: Interactable): () => void {
   registry.set(item.id, item);
   return () => {
     registry.delete(item.id);
-    if (focused.current?.id === item.id) focused.current = null;
+    /* Deliberately *not* clearing `focused` here.
+       Doing so hides the change from `updateFocus`, which compares against the
+       previous value — so clearing it makes "the focused thing vanished" look
+       identical to "nothing changed", and the prompt keeps naming an object
+       that no longer exists. Letting the next frame notice it is gone is what
+       makes the prompt honest. */
   };
 }
 
@@ -57,6 +62,12 @@ const byDistance = (): readonly Interactable[] =>
  */
 export function updateFocus(): boolean {
   const previous = focused.current;
+
+  // A focused item that has been unregistered is gone, whatever else is true.
+  if (previous !== null && !registry.has(previous.id)) {
+    focused.current = null;
+    pinned = null;
+  }
 
   if (pinned !== null) {
     const held = registry.get(pinned);
@@ -101,13 +112,19 @@ export function clearPin(): void {
   pinned = null;
 }
 
-/** Act on whatever is focused. Returns whether anything happened. */
+/**
+ * Act on whatever is focused. Returns whether anything happened.
+ *
+ * The pin is kept. Acting on something that survives the action — turning a
+ * lantern, reading a plaque — should leave it selected, or operating a puzzle
+ * from across the clearing means re-cycling to it for every single turn. When
+ * the action *consumes* the thing, it unregisters itself and `updateFocus`
+ * drops the pin on the next frame.
+ */
 export function actOnFocus(): boolean {
   const target = focused.current;
   if (!target) return false;
-  const result = target.act();
-  if (result !== false) pinned = null;
-  return result !== false;
+  return target.act() !== false;
 }
 
 export const interactableCount = (): number => registry.size;

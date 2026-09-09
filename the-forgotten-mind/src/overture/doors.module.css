@@ -1,0 +1,66 @@
+.doors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--tfm-space-sm);
+}
+
+.door {
+  display: grid;
+  gap: 2px;
+  padding: var(--tfm-space-md) var(--tfm-space-lg);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-card);
+  background: var(--tfm-color-surface-glass);
+  transition:
+    border-color var(--tfm-motion-hover) var(--tfm-motion-ease-enter),
+    transform var(--tfm-motion-hover) var(--tfm-motion-ease-enter);
+}
+
+.door:hover { border-color: var(--tfm-color-border-strong); transform: translateY(-2px); }
+
+.primary {
+  border-color: color-mix(in oklch, var(--tfm-color-accent) 40%, transparent);
+  background: linear-gradient(
+    118deg,
+    color-mix(in oklch, var(--tfm-color-accent) 14%, transparent),
+    var(--tfm-color-surface-glass) 64%
+  );
+}
+
+.label { color: var(--tfm-color-text-high); font-size: var(--tfm-type-lede); }
+
+.cost {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tfm-color-text-muted);
+}
+
+/* Pinned to the bottom of every viewport after the first — the rule that lets
+   an introduction exist in front of a portfolio without becoming a gate. */
+.pinned {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: 20;
+  justify-content: center;
+  gap: var(--tfm-space-xs);
+  padding: var(--tfm-space-sm) var(--tfm-space-md);
+  border-block-start: 1px solid var(--tfm-color-border-subtle);
+  background: color-mix(in oklch, var(--tfm-color-canvas) 88%, transparent);
+  backdrop-filter: blur(var(--tfm-effect-blur-panel));
+}
+
+.pinned .door {
+  padding: var(--tfm-space-xs) var(--tfm-space-md);
+  border-radius: var(--tfm-radius-pill);
+  background: none;
+}
+
+.pinned .label { font-size: var(--tfm-type-body); }
+.pinned .cost { display: none; }
+
+@media (min-width: 48rem) {
+  .pinned .cost { display: block; }
+}

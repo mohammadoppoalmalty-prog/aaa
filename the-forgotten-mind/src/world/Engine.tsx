@@ -17,6 +17,8 @@ import { Memories, type MoteSpec } from './entities/Memories';
 import { CompanionCat } from './entities/CompanionCat';
 import { FountainAnchor } from './entities/FountainAnchor';
 import { FountainGrate } from './puzzles/FountainGrate';
+import { LightEcho } from './puzzles/LightEcho';
+import { LumaPresence } from './entities/LumaPresence';
 import { Hud } from './Hud';
 import { CursorRitual } from './puzzles/CursorRitual';
 import { registry } from './systems/puzzles';
@@ -155,6 +157,14 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
                 the Gate, where the tutorial already teaches movement. */}
             {area.id === 'gate' ? <Blockout /> : null}
             <Memories motes={motes.filter((mote) => mote.area === area.id)} total={total} />
+
+            {/* The Forest: LUMA's arrival at the first fork, and the lanterns. */}
+            {area.id === 'memory-forest' ? (
+              <>
+                <LumaPresence at={[0, 0, -4]} />
+                <LightEcho />
+              </>
+            ) : null}
 
             {area.id === 'village' ? (
               <FountainAnchor

@@ -1,0 +1,21 @@
+/* LUMA's speech. Subtitle-safe: a real backing at 30% rather than text floating
+   over a moving scene, which is unreadable exactly when the scene is busiest. */
+.speech {
+  position: fixed;
+  inset-block-end: 30vh;
+  inset-inline: 0;
+  z-index: 33;
+  inline-size: min(46rem, calc(100% - var(--tfm-space-xl)));
+  margin-inline: auto;
+  padding: var(--tfm-space-sm) var(--tfm-space-lg);
+  border-radius: var(--tfm-radius-card);
+  background: color-mix(in oklch, var(--tfm-color-canvas) 30%, transparent);
+  backdrop-filter: blur(var(--tfm-effect-blur-panel));
+  color: var(--tfm-color-text-high);
+  font-size: var(--tfm-type-lede);
+  text-align: center;
+  text-wrap: pretty;
+  pointer-events: none;
+}
+
+.speech:empty { display: none; }

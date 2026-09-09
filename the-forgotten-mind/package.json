@@ -83,9 +83,9 @@
       "limit": "20 KB"
     },
     {
-      "name": "Title screen JS (part of the 120 KB screen budget)",
+      "name": "Overture JS (front of the 120 KB screen budget)",
       "path": ".next/static/chunks/app/page-*.js",
-      "limit": "10 KB"
+      "limit": "12 KB"
     },
     {
       "name": "World route shell",

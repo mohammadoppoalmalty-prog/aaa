@@ -1,0 +1,28 @@
+.counts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: var(--tfm-space-lg);
+  margin: 0;
+  padding: 0;
+}
+
+.counts li { display: grid; gap: var(--tfm-space-xs); }
+
+.counts b {
+  font-size: var(--tfm-type-display);
+  font-weight: 300;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--tfm-color-text-high);
+  font-variant-numeric: tabular-nums;
+}
+
+.counts span {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tfm-color-text-muted);
+}
+
+.pending { color: var(--tfm-color-text-muted); }

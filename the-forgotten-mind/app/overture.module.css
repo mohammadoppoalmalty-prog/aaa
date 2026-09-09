@@ -1,0 +1,220 @@
+/* The Overture — screen 00.
+
+   The page heals as you scroll: `--r` runs 0 → 1 and every warm value below is
+   interpolated against it. The same mechanism as the world's restoration
+   uniform, done in CSS, so a visitor performs the game's central mechanic
+   before they ever enter it. */
+
+.page {
+  --r: 0;
+  /* The ground warms from the world's cold void toward a lit interior. */
+  background: color-mix(in oklch, var(--tfm-color-canvas-raised) calc(var(--r) * 55%), var(--tfm-color-canvas));
+  /* The rail down the left edge fills as you go — a progress bar that is not a
+     progress bar, and the only ornament on the page that means something. */
+  border-inline-start: 2px solid transparent;
+  border-image: linear-gradient(
+      to bottom,
+      var(--tfm-color-accent) calc(var(--r) * 100%),
+      transparent calc(var(--r) * 100%)
+    )
+    1;
+  padding-block-end: 6rem;
+}
+
+.hero {
+  position: relative;
+  min-block-size: 100dvh;
+  display: grid;
+  align-content: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--tfm-space-lg);
+  justify-items: start;
+  inline-size: min(100% - var(--tfm-space-xl), var(--tfm-layout-content));
+  margin-inline: auto;
+  padding-block: var(--tfm-space-2xl);
+}
+
+.eyebrow {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--tfm-color-text-muted);
+}
+
+.title {
+  font-size: var(--tfm-type-display);
+  line-height: var(--tfm-type-leading-title);
+  letter-spacing: -0.05em;
+  font-weight: 300;
+  color: var(--tfm-color-text-high);
+  text-wrap: balance;
+}
+
+.title strong {
+  font-weight: 600;
+  background: linear-gradient(
+    118deg,
+    var(--tfm-color-accent) 0%,
+    var(--tfm-color-accent-alt) 46%,
+    var(--tfm-color-accent-warm) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lede {
+  max-inline-size: var(--tfm-type-measure);
+  font-size: var(--tfm-type-lede);
+  color: var(--tfm-color-text-body);
+  text-wrap: pretty;
+}
+
+.scrollHint,
+.footnote {
+  max-inline-size: var(--tfm-type-measure);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.06em;
+  color: var(--tfm-color-text-muted);
+}
+
+.footnote a { color: var(--tfm-color-accent); }
+
+.section {
+  padding-block: var(--tfm-space-section);
+  border-block-start: 1px solid var(--tfm-color-border-subtle);
+}
+
+.sectionInner {
+  display: grid;
+  gap: var(--tfm-space-lg);
+  inline-size: min(100% - var(--tfm-space-xl), var(--tfm-layout-content));
+  margin-inline: auto;
+}
+
+.sectionTitle {
+  font-size: var(--tfm-type-title);
+  line-height: var(--tfm-type-leading-title);
+  letter-spacing: -0.04em;
+  font-weight: 300;
+  /* Type warms with the page, from cool body text to full white. */
+  color: color-mix(in oklch, var(--tfm-color-text-high) calc(40% + var(--r) * 60%), var(--tfm-color-text-body));
+  text-wrap: balance;
+}
+
+.panels,
+.ways,
+.work {
+  display: grid;
+  gap: var(--tfm-space-md);
+  grid-template-columns: repeat(auto-fit, minmax(var(--tfm-layout-card-min), 1fr));
+}
+
+.panels article,
+.ways article,
+.work article {
+  display: grid;
+  gap: var(--tfm-space-xs);
+  align-content: start;
+  padding: var(--tfm-space-lg);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-card);
+  background: var(--tfm-color-surface-glass);
+}
+
+.panels h3,
+.ways h3,
+.work h3 {
+  font-size: var(--tfm-type-lede);
+  font-weight: 400;
+  color: var(--tfm-color-text-high);
+}
+
+.panels p,
+.ways p,
+.work p { color: var(--tfm-color-text-body); }
+
+.ways a,
+.work a { color: var(--tfm-color-accent); }
+
+.wayCost {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tfm-color-text-muted);
+}
+
+.who {
+  display: grid;
+  gap: var(--tfm-space-lg);
+  align-items: start;
+}
+
+@media (min-width: 56rem) {
+  .who { grid-template-columns: 1fr 1fr; }
+}
+
+.quote {
+  margin: 0;
+  padding-inline-start: var(--tfm-space-lg);
+  border-inline-start: 2px solid var(--tfm-color-accent);
+  font-size: var(--tfm-type-lede);
+  color: var(--tfm-color-text-high);
+  font-style: italic;
+  text-wrap: pretty;
+}
+
+.whoText { display: grid; gap: var(--tfm-space-md); color: var(--tfm-color-text-body); }
+.whoText code,
+.pending code {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  color: var(--tfm-color-accent);
+}
+
+.pending {
+  max-inline-size: var(--tfm-type-measure);
+  color: var(--tfm-color-state-warning);
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--tfm-space-xs);
+  margin: 0;
+  padding: 0;
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  color: var(--tfm-color-text-muted);
+}
+
+.stack li {
+  padding: 2px var(--tfm-space-xs);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-pill);
+}
+
+.broke {
+  display: grid;
+  gap: var(--tfm-space-xs);
+  padding-inline-start: var(--tfm-space-md);
+  border-inline-start: 2px solid var(--tfm-color-state-error);
+  font-size: var(--tfm-type-label);
+}
+
+.broke span {
+  font-family: var(--tfm-type-family-data);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tfm-color-state-error);
+}
