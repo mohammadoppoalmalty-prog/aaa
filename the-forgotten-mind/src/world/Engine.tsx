@@ -14,10 +14,15 @@ import { PlayerController } from './entities/PlayerController';
 import { Flythrough } from './Flythrough';
 import { DebugPanel } from './DebugPanel';
 import { Memories, type MoteSpec } from './entities/Memories';
+import { CompanionCat } from './entities/CompanionCat';
+import { FountainAnchor } from './entities/FountainAnchor';
+import { FountainGrate } from './puzzles/FountainGrate';
 import { Hud } from './Hud';
 import { CursorRitual } from './puzzles/CursorRitual';
 import { registry } from './systems/puzzles';
 import { Luma } from './Luma';
+import { InteractionSystem } from './InteractionSystem';
+import { PauseMenu } from './PauseMenu';
 import type { LumaIntent } from './systems/luma/fallback';
 import { settingsFor, tierFromGpuTier } from './quality';
 import { useSettings } from '@/state/settings';
@@ -54,6 +59,9 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
      puts the player back where they left it rather than at the gate. */
   const areaId = useGame((s) => s.save.area);
   const ritual = useGame((s) => s.save.puzzles['cursor-ritual']);
+  const catFollows = useGame((s) => s.save.hasCat);
+  const fountainState = useGame((s) => s.save.puzzles.fountain);
+  const [grateOpen, setGrateOpen] = useState(false);
   const area = AREA_SPECS[areaId as AreaId] ?? AREA_SPECS.gate;
 
   /* Detect once, and never over a manual choice. */
@@ -121,6 +129,7 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
       >
         <ContextGuard />
         <PerfSampler />
+        <InteractionSystem />
 
         {/* One light source, upper-left, obeyed by every surface in both layers. */}
         <hemisphereLight intensity={0.35} groundColor={tokens.semantic.color.canvas.hex} />
@@ -146,6 +155,21 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
                 the Gate, where the tutorial already teaches movement. */}
             {area.id === 'gate' ? <Blockout /> : null}
             <Memories motes={motes.filter((mote) => mote.area === area.id)} total={total} />
+
+            {area.id === 'village' ? (
+              <FountainAnchor
+                solved={fountainState === 'solved' || fountainState === 'skipped'}
+                onOpen={() => setGrateOpen(true)}
+              />
+            ) : null}
+
+            {/* Off the path, in the Forest, doing nothing at all. */}
+            {area.id === 'memory-forest' || catFollows ? (
+              <CompanionCat
+                home={[-18, 0, -14]}
+                purrNear={motes.filter((mote) => mote.area === area.id).map((mote) => mote.position)}
+              />
+            ) : null}
             {flythrough === null ? (
               <PlayerController key={area.id} start={[0, 1.5, 4]} reducedMotion={reducedMotion} />
             ) : (
@@ -162,8 +186,11 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
         <CursorRitual onDone={() => undefined} />
       ) : null}
 
+      {grateOpen ? <FountainGrate onClose={() => setGrateOpen(false)} /> : null}
+
       <Hud total={total} />
       <Luma intents={lumaIntents} total={total} />
+      <PauseMenu />
       <PerfHud />
       {debug ? <DebugPanel /> : null}
       <Legend />

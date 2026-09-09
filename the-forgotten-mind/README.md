@@ -40,6 +40,10 @@ real career content in `content/`.
 | **Phase 1** — LUMA's scripted tree, with the golden-question eval as a unit test | ✅ |
 | **Phase 1** — Codex sections: memories, projects, skills, experience, contact | ✅ |
 | **Phase 1** — RUM (`web-vitals` → `/api/telemetry`), anonymous, DNT-respecting | ✅ |
+| **Phase 1** — one interaction system: `[`/`]` cycling, live-region prompt, keyboard-completable | ✅ |
+| **Phase 1** — pause menu: fast travel, settings, save code in and out, begin again | ✅ |
+| **Phase 1** — `/accessibility`, stating per surface what is met and what is not | ✅ |
+| **Phase 1** — the Fountain, playable, and the cat | ✅ |
 | Phase 1 · art pass — the Forest and the Village as places, not blockouts | ⬜ |
 | Phase 1 · the cat, the Overture, LUMA's arrival, the other 13 puzzles | ⬜ |
 

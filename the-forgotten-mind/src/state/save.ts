@@ -33,6 +33,8 @@ export interface Save {
   readonly position: readonly [number, number, number];
   readonly yaw: number;
   readonly luma: { readonly stage: number; readonly turns: readonly string[] };
+  /** Whether the cat is following. It does nothing, and it is remembered. */
+  readonly hasCat: boolean;
   readonly puzzles: Readonly<Record<string, PuzzleState>>;
 }
 
@@ -82,6 +84,7 @@ export function freshSave(now = Date.now()): Save {
     position: [0, 1.5, 4],
     yaw: 0,
     luma: { stage: 0, turns: [] },
+    hasCat: false,
     puzzles: {},
   };
 }
@@ -105,6 +108,7 @@ function coerce(record: Record<string, unknown>, now = Date.now()): Save {
       stage: Math.min(5, Math.max(0, Math.floor(num(luma.stage, 0)))),
       turns: strings(luma.turns),
     },
+    hasCat: record.hasCat === true,
     puzzles: puzzles(record.puzzles),
   };
 }

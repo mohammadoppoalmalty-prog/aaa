@@ -1,0 +1,127 @@
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  display: grid;
+  place-items: center;
+  padding: var(--tfm-space-md);
+  background: color-mix(in oklch, var(--tfm-color-canvas) 78%, transparent);
+  backdrop-filter: blur(var(--tfm-effect-blur-scrim));
+}
+
+.sheet {
+  display: grid;
+  gap: var(--tfm-space-md);
+  justify-items: center;
+  inline-size: min(30rem, 100%);
+  padding: var(--tfm-space-xl);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-panel);
+  background: var(--tfm-color-canvas-raised);
+}
+
+.head {
+  display: grid;
+  gap: var(--tfm-space-xs);
+  justify-items: center;
+  text-align: center;
+  font-size: var(--tfm-type-lede);
+  color: var(--tfm-color-text-high);
+}
+
+.head span,
+.label,
+.note {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.12em;
+  color: var(--tfm-color-text-muted);
+  text-transform: uppercase;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+}
+
+.cell {
+  inline-size: 3rem;
+  block-size: 3rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-control);
+  background: var(--tfm-color-canvas);
+  color: var(--tfm-color-text-muted);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-lede);
+  line-height: 1;
+  cursor: default;
+}
+
+.turnable { cursor: pointer; }
+.turnable:hover { border-color: var(--tfm-color-border-strong); color: var(--tfm-color-text-high); }
+
+/* Water is colour *and* a border change, never colour alone. */
+.wet {
+  border-color: var(--tfm-color-accent);
+  color: var(--tfm-color-accent);
+  background: color-mix(in oklch, var(--tfm-color-accent) 12%, transparent);
+}
+
+.broken {
+  border-style: dashed;
+  border-color: var(--tfm-color-state-error);
+  color: var(--tfm-color-state-error);
+}
+
+.empty { opacity: 0.4; }
+
+.cart {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tfm-space-sm);
+  justify-content: center;
+}
+
+.spare {
+  padding: var(--tfm-space-xs) var(--tfm-space-md);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-pill);
+  background: none;
+  color: var(--tfm-color-text-body);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.picked {
+  border-color: var(--tfm-color-accent);
+  color: var(--tfm-color-accent);
+}
+
+.solved {
+  max-inline-size: var(--tfm-type-measure);
+  text-align: center;
+  color: var(--tfm-color-state-success);
+  text-wrap: pretty;
+}
+
+.actions { display: flex; gap: var(--tfm-space-sm); }
+
+.actions button {
+  padding: var(--tfm-button-pad-block) var(--tfm-button-pad-inline);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-button-radius);
+  background: none;
+  color: var(--tfm-color-text-body);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.12em;
+  cursor: pointer;
+}
+
+.actions button:hover { color: var(--tfm-color-text-high); border-color: var(--tfm-color-border-strong); }

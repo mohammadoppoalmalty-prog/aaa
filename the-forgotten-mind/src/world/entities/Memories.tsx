@@ -5,19 +5,19 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { game, useGame } from '@/state/game';
 import { setRestoration } from '../systems/restoration';
-import { interactable, playerPosition } from '../systems/player';
+import { registerInteractable } from '../systems/interact';
 import { tokens } from '@/generated/tokens';
 
 /**
- * Memory motes — the grey-box form of the recovery loop.
+ * Memory motes — the recovery loop.
  *
- * Everything per-frame here writes to refs and to the DOM directly: the
- * proximity test, the prompt, and the mote's own float and pulse. The only
- * React commit in the whole interaction is the one that recovers a memory, and
- * that is a state change a visitor caused, not a frame.
+ * All motes are one `InstancedMesh` (architecture Rule 3): a hundred of these
+ * must cost one draw call, not a hundred. Their float and spin are written to
+ * the instance matrix each frame; nothing else here touches React.
  *
- * All motes are one `InstancedMesh` — architecture Rule 3. A hundred of these
- * must cost one draw call, not a hundred.
+ * Interaction is *registered* rather than detected here. One arbiter decides
+ * what `E` means, so a mote standing beside an exit cannot fight it for the
+ * prompt — which is exactly what happened when each entity wrote its own.
  */
 
 const REACH = 3; // metres — GDD Part 8's interaction radius
@@ -37,8 +37,6 @@ export function Memories({ motes, total }: { motes: readonly MoteSpec[]; total: 
   const revealedAll = useGame((s) => s.save.revealedAll);
 
   const dummy = useMemo(() => new THREE.Object3D(), []);
-  const nearest = useRef<MoteSpec | null>(null);
-  const prompt = useRef<HTMLDivElement | null>(null);
 
   /* Restoration is a pure function of progress, so it is set wherever progress
      changes rather than tracked as a second source of truth. */
@@ -47,38 +45,34 @@ export function Memories({ motes, total }: { motes: readonly MoteSpec[]; total: 
     setRestoration(total === 0 ? 0 : count / total);
   }, [recovered.length, revealedAll, total]);
 
-  /* The prompt is a DOM node the world writes into — no React in the hot path. */
-  useEffect(() => {
-    const node = document.createElement('div');
-    node.className = 'tfm-prompt';
-    node.hidden = true;
-    document.body.append(node);
-    prompt.current = node;
-    return () => node.remove();
-  }, []);
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.code !== 'KeyE' && event.code !== 'Space' && event.code !== 'Enter') return;
-      const target = nearest.current;
-      if (!target) return;
-      event.preventDefault();
-      game().recoverMemory(target.id);
-    };
-    window.addEventListener('keydown', onKey);
-    return () => {
-      window.removeEventListener('keydown', onKey);
-      interactable.current = null;
-    };
-  }, []);
-
-  /* Which motes are taken changes a handful of times per session, so the colour
-     attribute is written then — not sixty times a second for no reason. */
   const taken = useMemo(
     () => new Set(revealedAll ? motes.map((m) => m.id) : recovered),
     [revealedAll, recovered, motes],
   );
 
+  /* Register every un-recovered mote, and drop it the moment it is taken — the
+     prompt must never offer something that is already in hand. */
+  useEffect(() => {
+    const drop = motes
+      .filter((mote) => !taken.has(mote.id))
+      .map((mote) =>
+        registerInteractable({
+          id: mote.id,
+          title: mote.title,
+          position: new THREE.Vector3(mote.position[0], mote.position[1], mote.position[2]),
+          reach: REACH,
+          act: () => {
+            game().recoverMemory(mote.id);
+          },
+        }),
+      );
+    return () => {
+      for (const remove of drop) remove();
+    };
+  }, [motes, taken]);
+
+  /* Which motes are taken changes a handful of times per session, so the colour
+     attribute is written then — not sixty times a second for no reason. */
   useEffect(() => {
     const instanced = mesh.current;
     if (!instanced) return;
@@ -89,10 +83,7 @@ export function Memories({ motes, total }: { motes: readonly MoteSpec[]; total: 
   useFrame(({ clock }) => {
     const instanced = mesh.current;
     if (!instanced) return;
-
     const time = clock.elapsedTime;
-    let closest: MoteSpec | null = null;
-    let closestDistance = REACH;
 
     for (const [index, mote] of motes.entries()) {
       const [x, y, z] = mote.position;
@@ -104,29 +95,9 @@ export function Memories({ motes, total }: { motes: readonly MoteSpec[]; total: 
       dummy.scale.setScalar(isTaken ? 0.18 : 0.32);
       dummy.updateMatrix();
       instanced.setMatrixAt(index, dummy.matrix);
-
-      if (isTaken) continue;
-      const distance = playerPosition.distanceTo(dummy.position);
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closest = mote;
-      }
     }
 
     instanced.instanceMatrix.needsUpdate = true;
-
-    /* The prompt is written straight into the DOM when the nearest interactable
-       changes — a few times a minute, not a few times a second, and never a
-       React commit either way. */
-    if (closest !== nearest.current) {
-      nearest.current = closest;
-      interactable.current = closest;
-      const node = prompt.current;
-      if (node) {
-        node.hidden = closest === null;
-        node.textContent = closest === null ? '' : `◈  ${closest.title}   —   press E`;
-      }
-    }
   });
 
   return (

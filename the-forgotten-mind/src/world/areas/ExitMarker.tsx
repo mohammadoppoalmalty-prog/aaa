@@ -4,18 +4,18 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { tokens } from '@/generated/tokens';
-import { AREA_SPECS, gateState, type AreaId } from './manifest';
+import { AREA_SPECS, gateState, TOTAL_MEMORIES, type AreaId } from './manifest';
 import { canTravel, restorationOf } from '../systems/director';
-import { interactable, playerPosition } from '../systems/player';
+import { registerInteractable } from '../systems/interact';
 import { game, useGame } from '@/state/game';
-import { TOTAL_MEMORIES } from './manifest';
 
 /**
  * A way out, standing where you can see it.
  *
  * A locked exit is never a blank wall (GDD Part 4): it keeps its shape, changes
- * colour, and says what it is waiting for. Being able to see the thing you have
- * not earned yet is what makes earning it feel like a route rather than a wall.
+ * colour, and says what it is waiting for. It also stays *registered* while
+ * locked, so `[` and `]` still reach it and a screen reader still announces the
+ * reason — a door you cannot open is still information.
  */
 
 const OPEN = new THREE.Color(tokens.semantic.color.accent.hex);
@@ -33,56 +33,44 @@ export function ExitMarker({
 }) {
   const recovered = useGame((s) => s.save.memories.length);
   const revealedAll = useGame((s) => s.save.revealedAll);
+  const fragmentsHeld = useGame((s) => s.fragmentsHeld);
 
   const target = AREA_SPECS[to];
   const progress = useMemo(
     () => ({
       restoration: revealedAll ? 1 : restorationOf(recovered, TOTAL_MEMORIES),
-      /* Fragments arrive with the puzzle framework; until then the gates that
-         need them stay visibly shut, which is the honest state. */
-      fragments: 0,
+      fragments: fragmentsHeld(),
     }),
-    [recovered, revealedAll],
+    [recovered, revealedAll, fragmentsHeld],
   );
 
   const verdict = useMemo(() => canTravel(from, to, progress), [from, to, progress]);
   const gate = useMemo(() => gateState(target, progress), [target, progress]);
 
   const mesh = useRef<THREE.Mesh>(null);
-  const inReach = useRef(false);
   const here = useMemo(() => new THREE.Vector3(position[0], position[1] + 1.2, position[2]), [position]);
 
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (!inReach.current) return;
-      if (event.code !== 'KeyE' && event.code !== 'Enter') return;
-      event.preventDefault();
-      if (!verdict.ok) return;
-      game().setArea(to);
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [to, verdict]);
+  useEffect(
+    () =>
+      registerInteractable({
+        id: `exit:${to}`,
+        title: verdict.ok ? `Walk to ${target.name}` : `${target.name} — ${gate.reason ?? 'not open yet'}`,
+        position: here,
+        reach: REACH,
+        /* A locked exit stays enabled so it can be found and read. Acting on it
+           does nothing but say why, which is the honest behaviour: the player
+           learns the requirement instead of bouncing off silence. */
+        act: () => {
+          if (!verdict.ok) return false;
+          game().setArea(to);
+        },
+      }),
+    [to, target.name, verdict, gate.reason, here],
+  );
 
   useFrame(({ clock }) => {
     const node = mesh.current;
-    if (!node) return;
-    node.rotation.y = clock.elapsedTime * 0.4;
-
-    const within = playerPosition.distanceTo(here) < REACH;
-    if (within === inReach.current) return;
-    inReach.current = within;
-
-    /* The exit competes with memories for the interaction slot; whichever the
-       player is standing next to wins, and the prompt always names it. */
-    if (within) {
-      interactable.current = {
-        id: `exit:${to}`,
-        title: verdict.ok ? `Walk to ${target.name}` : `${target.name} — ${gate.reason ?? 'not yet'}`,
-      };
-    } else if (interactable.current?.id === `exit:${to}`) {
-      interactable.current = null;
-    }
+    if (node) node.rotation.y = clock.elapsedTime * 0.4;
   });
 
   return (

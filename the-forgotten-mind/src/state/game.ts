@@ -52,6 +52,7 @@ export interface GameState {
    * it is the guilt-trip this project spent its whole design avoiding.
    */
   completePuzzle: (id: string, how: 'solved' | 'skipped') => void;
+  adoptCat: () => void;
   beginAgain: () => void;
   replaceSave: (save: Save) => void;
 
@@ -134,6 +135,12 @@ export const useGame = create<GameState>()(
       for (const memory of granted) if (!memories.includes(memory)) memories.push(memory);
 
       set({ save: { ...save, memories, puzzles: { ...save.puzzles, [id]: how } } });
+      flush(get);
+    },
+
+    adoptCat: () => {
+      if (get().save.hasCat) return;
+      set({ save: { ...get().save, hasCat: true } });
       flush(get);
     },
 
