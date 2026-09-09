@@ -1,0 +1,49 @@
+.page {
+  inline-size: min(100% - var(--tfm-space-lg), 52rem);
+  margin-inline: auto;
+  padding-block: var(--tfm-space-2xl);
+  display: grid;
+  gap: var(--tfm-space-md);
+}
+
+.eyebrow {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--tfm-color-text-muted);
+}
+
+.title {
+  font-size: var(--tfm-type-display);
+  line-height: var(--tfm-type-leading-title);
+  letter-spacing: -0.045em;
+  font-weight: 300;
+  color: var(--tfm-color-text-high);
+}
+
+.lede {
+  max-inline-size: var(--tfm-type-measure);
+  font-size: var(--tfm-type-lede);
+  text-wrap: pretty;
+}
+
+.status {
+  max-inline-size: var(--tfm-type-measure);
+  padding: var(--tfm-space-md) var(--tfm-space-lg);
+  border: 1px dashed var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-card);
+  color: var(--tfm-color-text-muted);
+}
+
+.status b {
+  color: var(--tfm-color-state-warning);
+  font-weight: 500;
+}
+
+.back {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.1em;
+  color: var(--tfm-color-text-muted);
+}

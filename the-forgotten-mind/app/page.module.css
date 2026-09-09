@@ -1,0 +1,193 @@
+/* Screen 01 · the title screen.
+   GDD Part 8: black, the gate in silhouette, three doors, a language toggle,
+   nothing else. Zero client JavaScript — the doors are links, and the only
+   motion is one 1.2s settle that Reduced Motion removes entirely. */
+
+.screen {
+  position: relative;
+  min-block-size: 100dvh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+  background: var(--tfm-color-canvas);
+  isolation: isolate;
+}
+
+/* The one light source of the whole product: upper-left, obeyed everywhere. */
+.screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(70% 55% at 22% 8%, color-mix(in oklch, var(--tfm-color-accent) 13%, transparent), transparent 70%),
+    radial-gradient(60% 50% at 78% 96%, color-mix(in oklch, var(--tfm-color-accent-alt) 10%, transparent), transparent 72%);
+  pointer-events: none;
+}
+
+.stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--tfm-space-xl);
+  inline-size: min(100% - var(--tfm-space-xl), 68rem);
+  margin-inline: auto;
+  padding-block: var(--tfm-space-2xl);
+}
+
+.gate {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  z-index: -1;
+  inline-size: min(52vw, 34rem);
+  color: var(--tfm-color-accent);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.eyebrow {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--tfm-color-text-muted);
+}
+
+.title {
+  font-size: var(--tfm-type-display);
+  line-height: var(--tfm-type-leading-title);
+  letter-spacing: -0.045em;
+  font-weight: 300;
+  color: var(--tfm-color-text-high);
+  text-wrap: balance;
+}
+
+.title strong {
+  font-weight: 600;
+  background: linear-gradient(
+    118deg,
+    var(--tfm-color-accent) 0%,
+    var(--tfm-color-accent-alt) 46%,
+    var(--tfm-color-accent-warm) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lede {
+  max-inline-size: var(--tfm-type-measure);
+  font-size: var(--tfm-type-lede);
+  color: var(--tfm-color-text-body);
+  text-wrap: pretty;
+}
+
+/* ── the three doors ──────────────────────────────────────────────────────
+   Labelled with their real time cost, because a choice made blind is not a
+   choice. The second door is not a fallback and is not styled like one.   */
+
+.doors {
+  display: grid;
+  gap: var(--tfm-space-sm);
+  inline-size: 100%;
+  max-inline-size: 40rem;
+}
+
+.door {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: var(--tfm-space-md);
+  padding: var(--tfm-space-md) var(--tfm-space-lg);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-card);
+  background: var(--tfm-color-surface-glass);
+  transition:
+    border-color var(--tfm-motion-hover) var(--tfm-motion-ease-enter),
+    background-color var(--tfm-motion-hover) var(--tfm-motion-ease-enter),
+    transform var(--tfm-motion-hover) var(--tfm-motion-ease-enter);
+}
+
+.door:hover,
+.door:focus-visible {
+  border-color: var(--tfm-color-border-strong);
+  background: var(--tfm-color-surface-glass-strong);
+  transform: translateX(var(--tfm-space-xs));
+}
+
+.door .mark {
+  color: var(--tfm-color-accent);
+}
+
+.door .label {
+  font-size: var(--tfm-type-lede);
+  color: var(--tfm-color-text-high);
+  letter-spacing: 0.01em;
+}
+
+.door .cost {
+  display: block;
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tfm-color-text-muted);
+}
+
+.door.primary {
+  border-color: color-mix(in oklch, var(--tfm-color-accent) 34%, transparent);
+  background: linear-gradient(
+    118deg,
+    color-mix(in oklch, var(--tfm-color-accent) 11%, transparent),
+    var(--tfm-color-surface-glass) 62%
+  );
+}
+
+/* ── footer rail ─────────────────────────────────────────────────────────── */
+
+.rail {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--tfm-space-md) var(--tfm-space-lg);
+  align-items: center;
+  justify-content: space-between;
+  inline-size: min(100% - var(--tfm-space-xl), 68rem);
+  margin-inline: auto;
+  padding-block: var(--tfm-space-lg);
+  border-block-start: 1px solid var(--tfm-color-border-subtle);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tfm-color-text-muted);
+}
+
+.rail a:hover {
+  color: var(--tfm-color-text-high);
+}
+
+.settle {
+  animation: settle var(--tfm-motion-cinematic) var(--tfm-motion-ease-enter) both;
+}
+
+.settle:nth-child(2) { animation-delay: 90ms; }
+.settle:nth-child(3) { animation-delay: 180ms; }
+.settle:nth-child(4) { animation-delay: 270ms; }
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(var(--tfm-space-md));
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}

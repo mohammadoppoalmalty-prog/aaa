@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>The Forgotten Mind — First Five Screens</title>
+<style>
+/* ─────────────────────────────────────────────────────────────
+   THE FORGOTTEN MIND — screen review
+   Local file. Open directly in a browser; no server, no network.
+   Single committed theme: this is a screening room for a dark
+   game. A light frame around dark world screens would
+   misrepresent every one of them. Every colour is painted
+   explicitly so the page holds on any host background.
+   ───────────────────────────────────────────────────────────── */
+
+/* minimal reset */
+*,*::before,*::after{box-sizing:border-box}
+html,body,h1,h2,h3,h4,p,figure,blockquote,dl,dd{margin:0}
+img,svg{display:block;max-width:100%}
+button,input{font:inherit}
+
+:root{
+  /* frame — neutrals biased toward the world's cool fog (#6B7280) */
+  --ink:        #08090C;
+  --ink-1:      #0D0F13;
+  --ink-2:      #14171C;
+  --hair:       #21252D;
+  --hair-soft:  #191C22;
+  --dust:       #8B95A1;
+  --dust-dim:   #5D6570;
+  --parch:      #C8B688;   /* memory glow — frame's primary label colour */
+  --luma:       #7FD4E8;   /* the world's only Act-I saturation */
+  --gold:       #FFD98A;   /* Act III */
+
+  /* world palette, verbatim from GDD Part 9 */
+  --w-ground:   #2A2E33;
+  --w-struct:   #3D4148;
+  --w-fog:      #6B7280;
+  --w-veg:      #4A4438;
+  --w-sky:      #8B95A1;
+
+  /* codex */
+  --cx-paper:   #F5E9D0;
+  --cx-paper-2: #EDDFC0;
+  --cx-ink:     #241E14;
+  --cx-ink-2:   #6B5D46;
+  --cx-line:    #D6C4A0;
+
+  /* category colours */
+  --c-front:#4FC3D9; --c-back:#E5A64B; --c-data:#A97FE0;
+  --c-infra:#62B36B; --c-design:#E3799B; --c-practice:#EDE6D6;
+
+  --display: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  --body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  --arabic: "Amiri", "Traditional Arabic", "Segoe UI", Georgia, serif;
+}
+
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--ink);
+  color:var(--dust);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--luma);color:#03151A}
+a{color:var(--luma)}
+:focus-visible{outline:2px solid var(--luma);outline-offset:3px;border-radius:2px}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* ── masthead ─────────────────────────────────────────── */
+.mast{padding:88px 0 56px;border-bottom:1px solid var(--hair-soft)}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--dust-dim);margin:0 0 22px;
+}
+.mast h1{
+  font-family:var(--display);
+  font-size:clamp(34px,6.2vw,68px);
+  line-height:1.02;letter-spacing:-.015em;
+  color:var(--parch);margin:0 0 20px;font-weight:400;
+  text-wrap:balance;
+}
+.mast h1 em{font-style:italic;color:var(--dust)}
+.lede{max-width:62ch;font-size:17px;line-height:1.65;color:var(--dust);margin:0}
+.lede strong{color:var(--parch);font-weight:600}
+
+.chain{
+  display:flex;flex-wrap:wrap;gap:8px;margin:30px 0 0;
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+}
+.chain span{
+  padding:5px 11px;border:1px solid var(--hair);border-radius:2px;
+  color:var(--dust-dim);
+}
+.chain span.now{border-color:var(--parch);color:var(--parch)}
+
+/* ── caveat strip ─────────────────────────────────────── */
+.caveat{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:1px;background:var(--hair-soft);
+  border:1px solid var(--hair-soft);margin:56px 0 0;
+}
+.caveat > div{background:var(--ink);padding:20px 22px}
+.caveat h3{
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--luma);margin:0 0 9px;font-weight:500;
+}
+.caveat p{margin:0;font-size:13.5px;line-height:1.6;color:var(--dust-dim)}
+
+/* ── screen block ─────────────────────────────────────── */
+.screen{padding:96px 0;border-bottom:1px solid var(--hair-soft)}
+.screen:last-of-type{border-bottom:0}
+
+.shead{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin:0 0 8px}
+.snum{
+  font-family:var(--mono);font-size:12px;color:var(--dust-dim);
+  letter-spacing:.14em;padding-top:6px;
+}
+.shead h2{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(26px,3.6vw,40px);line-height:1.1;letter-spacing:-.01em;
+  color:var(--parch);margin:0;
+}
+.route{
+  font-family:var(--mono);font-size:12px;color:var(--luma);
+  border:1px solid rgba(127,212,232,.28);padding:3px 9px;border-radius:2px;
+}
+.sjob{max-width:70ch;margin:0 0 34px;font-size:15.5px;color:var(--dust)}
+
+.layout{display:grid;grid-template-columns:1fr;gap:36px}
+@media(min-width:1000px){
+  .layout{grid-template-columns:minmax(0,1.68fr) minmax(280px,1fr);gap:44px;align-items:start}
+}
+
+/* ── the mock frame ───────────────────────────────────── */
+.frame{
+  position:relative;aspect-ratio:16/9;width:100%;
+  border:1px solid var(--hair);border-radius:3px;overflow:hidden;
+  container-type:inline-size;
+  background:#000;
+  box-shadow:0 30px 80px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.02) inset;
+}
+.frame *{box-sizing:border-box}
+
+/* annotation pins */
+.pin{
+  position:absolute;width:2.1cqw;height:2.1cqw;min-width:20px;min-height:20px;
+  border-radius:50%;background:var(--luma);color:#03151A;
+  font-family:var(--mono);font-size:max(10px,1.05cqw);font-weight:700;
+  display:grid;place-items:center;z-index:60;
+  box-shadow:0 0 0 max(3px,.45cqw) rgba(127,212,232,.16), 0 2px 8px rgba(0,0,0,.6);
+  transform:translate(-50%,-50%);
+}
+
+/* annotation list */
+.notes{display:flex;flex-direction:column;gap:2px}
+.note{display:grid;grid-template-columns:26px 1fr;gap:13px;padding:13px 0;border-bottom:1px solid var(--hair-soft)}
+.note:last-child{border-bottom:0}
+.note b{
+  font-family:var(--mono);font-size:11px;font-weight:700;color:var(--luma);
+  background:rgba(127,212,232,.09);border:1px solid rgba(127,212,232,.22);
+  border-radius:50%;width:24px;height:24px;display:grid;place-items:center;
+}
+.note p{margin:0;font-size:13.5px;line-height:1.58;color:var(--dust)}
+.note p strong{color:var(--parch);font-weight:600}
+.note p code{font-family:var(--mono);font-size:12px;color:var(--gold)}
+
+/* ═══════════════ SCREEN 1 — TITLE ═══════════════ */
+.s1{background:radial-gradient(120% 90% at 50% 58%, #0E1014 0%, #050609 62%, #000 100%)}
+.s1 .gate{position:absolute;inset:0;display:grid;place-items:end center}
+.s1 .glow{
+  position:absolute;left:50%;top:56%;width:34cqw;height:34cqw;transform:translate(-50%,-50%);
+  background:radial-gradient(circle, rgba(127,212,232,.13) 0%, rgba(127,212,232,0) 68%);
+  pointer-events:none;
+}
+.s1 .title{position:absolute;left:7.5cqw;top:19cqw;z-index:20}
+.s1 .title h3{
+  font-family:var(--display);font-weight:400;
+  font-size:5.4cqw;line-height:.98;letter-spacing:.01em;
+  color:#D8C79C;margin:0;
+  text-shadow:0 0 30px rgba(200,182,136,.16);
+}
+.s1 .title .sub{
+  font-family:var(--mono);font-size:1.18cqw;letter-spacing:.34em;text-transform:uppercase;
+  color:#5D6570;margin-top:1.5cqw;
+}
+.s1 .menu{position:absolute;left:7.5cqw;top:33.5cqw;z-index:20;display:flex;flex-direction:column;gap:2.2cqw}
+.s1 .opt{display:flex;align-items:baseline;gap:1.3cqw}
+.s1 .opt .arw{color:#3E4650;font-size:1.5cqw;line-height:1}
+.s1 .opt .lbl{
+  font-family:var(--body);font-size:1.85cqw;letter-spacing:.16em;text-transform:uppercase;
+  color:#7C848E;font-weight:500;
+}
+.s1 .opt .meta{font-family:var(--mono);font-size:1.05cqw;color:#454C56;letter-spacing:.04em}
+.s1 .opt.on .arw{color:var(--parch)}
+.s1 .opt.on .lbl{color:#E8DCC0;text-shadow:0 0 18px rgba(200,182,136,.3)}
+.s1 .opt.on .meta{color:#6E6349}
+.s1 .opt.skip .lbl{color:#93A4AC}
+.s1 .lang{
+  position:absolute;left:7.5cqw;bottom:3.4cqw;z-index:20;
+  font-family:var(--mono);font-size:1.05cqw;letter-spacing:.1em;color:#3E4650;
+}
+.s1 .lang b{color:#8B95A1;font-weight:500}
+.s1 .lang span.ar{font-family:var(--arabic);font-size:1.3cqw}
+
+/* ═══════════════ SCREEN 2 — CURSOR RITUAL ═══════════════ */
+.s2{background:#000;cursor:none}
+.s2 .lightfield{position:absolute;inset:0;pointer-events:none;z-index:5}
+.s2 .cursorlight{
+  position:absolute;width:26cqw;height:26cqw;transform:translate(-50%,-50%);
+  left:50%;top:50%;
+  background:radial-gradient(circle, rgba(215,235,242,.20) 0%, rgba(160,205,220,.075) 34%, rgba(127,212,232,0) 70%);
+  transition:left .09s linear, top .09s linear;
+}
+.s2 .cursordot{
+  position:absolute;width:.55cqw;height:.55cqw;min-width:4px;min-height:4px;border-radius:50%;
+  background:#EAF6FA;transform:translate(-50%,-50%);left:50%;top:50%;
+  box-shadow:0 0 12px 3px rgba(200,235,245,.55);
+  transition:left .09s linear, top .09s linear;
+}
+.s2 .arch{position:absolute;inset:0;z-index:3;opacity:.9}
+.s2 .glyphs{position:absolute;inset:0;z-index:8}
+.s2 .gy{
+  position:absolute;width:3.3cqw;height:3.3cqw;transform:translate(-50%,-50%);
+  display:grid;place-items:center;
+}
+.s2 .gy svg{width:100%;height:100%;stroke:#22282E;stroke-width:1.6;fill:none;transition:stroke .45s ease, filter .45s ease}
+.s2 .gy.lit svg{stroke:var(--parch);filter:drop-shadow(0 0 6px rgba(200,182,136,.8))}
+.s2 .narr{
+  position:absolute;left:0;right:0;bottom:6.5cqw;text-align:center;z-index:20;
+  font-family:var(--display);font-style:italic;font-size:2.05cqw;color:#9AA3AC;
+  letter-spacing:.02em;text-shadow:0 2px 20px #000;
+}
+.s2 .cnt{
+  position:absolute;left:0;right:0;bottom:3.2cqw;text-align:center;z-index:20;
+  font-family:var(--mono);font-size:1.1cqw;letter-spacing:.3em;color:#3A424B;
+}
+.s2 .cnt b{color:var(--parch);font-weight:500}
+.s2 .hint{
+  position:absolute;right:2.6cqw;top:2.6cqw;z-index:30;
+  font-family:var(--mono);font-size:1.02cqw;letter-spacing:.14em;text-transform:uppercase;
+  color:#2C333B;border:1px solid #1B2026;padding:.55cqw 1cqw;border-radius:2px;
+}
+.s2.done .hint{color:var(--gold);border-color:rgba(255,217,138,.35)}
+
+/* ═══════════════ SCREEN 3 — MEMORY FOREST ═══════════════ */
+.s3{background:linear-gradient(#3A4149 0%, #4A525A 26%, #3B4048 55%, #23272C 80%, #191C20 100%)}
+.s3 .fog{
+  position:absolute;left:0;right:0;top:36%;height:52%;z-index:6;pointer-events:none;
+  background:linear-gradient(rgba(107,114,128,0) 0%, rgba(107,114,128,.34) 55%, rgba(107,114,128,.1) 100%);
+}
+.s3 .trees{position:absolute;inset:0}
+.s3 .trees svg{position:absolute;inset:0;width:100%;height:100%}
+.s3 .ground{
+  position:absolute;left:0;right:0;bottom:0;height:26%;z-index:7;
+  background:linear-gradient(rgba(30,33,38,0), #16181C 62%);
+}
+.s3 .luma{position:absolute;left:29.5%;top:47%;z-index:14;width:7cqw;height:7cqw;transform:translate(-50%,-50%)}
+.s3 .luma .core{
+  position:absolute;left:50%;top:50%;width:1.7cqw;height:1.7cqw;transform:translate(-50%,-50%) rotate(12deg);
+  background:#BFE9F5;border-radius:14% 40% 14% 40%;
+  box-shadow:0 0 3cqw 1cqw rgba(127,212,232,.32), 0 0 8cqw 3cqw rgba(127,212,232,.11);
+}
+.s3 .luma .frag{
+  position:absolute;left:50%;top:50%;width:.5cqw;height:.5cqw;border-radius:1px;
+  background:#8FD8EA;transform-origin:0 0;opacity:.85;
+}
+.s3 .say{position:absolute;left:35.5%;top:41%;z-index:16;max-width:29cqw}
+.s3 .say .txt{
+  font-family:var(--body);font-size:1.65cqw;line-height:1.5;color:#D5EDF4;
+  background:rgba(6,10,13,.34);
+  padding:1cqw 1.4cqw;border-left:1px solid rgba(127,212,232,.4);
+}
+.s3 .say .who{
+  font-family:var(--mono);font-size:.98cqw;letter-spacing:.24em;text-transform:uppercase;
+  color:#6FBACC;margin-bottom:.55cqw;
+}
+.s3 .mem{
+  position:absolute;right:5cqw;top:24cqw;z-index:20;width:29cqw;
+  background:linear-gradient(#EFE3C8, #E2D3B2);
+  border:1px solid #C4B08A;
+  padding:1.7cqw 1.9cqw;
+  box-shadow:0 1.6cqw 4cqw rgba(0,0,0,.55);
+  transform:rotate(-.5deg);
+}
+.s3 .mem .cat{
+  font-family:var(--mono);font-size:.95cqw;letter-spacing:.22em;text-transform:uppercase;
+  color:#8A6E3C;margin-bottom:.7cqw;display:flex;align-items:center;gap:.6cqw;
+}
+.s3 .mem .cat i{width:.7cqw;height:.7cqw;background:#E5A64B;border-radius:50%;display:block}
+.s3 .mem h4{font-family:var(--display);font-size:2.15cqw;font-weight:400;color:#241E14;margin:0 0 .7cqw;line-height:1.15}
+.s3 .mem p{font-family:var(--body);font-size:1.35cqw;line-height:1.5;color:#5C4F3A;margin:0}
+.s3 .mem .idx{position:absolute;right:1.5cqw;top:1.4cqw;font-family:var(--mono);font-size:.95cqw;color:#A8916A}
+.s3 .burst{
+  position:absolute;right:19.5cqw;top:30cqw;width:9cqw;height:9cqw;z-index:12;
+  background:radial-gradient(circle, rgba(255,242,208,.55) 0%, rgba(229,166,75,.18) 38%, rgba(229,166,75,0) 70%);
+  transform:translate(50%,-50%);
+}
+
+/* HUD (shared by screens 3 and 5) */
+.hud-count{
+  position:absolute;left:2.8cqw;bottom:2.8cqw;z-index:40;
+  font-family:var(--mono);font-size:1.35cqw;letter-spacing:.16em;color:rgba(232,220,192,.62);
+  display:flex;align-items:center;gap:.6cqw;
+}
+.hud-count i{font-style:normal;color:var(--parch)}
+.hud-codex{
+  position:absolute;right:2.8cqw;bottom:2.8cqw;z-index:40;
+  font-family:var(--mono);font-size:1.05cqw;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(232,220,192,.78);border:1px solid rgba(200,182,136,.32);
+  padding:.7cqw 1.2cqw;border-radius:2px;background:rgba(8,10,13,.45);
+  display:flex;align-items:center;gap:.7cqw;
+}
+.hud-codex kbd{
+  font-family:var(--mono);font-size:.9cqw;border:1px solid rgba(200,182,136,.3);
+  padding:.12cqw .45cqw;border-radius:2px;color:rgba(200,182,136,.75);
+}
+.hud-prompt{
+  position:absolute;left:50%;bottom:11cqw;transform:translateX(-50%);z-index:40;
+  font-family:var(--body);font-size:1.25cqw;letter-spacing:.1em;color:rgba(255,255,255,.72);
+  display:flex;align-items:center;gap:.7cqw;text-shadow:0 2px 10px rgba(0,0,0,.8);
+}
+.hud-prompt kbd{
+  font-family:var(--mono);font-size:1cqw;border:1px solid rgba(255,255,255,.35);
+  padding:.15cqw .6cqw;border-radius:2px;
+}
+
+/* ═══════════════ SCREEN 4 — CODEX ═══════════════ */
+.s4{background:var(--cx-paper);cursor:default}
+.s4 .grain{
+  position:absolute;inset:0;z-index:1;opacity:.5;pointer-events:none;
+  background-image:radial-gradient(rgba(120,95,55,.055) 1px, transparent 1px);
+  background-size:3px 3px;
+}
+.s4 .topbar{
+  position:absolute;left:0;right:0;top:0;height:5.4cqw;z-index:10;
+  border-bottom:1px solid var(--cx-line);
+  display:flex;align-items:center;justify-content:space-between;padding:0 3cqw;
+  background:rgba(245,233,208,.9);
+}
+.s4 .brandmark{display:flex;align-items:center;gap:1cqw}
+.s4 .brandmark .sig{
+  width:1.9cqw;height:1.9cqw;border:1px solid #A8916A;border-radius:50%;
+  display:grid;place-items:center;color:#8A6E3C;font-size:1cqw;
+}
+.s4 .brandmark b{font-family:var(--display);font-size:1.7cqw;font-weight:400;color:var(--cx-ink);letter-spacing:.01em}
+.s4 .topright{display:flex;align-items:center;gap:1.6cqw}
+.s4 .counter{font-family:var(--mono);font-size:1.05cqw;color:#8A7A5C;letter-spacing:.08em}
+.s4 .counter b{color:#4A3E2A}
+.s4 .revealbtn{
+  font-family:var(--mono);font-size:1cqw;letter-spacing:.14em;text-transform:uppercase;
+  color:#F5E9D0;background:#3A3020;padding:.65cqw 1.2cqw;border-radius:2px;
+}
+.s4 .langpair{font-family:var(--mono);font-size:1cqw;color:#A8916A}
+.s4 .langpair b{color:#3A3020}
+.s4 .langpair .ar{font-family:var(--arabic);font-size:1.25cqw}
+
+.s4 .body{position:absolute;left:0;right:0;top:5.4cqw;bottom:0;display:flex;z-index:8}
+.s4 .rail{width:16cqw;border-right:1px solid var(--cx-line);padding:2.4cqw 0 0 3cqw;flex:none}
+.s4 .rail .lab{
+  font-family:var(--mono);font-size:.9cqw;letter-spacing:.2em;text-transform:uppercase;
+  color:#A8916A;margin-bottom:1.3cqw;
+}
+.s4 .rail a{
+  display:flex;align-items:center;justify-content:space-between;padding-right:1.6cqw;
+  font-size:1.25cqw;color:#6B5D46;text-decoration:none;margin-bottom:.95cqw;position:relative;
+}
+.s4 .rail a.cur{color:var(--cx-ink);font-weight:600}
+.s4 .rail a.cur::before{content:"";position:absolute;left:-3cqw;top:.15cqw;width:.25cqw;height:1.5cqw;background:#3A3020}
+.s4 .rail a i{font-family:var(--mono);font-style:normal;font-size:.95cqw;color:#B8A67F}
+
+.s4 .main{flex:1;padding:2.4cqw 3cqw 0;overflow:hidden;position:relative}
+.s4 .main h1{
+  font-family:var(--display);font-weight:400;font-size:3.6cqw;color:var(--cx-ink);
+  margin:0 0 .5cqw;letter-spacing:-.012em;
+}
+.s4 .main .dek{font-size:1.32cqw;color:var(--cx-ink-2);margin:0 0 2.2cqw;max-width:44cqw;line-height:1.5}
+
+.s4 .cards{display:grid;grid-template-columns:1fr 1fr;gap:1.5cqw}
+.s4 .card{
+  border:1px solid var(--cx-line);background:rgba(255,252,244,.55);
+  padding:1.5cqw 1.6cqw;position:relative;
+}
+.s4 .card .yr{position:absolute;right:1.4cqw;top:1.3cqw;font-family:var(--mono);font-size:.95cqw;color:#B8A67F}
+.s4 .card h3{font-family:var(--display);font-size:1.95cqw;font-weight:400;color:var(--cx-ink);margin:0 0 .4cqw}
+.s4 .card .role{font-family:var(--mono);font-size:.92cqw;letter-spacing:.12em;text-transform:uppercase;color:#A8916A;margin-bottom:1cqw}
+.s4 .card p{font-size:1.18cqw;line-height:1.5;color:#5C4F3A;margin:0 0 1.1cqw}
+.s4 .chips{display:flex;flex-wrap:wrap;gap:.45cqw;margin-bottom:1.1cqw}
+.s4 .chip{
+  font-family:var(--mono);font-size:.88cqw;padding:.28cqw .62cqw;border-radius:2px;
+  border:1px solid;letter-spacing:.03em;
+}
+.s4 .broke{
+  border-top:1px solid var(--cx-line);padding-top:.9cqw;
+  font-size:1.05cqw;line-height:1.45;color:#7A5E33;font-style:italic;
+}
+.s4 .broke b{
+  font-style:normal;font-family:var(--mono);font-size:.85cqw;letter-spacing:.16em;
+  text-transform:uppercase;color:#B0895A;display:block;margin-bottom:.3cqw;
+}
+.s4 .card.locked{background:repeating-linear-gradient(-45deg,rgba(214,196,160,.16) 0 6px,transparent 6px 12px)}
+.s4 .card.locked h3{color:#B8A67F}
+.s4 .card.locked .silhouette{height:1.2cqw;background:#DFCFAA;border-radius:1px;margin-bottom:.5cqw}
+.s4 .card.locked .silhouette.s2w{width:62%}
+.s4 .card.locked .unlock{
+  font-family:var(--mono);font-size:.95cqw;color:#8A6E3C;margin-top:1cqw;
+  border-bottom:1px solid #C9B489;display:inline-block;padding-bottom:.2cqw;
+}
+
+/* ═══════════════ SCREEN 5 — VILLAGE + IMPATIENCE ═══════════════ */
+.s5{background:linear-gradient(#4C535C 0%, #5A616A 20%, #454B54 48%, #2C3037 74%, #1C1F24 100%)}
+.s5 .vfog{
+  position:absolute;left:0;right:0;top:30%;height:48%;z-index:6;
+  background:linear-gradient(rgba(107,114,128,0), rgba(107,114,128,.3) 60%, rgba(107,114,128,.05));
+}
+.s5 .vill{position:absolute;inset:0;z-index:4}
+.s5 .vill svg{position:absolute;inset:0;width:100%;height:100%}
+.s5 .vground{
+  position:absolute;left:0;right:0;bottom:0;height:30%;z-index:7;
+  background:linear-gradient(rgba(28,31,36,0), #191B1F 65%);
+}
+.s5 .fount{position:absolute;left:50%;bottom:11.5cqw;transform:translateX(-50%);z-index:14;width:20cqw}
+.s5 .fbowl{
+  position:relative;height:5.2cqw;border:.28cqw solid #575F68;border-top:0;
+  border-radius:0 0 46% 46%/0 0 100% 100%;overflow:hidden;background:#22262B;
+}
+.s5 .fwater{
+  position:absolute;left:0;right:0;bottom:0;height:26%;
+  background:linear-gradient(rgba(200,182,136,.5), rgba(200,182,136,.82));
+  box-shadow:0 -0.2cqw 1.6cqw rgba(200,182,136,.4);
+}
+.s5 .fwater::after{content:"";position:absolute;left:0;right:0;top:0;height:.18cqw;background:rgba(255,242,208,.9)}
+.s5 .fpillar{
+  position:absolute;left:50%;bottom:5.2cqw;transform:translateX(-50%);
+  width:1.5cqw;height:4cqw;background:linear-gradient(#4A515A,#343A42);
+}
+.s5 .fjet{
+  position:absolute;left:50%;bottom:9cqw;transform:translateX(-50%);
+  width:.35cqw;height:2.6cqw;
+  background:linear-gradient(rgba(200,182,136,0), rgba(255,242,208,.85));
+}
+.s5 .fmeter{
+  position:absolute;left:50%;transform:translateX(-50%);top:-2.6cqw;white-space:nowrap;
+  font-family:var(--mono);font-size:1.1cqw;letter-spacing:.2em;color:rgba(200,182,136,.85);
+}
+.s5 .ftag{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:-2.8cqw;white-space:nowrap;
+  font-family:var(--body);font-size:1.05cqw;font-style:italic;color:rgba(139,149,161,.75);
+}
+.s5 .luma2{position:absolute;left:22%;top:44%;z-index:15;width:6cqw;height:6cqw;transform:translate(-50%,-50%)}
+.s5 .luma2 .core{
+  position:absolute;left:50%;top:50%;width:1.9cqw;height:1.9cqw;transform:translate(-50%,-50%) rotate(-8deg);
+  background:#CDEFF8;border-radius:16% 42% 16% 42%;
+  box-shadow:0 0 3.4cqw 1.1cqw rgba(127,212,232,.34), 0 0 9cqw 3.4cqw rgba(127,212,232,.12);
+}
+.s5 .say2{position:absolute;left:28%;top:33%;z-index:18;width:36cqw}
+.s5 .say2 .who{
+  font-family:var(--mono);font-size:.98cqw;letter-spacing:.24em;text-transform:uppercase;
+  color:#6FBACC;margin-bottom:.6cqw;
+}
+.s5 .say2 .txt{
+  font-family:var(--body);font-size:1.62cqw;line-height:1.55;color:#DDF1F7;
+  background:rgba(6,10,13,.42);
+  padding:1.1cqw 1.5cqw;border-left:1px solid rgba(127,212,232,.42);
+}
+.s5 .skipbar{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:4.4cqw;z-index:40;
+  display:flex;align-items:center;gap:1.4cqw;
+  background:rgba(8,10,13,.62);border:1px solid rgba(200,182,136,.34);
+  padding:.9cqw 1.6cqw;border-radius:2px;
+}
+.s5 .skipbar .t{font-family:var(--body);font-size:1.28cqw;color:#E3D8BE;letter-spacing:.04em}
+.s5 .skipbar .go{
+  font-family:var(--mono);font-size:1cqw;letter-spacing:.16em;text-transform:uppercase;
+  color:#0C0E11;background:var(--parch);padding:.55cqw 1.1cqw;border-radius:2px;
+}
+.s5 .skipbar .dismiss{font-family:var(--mono);font-size:.95cqw;color:#6B7280;letter-spacing:.1em}
+
+/* ── closing ─────────────────────────────────────────── */
+.close{padding:88px 0 110px}
+.close h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,36px);color:var(--parch);margin:0 0 14px}
+.close > .wrap > p{max-width:64ch;font-size:15.5px;margin:0 0 40px}
+.decide{display:grid;gap:1px;background:var(--hair-soft);border:1px solid var(--hair-soft)}
+.decide > div{background:var(--ink-1);padding:22px 24px;display:grid;grid-template-columns:34px 1fr;gap:16px}
+.decide .q{font-family:var(--mono);font-size:12px;color:var(--gold);padding-top:3px}
+.decide h4{margin:0 0 6px;font-size:15.5px;color:#C6CDD4;font-weight:600}
+.decide p{margin:0;font-size:13.8px;color:var(--dust-dim);line-height:1.6}
+.decide p em{color:var(--parch);font-style:normal}
+
+.footnote{
+  margin-top:44px;padding-top:22px;border-top:1px solid var(--hair-soft);
+  font-family:var(--mono);font-size:11.5px;color:var(--dust-dim);letter-spacing:.04em;line-height:1.8;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="mast">
+    <p class="eyebrow">Screen review · pre-production</p>
+    <h1>Five screens, <em>before a line of code</em></h1>
+    <p class="lede">The first five surfaces a visitor meets, rendered at the real palette, the real layout, and the real copy from the design document. Three of them decide whether this project works: <strong>screen&nbsp;2</strong> is the only moment a visitor is asked to learn something new, <strong>screen&nbsp;4</strong> is where a recruiter's ninety seconds are actually spent, and <strong>screen&nbsp;5</strong> is where the world offers them the exit.</p>
+    <div class="chain">
+      <span>idea.md</span><span>GDD.md</span><span>STANDARDS.md</span><span class="now">→ screens.html</span>
+    </div>
+    <div class="caveat">
+      <div>
+        <h3>What these are</h3>
+        <p>Composition, hierarchy, colour, and copy — decided. Every hex value is lifted from GDD Part&nbsp;9; every string is the shipping string.</p>
+      </div>
+      <div>
+        <h3>What these are not</h3>
+        <p>Not renders. The world screens show layout and light, not final 3D art — that is Phase&nbsp;1's grey-box, then art pass.</p>
+      </div>
+      <div>
+        <h3>One live moment</h3>
+        <p>Screen&nbsp;2 is interactive. Move your pointer across it; the light follows and the glyphs ignite. That is the actual opening mechanic.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════════ SCREEN 1 ══════════════ -->
+  <section class="screen">
+    <div class="shead">
+      <div class="snum">01</div>
+      <h2>The Title Screen</h2>
+      <div class="route">/</div>
+    </div>
+    <p class="sjob">Black, a ruined gate, and three honest choices. This screen has one job: make the second option look like a legitimate path rather than a defeat.</p>
+
+    <div class="layout">
+      <div class="frame s1">
+        <div class="glow"></div>
+        <div class="gate">
+          <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMax meet" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#101318"></stop><stop offset="1" stop-color="#05070A"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M356 360 V150 q0 -46 44 -46 h34 q44 0 44 46 V360 Z" fill="url(#g1)"></path>
+            <path d="M470 360 V126 h58 l6 -18 h34 V360 Z" fill="#0A0C10"></path>
+            <path d="M356 360 V150 q0 -46 44 -46 h34 q44 0 44 46 V360 Z" fill="none" stroke="#171B21" stroke-width="1.2"></path>
+            <rect x="286" y="104" width="18" height="256" fill="#0C0E13"></rect>
+            <path d="M182 360 V168 h22 l4 -14 h30 v206 Z" fill="#080A0E"></path>
+            <path d="M60 360 V196 h40 l5 -12 h26 v176 Z" fill="#060809"></path>
+            <g stroke="#1D242B" stroke-width="1" fill="none">
+              <path d="M372 176 h20 M372 190 h14 M372 204 h20"></path>
+              <path d="M446 172 v22 M440 183 h12"></path>
+            </g>
+          </svg>
+        </div>
+
+        <div class="title">
+          <h3>The Forgotten<br>Mind</h3>
+          <div class="sub">A cinematic interactive portfolio</div>
+        </div>
+
+        <div class="menu">
+          <div class="opt on">
+            <span class="arw">▸</span>
+            <span class="lbl">Enter the world</span>
+            <span class="meta">20–60 min · headphones</span>
+          </div>
+          <div class="opt skip">
+            <span class="arw">▸</span>
+            <span class="lbl">I have five minutes</span>
+            <span class="meta">full portfolio, no puzzles</span>
+          </div>
+          <div class="opt">
+            <span class="arw">▸</span>
+            <span class="lbl">Continue</span>
+            <span class="meta">42 / 100 · 3 days ago</span>
+          </div>
+        </div>
+
+        <div class="lang"><b>EN</b> &nbsp;/&nbsp; <span class="ar">العربية</span></div>
+
+        <span class="pin" style="left:9%;top:63%">1</span>
+        <span class="pin" style="left:9%;top:75%">2</span>
+        <span class="pin" style="left:66%;top:40%">3</span>
+        <span class="pin" style="left:9%;top:33%">4</span>
+      </div>
+
+      <div class="notes">
+        <div class="note"><b>1</b><p><strong>Three options, not eight.</strong> Hick's Law is load-bearing here — the first screen of an unfamiliar experience is where choice paralysis is most expensive. Each option states its real cost in time so nobody enters by accident.</p></div>
+        <div class="note"><b>2</b><p><strong>The skip is styled up, not down.</strong> It sits in the middle position, in a cooler tint than the muted third option — visible without competing. Making it look like a failure state would defeat the entire two-layer architecture.</p></div>
+        <div class="note"><b>3</b><p><strong>One saturated colour in the frame.</strong> Cold cyan bleeding from behind the gate is the only chroma on screen. It is <code>--luma #7FD4E8</code>, so the first colour a visitor sees is the Guardian's, before they know what a Guardian is.</p></div>
+        <div class="note"><b>4</b><p><strong>Left-anchored, not centred.</strong> Centred menus are the default and read as a template. Anchoring the block to the left third leaves the gate's negative space intact and lets the composition breathe asymmetrically.</p></div>
+        <div class="note"><b>5</b><p><strong>Arabic present at the threshold.</strong> The locale toggle is on screen one, not buried in settings — RTL is a first-class locale in this build, and the title screen is where that promise is made.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ SCREEN 2 ══════════════ -->
+  <section class="screen">
+    <div class="shead">
+      <div class="snum">02</div>
+      <h2>The Cursor Ritual</h2>
+      <div class="route">/world → gate</div>
+    </div>
+    <p class="sjob">Total darkness. The cursor is the only light source, and sweeping it across the gate ignites ancient glyphs. No tutorial text, no prompt, no fail state — the mechanic teaches itself in about eleven seconds. <strong style="color:#C8B688">Move your pointer across the frame.</strong></p>
+
+    <div class="layout">
+      <div class="frame s2" id="ritual" tabindex="0" role="img" aria-label="Interactive mockup: a dark gate with seven glyphs that ignite as a pointer-tracked light passes over them. Use the arrow keys to move the light.">
+        <div class="arch">
+          <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="width:100%;height:100%">
+            <path d="M180 360 V150 q0 -78 140 -78 t140 78 V360 h-26 V152 q0 -56 -114 -56 t-114 56 V360 Z" fill="#0A0C0F"></path>
+            <path d="M154 360 V140 h26 V360 Z M460 360 V140 h26 V360 Z" fill="#08090C"></path>
+          </svg>
+        </div>
+
+        <div class="glyphs" id="glyphs">
+          <div class="gy" data-x="24" data-y="46" style="left:24%;top:46%"><svg viewBox="0 0 24 24"><path d="M12 3 v18 M5 8 l7 -5 l7 5 M7 17 h10"></path></svg></div>
+          <div class="gy" data-x="30" data-y="30" style="left:30%;top:30%"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"></circle><path d="M12 5 v14"></path></svg></div>
+          <div class="gy" data-x="42" data-y="21" style="left:42%;top:21%"><svg viewBox="0 0 24 24"><path d="M4 18 L12 4 L20 18 M8 13 h8"></path></svg></div>
+          <div class="gy" data-x="50" data-y="17" style="left:50%;top:17%"><svg viewBox="0 0 24 24"><path d="M12 4 v16 M6 10 l6 -6 l6 6 M6 16 l6 -6 l6 6"></path></svg></div>
+          <div class="gy" data-x="58" data-y="21" style="left:58%;top:21%"><svg viewBox="0 0 24 24"><path d="M6 5 h12 v14 M6 12 h9"></path></svg></div>
+          <div class="gy" data-x="70" data-y="30" style="left:70%;top:30%"><svg viewBox="0 0 24 24"><path d="M5 5 l14 14 M19 5 l-14 14"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+          <div class="gy" data-x="76" data-y="46" style="left:76%;top:46%"><svg viewBox="0 0 24 24"><path d="M12 3 v18 M5 8 h14 M7 15 h10"></path></svg></div>
+        </div>
+
+        <div class="lightfield">
+          <div class="cursorlight" id="clight"></div>
+          <div class="cursordot" id="cdot"></div>
+        </div>
+
+        <div class="narr" id="narr">“…restore what has been forgotten.”</div>
+        <div class="cnt"><b id="lit">0</b> &nbsp;/&nbsp; 7</div>
+        <div class="hint" id="hint">Move to see</div>
+
+        <span class="pin" style="left:50%;top:9%">1</span>
+        <span class="pin" style="left:87%;top:74%">2</span>
+        <span class="pin" style="left:14%;top:86%">3</span>
+      </div>
+
+      <div class="notes">
+        <div class="note"><b>1</b><p><strong>Attention is the mechanic.</strong> Nothing is clicked. The glyph responds to proximity, so the first thing the world teaches is that looking at something is an action — which is the grammar every later puzzle uses.</p></div>
+        <div class="note"><b>2</b><p><strong>The counter is the only UI.</strong> <code>0 / 7</code> in hairline mono. It appears after the first glyph lights, so the visitor discovers the goal by achieving part of it rather than by being briefed.</p></div>
+        <div class="note"><b>3</b><p><strong>The narrator sets type in italic serif.</strong> His lines are the only italic in the entire product — a permanent signal that this voice is a recording, not the interface speaking.</p></div>
+        <div class="note"><b>4</b><p><strong>The one place novelty is affordable.</strong> An unfamiliar interaction in minute one is an invitation; the same interaction in minute forty is friction. Everything after this screen uses conventional bindings.</p></div>
+        <div class="note"><b>5</b><p><strong>No time pressure, no failure.</strong> A visitor can sit here for six minutes. Holding still for thirty seconds is itself a hidden achievement — the design rewards patience rather than punishing it.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ SCREEN 3 ══════════════ -->
+  <section class="screen">
+    <div class="shead">
+      <div class="snum">03</div>
+      <h2>Memory Forest — recovery</h2>
+      <div class="route">/world → memory-forest</div>
+    </div>
+    <p class="sjob">The core loop, caught at its peak moment: a memory has just been recovered. Time is dilated to 0.35×, ambience is ducked 12&nbsp;dB, and the card rises while the Guardian reacts. This 4.2-second ritual repeats a hundred times, so every frame of it is budgeted.</p>
+
+    <div class="layout">
+      <div class="frame s3">
+        <div class="trees">
+          <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g fill="#454C55" opacity=".55">
+              <path d="M40 360 V150 l-14 -18 l14 4 V110 l-12 -16 l12 3 V70 l16 20 l-6 2 l10 16 l-8 1 l10 18 V360Z"></path>
+              <path d="M120 360 V170 l-12 -14 l12 3 V128 l16 18 l-7 1 l9 14 V360Z"></path>
+              <path d="M560 360 V140 l16 -20 l-8 2 l12 -18 l-10 1 V88 l-18 22 l8 1 l-12 18 l9 1 V360Z"></path>
+              <path d="M615 360 V180 l14 -16 l-9 1 l11 -16 V360Z"></path>
+            </g>
+            <g fill="#333941" opacity=".85">
+              <path d="M180 360 V120 l-20 -26 l20 6 V60 l-16 -22 l16 5 V20 l22 28 l-9 2 l14 22 l-11 2 l14 26 V360Z"></path>
+              <path d="M480 360 V132 l22 -28 l-11 3 l16 -24 l-13 2 V54 l-24 30 l11 2 l-16 24 l12 2 V360Z"></path>
+              <path d="M300 360 V210 l-14 -18 l14 4 V166 l16 20 l-8 2 l10 16 V360Z"></path>
+            </g>
+            <g fill="#1E2228">
+              <path d="M90 360 V96 l-26 -34 l26 8 V22 l-20 -26 l20 6 V-10 h16 V360Z"></path>
+              <path d="M540 360 V104 l28 -36 l-14 4 l20 -30 l-16 3 V-4 h-30 V360Z"></path>
+              <path d="M370 360 V190 l-18 -22 l18 5 V140 l20 24 l-10 2 l12 20 V360Z"></path>
+            </g>
+          </svg>
+        </div>
+        <div class="fog"></div>
+        <div class="ground"></div>
+
+        <div class="burst"></div>
+
+        <div class="luma">
+          <div class="core"></div>
+          <div class="frag" style="transform:translate(2.2cqw,-.9cqw) rotate(24deg)"></div>
+          <div class="frag" style="transform:translate(-2cqw,1.4cqw) rotate(-38deg)"></div>
+          <div class="frag" style="transform:translate(.6cqw,2.4cqw) rotate(12deg)"></div>
+          <div class="frag" style="transform:translate(-1.4cqw,-2.1cqw) rotate(66deg)"></div>
+          <div class="frag" style="transform:translate(2.8cqw,1.9cqw) rotate(-12deg)"></div>
+          <div class="frag" style="transform:translate(-2.7cqw,-.4cqw) rotate(48deg)"></div>
+        </div>
+
+        <div class="say">
+          <div class="who">Luma · stage 2</div>
+          <div class="txt">“That one was near the surface. The rest are buried deeper.”</div>
+        </div>
+
+        <div class="mem">
+          <div class="idx">◈ 07</div>
+          <div class="cat"><i></i> Lesson learned</div>
+          <h4>Reading the error message</h4>
+          <p>For two years I guessed. Then someone made me read the stack trace out loud, line by line, and I never guessed again.</p>
+        </div>
+
+        <div class="hud-prompt"><kbd>E</kbd> Examine the lantern</div>
+        <div class="hud-count">◈ <i>7</i> / 100</div>
+        <div class="hud-codex"><kbd>Tab</kbd> Codex</div>
+
+        <span class="pin" style="left:32.5%;top:47%">1</span>
+        <span class="pin" style="left:79%;top:35%">2</span>
+        <span class="pin" style="left:9%;top:90.5%">3</span>
+        <span class="pin" style="left:87%;top:90.5%">4</span>
+        <span class="pin" style="left:53%;top:23%">5</span>
+      </div>
+
+      <div class="notes">
+        <div class="note"><b>1</b><p><strong>Luma at stage 2 of 5.</strong> One mended crack, six orbiting fragments, 65% opacity, cold cyan. It has no face — everything it feels is carried by light intensity, orbital speed, and colour temperature.</p></div>
+        <div class="note"><b>2</b><p><strong>The memory card is parchment, deliberately.</strong> It is the same surface as the Codex. Every recovered memory looks like a page torn from the archive it will live in, so the two layers read as one object from the first recovery.</p></div>
+        <div class="note"><b>3</b><p><strong>The counter fades.</strong> <code>◈ 7 / 100</code> is visible for four seconds after a change, then drops to zero opacity. Progress should be felt through the world healing, not read off a bar.</p></div>
+        <div class="note"><b>4</b><p><strong>The Codex button never fades.</strong> Of four HUD elements, three hide. This one is permanent and corner-anchored — an infinite Fitts target, one input from the portfolio, always.</p></div>
+        <div class="note"><b>5</b><p><strong>Fog is a budget, not a mood.</strong> Density interpolates from <code>0.045</code> to <code>0.006</code> across restoration, which is simultaneously the emotional arc and the draw-distance control that keeps the frame inside 180 draw calls.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ SCREEN 4 ══════════════ -->
+  <section class="screen">
+    <div class="shead">
+      <div class="snum">04</div>
+      <h2>The Codex — Projects</h2>
+      <div class="route">/codex/projects</div>
+    </div>
+    <p class="sjob">Layer 2: server-rendered, crawlable, 20&nbsp;KB of JavaScript, readable with the network off. This is where the ninety seconds are actually spent, so it is designed as carefully as the finale — and it belongs to the same world, in ink instead of light.</p>
+
+    <div class="layout">
+      <div class="frame s4">
+        <div class="grain"></div>
+
+        <div class="topbar">
+          <div class="brandmark"><span class="sig">◈</span> <b>The Guardian's Codex</b></div>
+          <div class="topright">
+            <span class="counter">Recovered <b>42</b> / 100</span>
+            <span class="revealbtn">Reveal everything</span>
+            <span class="langpair"><b>EN</b> / <span class="ar">ع</span></span>
+          </div>
+        </div>
+
+        <div class="body">
+          <nav class="rail">
+            <div class="lab">The archive</div>
+            <a href="#"><span>About</span><i>12</i></a>
+            <a href="#" class="cur"><span>Projects</span><i>7/10</i></a>
+            <a href="#"><span>Skills</span><i>18</i></a>
+            <a href="#"><span>Experience</span><i>8</i></a>
+            <a href="#"><span>Education</span><i>5</i></a>
+            <a href="#"><span>Certificates</span><i>6</i></a>
+            <a href="#"><span>Ambitions</span><i>2</i></a>
+            <a href="#"><span>Philosophy</span><i>—</i></a>
+            <a href="#"><span>Contact</span><i>→</i></a>
+          </nav>
+
+          <div class="main">
+            <h1>Projects</h1>
+            <p class="dek">Ten things that shipped, and the one thing that broke in each of them. Every demo below runs — the machines in the Developer Studio are these same pages.</p>
+
+            <div class="cards">
+              <div class="card">
+                <span class="yr">2024</span>
+                <h3>Scheduling Engine</h3>
+                <div class="role">Sole engineer</div>
+                <p>Queue-backed appointment system handling 8,400 users at 84&nbsp;ms p95.</p>
+                <div class="chips">
+                  <span class="chip" style="color:#4FC3D9;border-color:#4FC3D9">TypeScript</span>
+                  <span class="chip" style="color:#E5A64B;border-color:#E5A64B">Node</span>
+                  <span class="chip" style="color:#A97FE0;border-color:#A97FE0">PostgreSQL</span>
+                  <span class="chip" style="color:#62B36B;border-color:#62B36B">Redis</span>
+                </div>
+                <div class="broke"><b>What broke</b>Retries were not idempotent. For nine days we double-booked one clinic every Tuesday.</div>
+              </div>
+
+              <div class="card">
+                <span class="yr">2023</span>
+                <h3>Atlas</h3>
+                <div class="role">Lead · team of three</div>
+                <p>Internal mapping tool that replaced a 40-tab spreadsheet nobody could edit safely.</p>
+                <div class="chips">
+                  <span class="chip" style="color:#4FC3D9;border-color:#4FC3D9">React</span>
+                  <span class="chip" style="color:#A97FE0;border-color:#A97FE0">D3</span>
+                  <span class="chip" style="color:#E5A64B;border-color:#E5A64B">Go</span>
+                </div>
+                <div class="broke"><b>What broke</b>I designed for the power user first. Adoption sat at 11% until we rebuilt onboarding.</div>
+              </div>
+
+              <div class="card locked">
+                <span class="yr">—</span>
+                <h3>Not yet recovered</h3>
+                <div class="role">Developer Studio · desk 3</div>
+                <div class="silhouette"></div>
+                <div class="silhouette s2w"></div>
+                <div class="unlock">Reveal this, or find it in the world</div>
+              </div>
+
+              <div class="card locked">
+                <span class="yr">—</span>
+                <h3>Not yet recovered</h3>
+                <div class="role">Developer Studio · desk 4</div>
+                <div class="silhouette"></div>
+                <div class="silhouette s2w"></div>
+                <div class="unlock">Reveal this, or find it in the world</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span class="pin" style="left:62%;top:7%">1</span>
+        <span class="pin" style="left:34%;top:82%">2</span>
+        <span class="pin" style="left:76.5%;top:63%">3</span>
+        <span class="pin" style="left:8.5%;top:36%">4</span>
+      </div>
+
+      <div class="notes">
+        <div class="note"><b>1</b><p><strong>Reveal everything lives in the top bar.</strong> Not in a menu, not behind a confirm. A visitor who reached the Codex and still wants the rest gets it in one click, from every route.</p></div>
+        <div class="note"><b>2</b><p><strong>“What broke” is a required field.</strong> The build fails if a project file omits it. This is the single most credibility-bearing decision in the whole portfolio — every project names one real failure, in the developer's own words.</p></div>
+        <div class="note"><b>3</b><p><strong>Locked ≠ dead end.</strong> An unrecovered project shows its silhouette, its physical location in the world, and a way to open it. A visitor is never shown a wall with no door.</p></div>
+        <div class="note"><b>4</b><p><strong>Conventional information architecture.</strong> The world organises content by narrative adjacency; the Codex organises it by the categories every recruiter has already seen on a hundred portfolios. Same content, two mental models.</p></div>
+        <div class="note"><b>5</b><p><strong>Stack chips carry the category palette.</strong> Cyan frontend, amber backend, violet data, green infra — the same six hues as the skill crystals at Crystal Lake, so a colour learned in the world still means something in the archive.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ SCREEN 5 ══════════════ -->
+  <section class="screen">
+    <div class="shead">
+      <div class="snum">05</div>
+      <h2>The Village — and the exit</h2>
+      <div class="route">/world → forgotten-village</div>
+    </div>
+    <p class="sjob">The hub at 26% restoration, with the Impatience Detector firing. The fountain is the progress bar: its water level, glow, and jet count are driven directly by the same float that heals the entire world. And beneath it, the most important sentence in the project.</p>
+
+    <div class="layout">
+      <div class="frame s5">
+        <div class="vill">
+          <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g fill="#2F343B">
+              <path d="M30 360 V250 l46 -34 l46 34 V360Z"></path>
+              <path d="M96 360 V268 l38 -28 l38 28 V360Z"></path>
+              <path d="M470 360 V244 l50 -36 l50 36 V360Z"></path>
+              <path d="M556 360 V272 l40 -30 l40 30 V360Z"></path>
+            </g>
+            <g fill="#252A30">
+              <path d="M150 360 V232 l42 -32 l42 32 V360Z"></path>
+              <path d="M406 360 V238 l44 -34 l44 34 V360Z"></path>
+            </g>
+            <g fill="#C8B688" opacity=".55">
+              <rect x="66" y="278" width="8" height="11"></rect><rect x="82" y="278" width="8" height="11"></rect>
+              <rect x="180" y="262" width="9" height="12"></rect>
+            </g>
+            <g fill="#4E555E" opacity=".5">
+              <rect x="120" y="296" width="8" height="11"></rect><rect x="140" y="296" width="8" height="11"></rect>
+              <rect x="440" y="268" width="9" height="12"></rect><rect x="462" y="268" width="9" height="12"></rect>
+              <rect x="520" y="252" width="9" height="12"></rect><rect x="580" y="288" width="8" height="11"></rect>
+            </g>
+            <g stroke="#3B424A" stroke-width="1" fill="none" opacity=".7">
+              <path d="M0 322 q160 -10 320 -8 q160 2 320 10"></path>
+              <path d="M0 340 q160 -8 320 -6 q160 2 320 8"></path>
+            </g>
+          </svg>
+        </div>
+        <div class="vfog"></div>
+        <div class="vground"></div>
+
+        <div class="fount">
+          <div class="fmeter">RESTORATION · 26%</div>
+          <div class="fjet"></div>
+          <div class="fpillar"></div>
+          <div class="fbowl"><div class="fwater"></div></div>
+          <div class="ftag">the fountain is the progress bar</div>
+        </div>
+
+        <div class="luma2"><div class="core"></div></div>
+        <div class="say2">
+          <div class="who">Luma · stage 2</div>
+          <div class="txt">“You are in a hurry. I understand — you did not come here for riddles. Ask me to open the Codex and I will show you everything at once. The world will still be here.”</div>
+        </div>
+
+        <div class="skipbar">
+          <span class="t">Skip the journey — open the Codex</span>
+          <span class="go">Open</span>
+          <span class="dismiss">Esc to stay</span>
+        </div>
+
+        <div class="hud-count">◈ <i>26</i> / 100</div>
+        <div class="hud-codex"><kbd>Tab</kbd> Codex</div>
+
+        <span class="pin" style="left:50%;top:63%">1</span>
+        <span class="pin" style="left:50%;top:86.5%">2</span>
+        <span class="pin" style="left:29%;top:38%">3</span>
+        <span class="pin" style="left:13%;top:80%">4</span>
+      </div>
+
+      <div class="notes">
+        <div class="note"><b>1</b><p><strong>One float drives everything.</strong> <code>uRestoration</code> sets the water level, the jet, the lit-window count, the fog, the saturation LUT, and the music stems. Progress costs one uniform write per change — no scene rebuild, no per-frame cost.</p></div>
+        <div class="note"><b>2</b><p><strong>The single most important interaction.</strong> Fires at 75 seconds with zero memories, or on exit intent. No modal, no dark overlay, no “are you sure?” — a quiet bar with a real Open and a real way to stay.</p></div>
+        <div class="note"><b>3</b><p><strong>Luma offers it, not the interface.</strong> A system dialogue would break the fiction and read as a bounce-prevention trick. The character conceding the visitor's time is the whole tonal point.</p></div>
+        <div class="note"><b>4</b><p><strong>Zero guilt copy.</strong> No progress-shaming, no “you're only 26% done”, no penalty. The visitor who leaves here still leaves at an end — theirs — and that end is a full portfolio.</p></div>
+        <div class="note"><b>5</b><p><strong>Buildings heal on staggered thresholds.</strong> Windows light in an authored sequence rather than all at once, so a returning visitor at 34% sees a village that is measurably further along than the one they left.</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="close">
+  <div class="wrap">
+    <h2>Four decisions I need before Phase&nbsp;0</h2>
+    <p>Everything above is reversible cheaply right now and expensive later. These four are the ones that change what gets built in week one.</p>
+
+    <div class="decide">
+      <div>
+        <div class="q">Q1</div>
+        <div>
+          <h4>Is the skip option positioned correctly?</h4>
+          <p>It currently sits second, styled cooler than the primary but warmer than the tertiary. The alternative is a smaller link below the three options — less prominent, less honest. <em>My recommendation: keep it second.</em> It is the difference between a portfolio and a trap.</p>
+        </div>
+      </div>
+      <div>
+        <div class="q">Q2</div>
+        <div>
+          <h4>Third-person camera, or first-person?</h4>
+          <p>Every screen here assumes third-person: the visitor sees a character, which makes the world's scale legible and the Islands dramatic. First-person is cheaper — no character model, no animation set — but flattens every vertical moment. <em>My recommendation: third-person, with a simple silhouetted figure rather than a detailed one.</em></p>
+        </div>
+      </div>
+      <div>
+        <div class="q">Q3</div>
+        <div>
+          <h4>Does the Codex read as part of the world, or as an escape from it?</h4>
+          <p>Screen 4 commits to parchment, the same surface as the memory cards, with the same sigils and category colours. If it should instead read as a clean modern document — deliberately outside the fiction — that is a legitimate different answer and it changes the type and palette work in Phase 1.</p>
+        </div>
+      </div>
+      <div>
+        <div class="q">Q4</div>
+        <div>
+          <h4>Is “what broke” going in?</h4>
+          <p>A required, build-enforced field on every project naming one real failure. It is the most credibility-bearing and the most personally uncomfortable decision in the document. <em>My recommendation: yes.</em> It is what separates this from a portfolio where nothing ever went wrong.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="footnote">
+      Typefaces shown are system stand-ins — Georgia for Fraunces, the system sans for Inter Tight, the system mono for JetBrains Mono. Final faces are self-hosted, subset per locale, with metrics-matched fallbacks so the swap contributes 0.00 to CLS.<br>
+      Colours are exact: GDD Part 9, Act I palette, category hues, Codex parchment.<br>
+      Copy is the shipping copy — narrator lines from Appendix A, Luma's Impatience line from Part 0.<br>
+      Local file · no network requests · open directly in any modern browser.
+    </p>
+  </div>
+</section>
+
+<script>
+(function(){
+  var frame = document.getElementById('ritual');
+  if(!frame) return;
+  var light  = document.getElementById('clight');
+  var dot    = document.getElementById('cdot');
+  var litEl  = document.getElementById('lit');
+  var hint   = document.getElementById('hint');
+  var narr   = document.getElementById('narr');
+  var glyphs = Array.prototype.slice.call(document.querySelectorAll('#glyphs .gy'));
+  var count = 0, moved = false;
+
+  var lines = [
+    '“…restore what has been forgotten.”',
+    '“Yes. Like that.”',
+    '“I can almost feel the shape of it.”',
+    '“Keep going. Please.”',
+    '“It has been so long since anyone tried.”',
+    '“Almost. Almost.”',
+    '“Thank you.”'
+  ];
+
+  function place(px, py){
+    light.style.left = px + '%';
+    light.style.top  = py + '%';
+    dot.style.left   = px + '%';
+    dot.style.top    = py + '%';
+
+    if(!moved){ moved = true; hint.textContent = 'Live'; }
+
+    glyphs.forEach(function(g){
+      if(g.classList.contains('lit')) return;
+      var gx = parseFloat(g.dataset.x), gy = parseFloat(g.dataset.y);
+      var dx = (gx - px) * 1.78;            /* correct for the 16:9 aspect */
+      var dy = (gy - py);
+      if(Math.sqrt(dx*dx + dy*dy) < 11){
+        g.classList.add('lit');
+        count++;
+        litEl.textContent = count;
+        narr.textContent = lines[Math.min(count, lines.length - 1)];
+        if(count === 7){
+          frame.classList.add('done');
+          hint.textContent = 'The gate opens';
+        }
+      }
+    });
+  }
+
+  frame.addEventListener('pointermove', function(e){
+    var r = frame.getBoundingClientRect();
+    place(((e.clientX - r.left) / r.width) * 100, ((e.clientY - r.top) / r.height) * 100);
+  });
+
+  /* keyboard equivalent — the ritual is completable without a pointer */
+  var kx = 50, ky = 50;
+  frame.addEventListener('keydown', function(e){
+    var step = 4, used = true;
+    if(e.key === 'ArrowLeft')       kx -= step;
+    else if(e.key === 'ArrowRight') kx += step;
+    else if(e.key === 'ArrowUp')    ky -= step;
+    else if(e.key === 'ArrowDown')  ky += step;
+    else used = false;
+    if(used){
+      e.preventDefault();
+      kx = Math.max(0, Math.min(100, kx));
+      ky = Math.max(0, Math.min(100, ky));
+      place(kx, ky);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

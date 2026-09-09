@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Pick a direction — 5 designs</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body,h1,h2,h3,p,ul,li{margin:0;padding:0}
+ul{list-style:none}
+a{color:inherit;text-decoration:none}
+:root{
+  --bg:#0B0D12;--surf:#12151D;--line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.18);
+  --hi:#F2F5FA;--tx:#8C97A8;--dim:#5A6474;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+body{background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid #6FD3EC;outline-offset:3px;border-radius:6px}
+.wrap{width:min(1180px,100% - 44px);margin-inline:auto}
+.mast{padding:80px 0 44px;border-bottom:1px solid var(--line)}
+.lab{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-bottom:18px}
+h1{color:var(--hi);font-size:clamp(32px,5.4vw,58px);font-weight:700;letter-spacing:-.035em;line-height:1.04;margin-bottom:18px}
+.lede{max-width:64ch;font-size:16.5px}
+.lede b{color:var(--hi)}
+.grid{display:grid;gap:20px;padding-block:44px 80px}
+@media(min-width:760px){.grid{grid-template-columns:1fr 1fr}}
+.card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--surf);
+  display:flex;flex-direction:column;transition:.3s cubic-bezier(.2,.9,.3,1)}
+.card:hover{border-color:var(--line2);transform:translateY(-4px);box-shadow:0 26px 60px -26px #000}
+.sw{height:118px;display:flex}
+.sw i{flex:1;display:block}
+.bd{padding:24px 24px 22px;flex:1;display:flex;flex-direction:column}
+.no{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--dim);margin-bottom:10px}
+h2{color:var(--hi);font-size:23px;font-weight:700;letter-spacing:-.028em;margin-bottom:8px}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--dim);margin-bottom:14px}
+.card p{font-size:14.3px;margin-bottom:16px;flex:1}
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+.meta span{font-family:var(--mono);font-size:10.5px;padding:4px 9px;border:1px solid var(--line);border-radius:5px;color:var(--tx)}
+.go{display:inline-flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 18px;border-radius:10px;
+  background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--hi);font-size:13.5px;font-weight:600;transition:.25s}
+.go:hover{background:rgba(255,255,255,.11);border-color:var(--line2)}
+.note{border:1px dashed var(--line2);border-radius:14px;padding:24px 26px;margin-bottom:60px;font-size:14px}
+.note b{color:var(--hi)}
+.note ul{display:grid;gap:8px;margin-top:12px}
+.note li{display:grid;grid-template-columns:14px 1fr;gap:10px}
+.note li i{font-style:normal;color:#6FD3EC}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="lab">The Forgotten Mind · Overture</div>
+    <h1>Five directions. Same content.<br>Pick the one that feels like you.</h1>
+    <p class="lede">Every page below carries <b>identical copy, identical structure, and identical sections</b> — so the only variable is the design. Open them side by side and choose. Whatever you pick becomes screen 00 of the project.</p>
+  </header>
+
+  <div class="grid">
+
+    <article class="card" style="grid-column:1/-1;border-color:rgba(91,225,255,.4);background:linear-gradient(160deg,rgba(91,225,255,.07),#12151D)">
+      <div class="sw" style="height:96px"><i style="background:#05070F"></i><i style="background:#5BE1FF"></i><i style="background:#9B7CFF"></i><i style="background:#FF7A5A"></i><i style="background:#FFC96B"></i><i style="background:#3EE0B0"></i></div>
+      <div class="bd">
+        <div class="no" style="color:#5BE1FF">06 · THE SYNTHESIS</div>
+        <h2 style="font-size:28px">The Assembly</h2>
+        <div class="tag">02 + 05 + the exploded boot — merged around one idea, not stacked</div>
+        <p>A broken world rebuilds itself in front of you, in 3D, inside living air. <b style="color:#F2F5FA">The isometric city is the data</b> — every block's height is a real number from the career, and hovering one tells you what it is. One light source obeyed by every face. One motion budget spent once per screen. The cyclist re-cast as a scale figure riding on the plate.</p>
+        <div class="meta"><span>Aurora canvas</span><span>Isometric data-city</span><span>Exploded boot</span><span>Cursor torch</span><span>Scale figure</span><span>Press B</span></div>
+        <a class="go" href="design-6-assembly.html" style="background:rgba(91,225,255,.14);border-color:rgba(91,225,255,.4)">Open the synthesis <span>→</span></a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="sw"><i style="background:#F2F0E9"></i><i style="background:#0E0E0E"></i><i style="background:#FF4A17"></i><i style="background:#1B44FF"></i><i style="background:#FFE600"></i></div>
+      <div class="bd">
+        <div class="no">01</div>
+        <h2>Neo-Brutalist</h2>
+        <div class="tag">Paper · Arial Black · hard shadows</div>
+        <p>Loud, confident, zero blur. Thick black borders, offset shadows, rotated sticker badges, scrolling tickers. Type does the shouting. Reads as a designer who is not asking permission.</p>
+        <div class="meta"><span>Light</span><span>High contrast</span><span>Text scramble</span><span>Steppy motion</span></div>
+        <a class="go" href="design-1-brutalist.html">Open design 01 <span>→</span></a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="sw"><i style="background:#050610"></i><i style="background:#22D3EE"></i><i style="background:#8B7CF6"></i><i style="background:#F472B6"></i><i style="background:#FBBF24"></i></div>
+      <div class="bd">
+        <div class="no">02</div>
+        <h2>Aurora Glass</h2>
+        <div class="tag">Dark · frosted glass · living gradient</div>
+        <p>A canvas aurora mesh drifts behind frosted glass panels. Mouse parallax on the hero, 3D tilt on every card, blur-to-sharp reveals. The premium SaaS look, executed properly.</p>
+        <div class="meta"><span>Dark</span><span>Canvas mesh</span><span>Mouse parallax</span><span>3D tilt</span></div>
+        <a class="go" href="design-2-aurora.html">Open design 02 <span>→</span></a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="sw"><i style="background:#04070A"></i><i style="background:#4AFF9E"></i><i style="background:#1D7A48"></i><i style="background:#FFB230"></i><i style="background:#FF5C5C"></i></div>
+      <div class="bd">
+        <div class="no">03</div>
+        <h2>Terminal / CRT</h2>
+        <div class="tag">Phosphor green · monospace only · scanlines</div>
+        <p>The whole page is one shell session. ASCII logo, boot sequence on load, matrix rain, scanlines and screen curvature, glitch on hover, skill bars drawn in block characters. Unmistakably a developer.</p>
+        <div class="meta"><span>Dark</span><span>Boot sequence</span><span>Matrix rain</span><span>ASCII art</span></div>
+        <a class="go" href="design-3-terminal.html">Open design 03 <span>→</span></a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="sw"><i style="background:#FBFAF7"></i><i style="background:#12100E"></i><i style="background:#8A2B2B"></i><i style="background:#B99A6B"></i><i style="background:#DCD6CB"></i></div>
+      <div class="bd">
+        <div class="no">04</div>
+        <h2>Editorial Luxury</h2>
+        <div class="tag">Paper · serif · hairlines · drop caps</div>
+        <p>A design annual, not a website. Georgia at 116px, drop caps, plate captions, thin rules that draw themselves in, and a horizontal work rail you scroll sideways. Restraint as the statement.</p>
+        <div class="meta"><span>Light</span><span>Serif display</span><span>Masked reveals</span><span>Horizontal scroll</span></div>
+        <a class="go" href="design-4-editorial.html">Open design 04 <span>→</span></a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="sw"><i style="background:#F1EEFF"></i><i style="background:#6C4DF6"></i><i style="background:#FF7A5A"></i><i style="background:#1FC7A9"></i><i style="background:#FFC93C"></i></div>
+      <div class="bd">
+        <div class="no">05</div>
+        <h2>Isometric Playground</h2>
+        <div class="tag">Lilac · vivid blocks · real CSS 3D</div>
+        <p>A genuine isometric city built from CSS 3D cubes that tilts toward your cursor. Morphing blobs, chunky shadows, springy hovers, highlighter marks on key words. Friendly and confident.</p>
+        <div class="meta"><span>Light</span><span>CSS 3D cubes</span><span>Morphing blobs</span><span>Spring motion</span></div>
+        <a class="go" href="design-5-isometric.html">Open design 05 <span>→</span></a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="sw"><i style="background:#070910"></i><i style="background:#6FD3EC"></i><i style="background:#A98BF0"></i><i style="background:#FFC96B"></i><i style="background:#5FCF97"></i></div>
+      <div class="bd">
+        <div class="no">00</div>
+        <h2>Current build</h2>
+        <div class="tag">Dark · exploded assembly · the cyclist</div>
+        <p>The version already built: parts explode outward on load and reassemble in engine order, and a small 3D cyclist rides the background telling dry jokes. Kept here for comparison.</p>
+        <div class="meta"><span>Dark</span><span>Exploded intro</span><span>Cyclist</span><span>Press B</span></div>
+        <a class="go" href="overture.html">Open the current build <span>→</span></a>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="note">
+    <b>How to judge these fairly</b>
+    <ul>
+      <li><i>◈</i><span>Open each one and <b>scroll all the way down</b>. Half the design decisions live below the hero.</span></li>
+      <li><i>◈</i><span>Resize the window narrow. All five are responsive, and how they collapse tells you a lot.</span></li>
+      <li><i>◈</i><span>Hover the project cards, the buttons, and the headings — the motion differs sharply between directions.</span></li>
+      <li><i>◈</i><span>Ask one question of each: <b>would a recruiter trust this in ninety seconds?</b> That is the job.</span></li>
+      <li><i>◈</i><span>You can mix. Say “04's typography with 02's dark palette” and I will build that.</span></li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

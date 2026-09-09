@@ -1,0 +1,51 @@
+/* The perf HUD. Deliberately plain: it is an instrument, not a component. */
+
+.hud {
+  position: fixed;
+  inset-block-start: var(--tfm-space-sm);
+  inset-inline-start: var(--tfm-space-sm);
+  z-index: 40;
+  display: grid;
+  gap: 0;
+  padding: var(--tfm-space-sm) var(--tfm-space-md);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-control);
+  background: var(--tfm-perf-hud-bg);
+  backdrop-filter: blur(var(--tfm-effect-blur-panel));
+  color: var(--tfm-perf-hud-fg);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+  pointer-events: none;
+  user-select: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 4.5em auto;
+  gap: var(--tfm-space-sm);
+}
+
+.key {
+  color: var(--tfm-color-text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.value {
+  text-align: end;
+  color: var(--tfm-perf-hud-fg);
+}
+
+.good { color: var(--tfm-perf-hud-good); }
+.warn { color: var(--tfm-perf-hud-warn); }
+.bad  { color: var(--tfm-perf-hud-bad); }
+
+.tier {
+  margin-block-start: var(--tfm-space-xs);
+  padding-block-start: var(--tfm-space-xs);
+  border-block-start: 1px solid var(--tfm-color-border-subtle);
+  color: var(--tfm-color-text-muted);
+  letter-spacing: 0.08em;
+}

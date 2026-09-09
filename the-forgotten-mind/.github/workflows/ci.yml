@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static:
+    name: types · tests · token gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build tokens
+        run: npm run tokens
+      - name: Tokens are committed and up to date
+        # A generated file that drifts from its source is worse than no pipeline.
+        run: git diff --exit-code -- src/generated
+      - run: npm run lint
+      - run: npm run types
+      - run: npm run test
+      - name: Gate · token lint
+        run: npm run gate:tokens
+      - name: Gate · offset-pagination ban
+        run: npm run gate:pagination
+
+  runtime:
+    name: react-commit-count · memory-leak · smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Gate · React commits, heap growth, and the two doors
+        run: npx playwright test
+        env:
+          CI: '1'
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

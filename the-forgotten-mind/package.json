@@ -1,0 +1,55 @@
+{
+  "name": "the-forgotten-mind",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "tokens": "node scripts/build-tokens.mjs",
+    "predev": "npm run tokens",
+    "prebuild": "npm run tokens",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "types": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "gate:tokens": "node scripts/gate-tokens.mjs",
+    "gate:pagination": "node scripts/gate-pagination.mjs",
+    "gates": "npm run gate:tokens && npm run gate:pagination && npx playwright test e2e/react-commits.spec.ts e2e/memory-leak.spec.ts",
+    "e2e": "playwright test",
+    "verify": "npm run tokens && npm run lint && npm run types && npm run test && npm run gate:tokens && npm run gate:pagination"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.0.0-rc.0",
+    "@react-three/fiber": "^9.0.0-rc.1",
+    "@react-three/rapier": "^2.0.0",
+    "detect-gpu": "^5.0.56",
+    "gsap": "^3.12.5",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.171.0",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@next/eslint-plugin-next": "^15.5.25",
+    "@playwright/test": "^1.63.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "@types/three": "^0.171.0",
+    "eslint": "^9.39.5",
+    "globals": "^15.15.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.70.0",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>02 · AURORA GLASS — The Forgotten Mind</title>
+<style>
+/* ══════════════════════════════════════════════
+   DESIGN 02 · AURORA GLASS
+   Living gradient mesh. Frosted glass. Mouse
+   parallax. Everything soft, floating, deep.
+   ══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box}
+html,body,h1,h2,h3,h4,p,ul,li,figure,blockquote{margin:0;padding:0}
+ul{list-style:none}
+img,svg,canvas{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+:root{
+  --bg:#050610; --hi:#FFFFFF; --tx:rgba(233,238,250,.72); --tx2:rgba(233,238,250,.44);
+  --vi:#8B7CF6; --cy:#22D3EE; --pk:#F472B6; --am:#FBBF24; --em:#34D399;
+  --glass:rgba(255,255,255,.055);
+  --glass-2:rgba(255,255,255,.09);
+  --edge:rgba(255,255,255,.13);
+  --edge-2:rgba(255,255,255,.22);
+  --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --sp:cubic-bezier(.16,.9,.24,1.03);
+}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:16px;line-height:1.72;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--vi);color:#fff}
+:focus-visible{outline:2px solid var(--cy);outline-offset:4px;border-radius:10px}
+.wrap{width:min(1200px,100% - 44px);margin-inline:auto}
+@media(max-width:600px){.wrap{width:calc(100% - 30px)}}
+
+/* ── the aurora ── */
+#aurora{position:fixed;inset:0;z-index:0;pointer-events:none;filter:blur(70px) saturate(150%);opacity:.85}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.26;mix-blend-mode:overlay;
+  background-image:radial-gradient(rgba(255,255,255,.5) .6px,transparent .6px);background-size:3px 3px}
+.vig{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 10%,transparent 40%,rgba(5,6,16,.55) 78%,rgba(5,6,16,.9) 100%)}
+header,main,footer{position:relative;z-index:3}
+
+/* ── glass ── */
+.glass{
+  background:var(--glass);border:1px solid var(--edge);border-radius:26px;
+  backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);
+  box-shadow:0 24px 70px -28px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.16);
+  position:relative;overflow:hidden;
+}
+.glass::after{content:"";position:absolute;left:0;right:0;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent)}
+
+/* ── type ── */
+h1,h2,h3,h4{color:var(--hi);font-weight:600;letter-spacing:-.03em;line-height:1.08}
+.xl{font-size:clamp(42px,7.4vw,92px);letter-spacing:-.042em;font-weight:600;line-height:1.02}
+.lg{font-size:clamp(28px,4.4vw,52px)}
+.md{font-size:clamp(20px,2.4vw,27px)}
+.gr{background:linear-gradient(115deg,var(--cy),var(--vi) 45%,var(--pk));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:17px;max-width:58ch;color:var(--tx)}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 17px;border-radius:100px;
+  background:var(--glass-2);border:1px solid var(--edge);backdrop-filter:blur(14px);
+  font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx);margin-bottom:24px;font-weight:500}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--em);box-shadow:0 0 12px 3px rgba(52,211,153,.8);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35;transform:scale(.8)}}
+.sec{padding-block:clamp(76px,10vw,140px)}
+.shead{max-width:700px;margin-bottom:56px}
+.shead.ctr{margin-inline:auto;text-align:center}
+
+.btn{display:inline-flex;align-items:center;gap:10px;border-radius:100px;padding:15px 30px;font-size:14.5px;font-weight:600;
+  letter-spacing:-.008em;transition:.35s var(--sp);position:relative;overflow:hidden}
+.btn.sol{background:linear-gradient(115deg,var(--cy),var(--vi));color:#07091A;
+  box-shadow:0 14px 40px -12px rgba(139,124,246,.7)}
+.btn.sol:hover{transform:translateY(-3px);box-shadow:0 22px 55px -14px rgba(139,124,246,.9)}
+.btn.gh{background:var(--glass-2);border:1px solid var(--edge-2);color:var(--hi);backdrop-filter:blur(14px)}
+.btn.gh:hover{background:rgba(255,255,255,.14);transform:translateY(-3px)}
+.btn .a{transition:transform .3s}
+.btn:hover .a{transform:translateX(5px)}
+
+/* ── nav ── */
+.nav{position:fixed;left:0;right:0;top:0;z-index:60;padding:18px 0;transition:.4s var(--sp)}
+.nav.stuck{padding:11px 0}
+.nav .bar{display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:11px 11px 11px 22px;border-radius:100px;background:rgba(12,14,30,.5);border:1px solid transparent;
+  backdrop-filter:blur(0px);transition:.4s var(--sp)}
+.nav.stuck .bar{background:rgba(12,14,30,.72);border-color:var(--edge);backdrop-filter:blur(22px) saturate(160%);
+  box-shadow:0 16px 44px -20px rgba(0,0,0,.9)}
+.brand{display:flex;align-items:center;gap:11px;color:var(--hi);font-weight:600;letter-spacing:-.015em}
+.brand .mk{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;flex:none;
+  background:linear-gradient(135deg,var(--cy),var(--vi));color:#07091A;font-size:15px;font-weight:700;
+  box-shadow:0 6px 18px -6px rgba(34,211,238,.8)}
+.nlk{display:none;gap:28px;font-size:14px}
+@media(min-width:960px){.nlk{display:flex}}
+.nlk a{color:var(--tx);transition:.25s}
+.nlk a:hover{color:var(--hi)}
+
+/* ── hero ── */
+.hero{padding-top:170px;padding-bottom:60px}
+.hg{display:grid;gap:56px;align-items:center}
+@media(min-width:1040px){.hg{grid-template-columns:1.06fr .94fr;gap:60px}}
+.hero .sub{margin:26px 0 36px;max-width:48ch;font-size:17.5px}
+.hero .sub b{color:var(--hi);font-weight:600}
+.acts{display:flex;flex-wrap:wrap;gap:13px}
+
+.par{will-change:transform;transition:transform .5s cubic-bezier(.2,.8,.3,1)}
+
+.orbit{position:relative;aspect-ratio:1/1.02}
+.orbCore{position:absolute;inset:14%;border-radius:50%;
+  background:conic-gradient(from 200deg,#22D3EE,#8B7CF6,#F472B6,#FBBF24,#22D3EE);
+  filter:blur(28px);opacity:.55;animation:rot 26s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.orbGlass{position:absolute;inset:20%;border-radius:50%;background:rgba(255,255,255,.05);
+  border:1px solid var(--edge-2);backdrop-filter:blur(20px);
+  box-shadow:inset 0 2px 40px rgba(255,255,255,.12),0 40px 90px -40px #000;
+  display:grid;place-items:center;text-align:center}
+.orbGlass .n{font-size:clamp(38px,5.4vw,64px);font-weight:600;color:var(--hi);letter-spacing:-.045em;line-height:1}
+.orbGlass .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--tx2);margin-top:9px}
+.ringA,.ringB{position:absolute;inset:4%;border-radius:50%;border:1px dashed rgba(255,255,255,.14)}
+.ringB{inset:-4%;border-style:solid;border-color:rgba(255,255,255,.07)}
+.chipF{position:absolute;padding:11px 15px;border-radius:16px;background:rgba(12,14,30,.72);
+  border:1px solid var(--edge);backdrop-filter:blur(18px);box-shadow:0 18px 44px -18px #000;
+  display:flex;align-items:center;gap:10px;animation:bob 6.5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px)}}
+.chipF .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:14px;flex:none}
+.chipF .t{font-size:12.5px;font-weight:600;color:var(--hi);white-space:nowrap}
+.chipF .s{font-family:var(--mono);font-size:9.5px;color:var(--tx2);letter-spacing:.1em}
+.chipF.c1{left:-4%;top:14%}
+.chipF.c2{right:-6%;bottom:20%;animation-delay:1.6s}
+.chipF.c3{right:8%;top:2%;animation-delay:3s}
+@media(max-width:560px){.chipF{display:none}}
+
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:52px}
+@media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}}
+.st{padding:24px 22px;border-radius:20px}
+.st .n{font-size:clamp(30px,3.8vw,42px);font-weight:600;color:var(--hi);letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.st .k{margin-top:9px;font-family:var(--mono);font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--tx2)}
+
+/* ── tilt cards ── */
+.tilt{transform-style:preserve-3d;transition:transform .45s var(--sp)}
+.g3{display:grid;gap:22px}
+@media(min-width:900px){.g3{grid-template-columns:repeat(3,1fr)}}
+.fb{padding:36px 32px 34px}
+.fb .ic{width:58px;height:58px;border-radius:19px;display:grid;place-items:center;margin-bottom:26px;
+  border:1px solid var(--edge-2);position:relative}
+.fb .ic svg{width:25px;height:25px}
+.fb h3{font-size:23px;margin-bottom:12px}
+.fb p{font-size:15px}
+.fb .no{position:absolute;right:26px;top:24px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:rgba(255,255,255,.14);font-weight:600}
+
+/* ── about ── */
+.ab{display:grid;gap:48px;align-items:start}
+@media(min-width:1000px){.ab{grid-template-columns:.78fr 1.22fr;gap:62px}}
+.pf{padding:14px;border-radius:30px}
+.pf .in{aspect-ratio:4/4.8;border-radius:20px;overflow:hidden;position:relative;
+  background:linear-gradient(165deg,rgba(139,124,246,.28),rgba(34,211,238,.12),rgba(5,6,16,.9))}
+.pf svg{position:absolute;inset:0;width:100%;height:100%}
+.pf .cap{position:absolute;left:0;right:0;bottom:0;padding:14px;text-align:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--tx2)}
+.qt{font-size:clamp(20px,2.5vw,27px);line-height:1.42;color:var(--hi);font-weight:500;letter-spacing:-.02em;
+  padding-left:24px;border-left:2px solid;border-image:linear-gradient(var(--cy),var(--pk)) 1;margin-bottom:26px}
+.ab p{margin-bottom:15px;max-width:60ch;font-size:15.6px}
+.sk{display:grid;gap:19px;margin-top:36px}
+@media(min-width:620px){.sk{grid-template-columns:1fr 1fr;gap:19px 36px}}
+.sk .tp{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}
+.sk .nm{font-size:13.6px;font-weight:600;color:var(--hi)}
+.sk .pc{font-family:var(--mono);font-size:11px;color:var(--tx2)}
+.sk .tr{height:6px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.sk .tr i{display:block;height:100%;border-radius:99px;width:0;transition:width 1.3s cubic-bezier(.2,.85,.25,1)}
+.sk i.a{background:linear-gradient(90deg,var(--cy),#0EA5C9)}
+.sk i.b{background:linear-gradient(90deg,var(--vi),#6D5AE0)}
+.sk i.c{background:linear-gradient(90deg,var(--pk),#DB4E96)}
+.sk i.d{background:linear-gradient(90deg,var(--em),#1FA97C)}
+.tg{display:flex;flex-wrap:wrap;gap:9px;margin-top:32px}
+.tg span{padding:8px 15px;border-radius:100px;background:var(--glass);border:1px solid var(--edge);
+  font-size:12.5px;color:var(--tx);backdrop-filter:blur(10px)}
+
+/* ── work ── */
+.wk{display:grid;gap:24px}
+@media(min-width:920px){.wk{grid-template-columns:repeat(3,1fr)}}
+.wc{display:flex;flex-direction:column}
+.wc .tp{position:relative;aspect-ratio:16/10;overflow:hidden}
+.wc .tp svg{position:absolute;inset:0;width:100%;height:100%}
+.wc .tp .gl{position:absolute;inset:0;transition:.5s}
+.wc:hover .tp .gl{opacity:.7}
+.wc .tag{position:absolute;left:14px;top:14px;padding:5px 12px;border-radius:100px;background:rgba(6,8,20,.7);
+  border:1px solid var(--edge);font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--tx);backdrop-filter:blur(10px)}
+.wc .lv{position:absolute;right:14px;top:14px;padding:5px 12px;border-radius:100px;background:rgba(52,211,153,.16);
+  border:1px solid rgba(52,211,153,.4);font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--em)}
+.wc .bd{padding:26px 26px 24px;display:flex;flex-direction:column;flex:1}
+.wc .rl{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--tx2);margin-bottom:10px}
+.wc h3{font-size:22px;margin-bottom:11px}
+.wc .ds{font-size:14.2px;margin-bottom:19px;flex:1}
+.mt{display:flex;gap:22px;padding-block:16px;border-block:1px solid var(--edge);margin-bottom:18px}
+.mt .v{font-size:17px;font-weight:600;color:var(--hi);letter-spacing:-.03em}
+.mt .k{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx2)}
+.ch{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.ch span{padding:5px 11px;border-radius:8px;border:1px solid;font-family:var(--mono);font-size:10px}
+.bk{border-radius:14px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);padding:14px 16px}
+.bk b{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--am);margin-bottom:6px}
+.bk span{font-size:13px;line-height:1.55;color:rgba(251,229,180,.82)}
+
+/* ── ways ── */
+.wy{display:grid;gap:24px}
+@media(min-width:900px){.wy{grid-template-columns:1fr 1fr}}
+.wp{padding:40px 34px 36px;position:relative}
+.wp.hot{border-color:rgba(139,124,246,.4);background:linear-gradient(170deg,rgba(139,124,246,.12),rgba(255,255,255,.02))}
+.wp .rb{position:absolute;right:28px;top:0;padding:7px 16px;border-radius:0 0 12px 12px;
+  background:linear-gradient(115deg,var(--cy),var(--vi));color:#07091A;font-family:var(--mono);
+  font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+.wp .tm{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--tx2);margin-bottom:16px}
+.wp h3{font-size:clamp(24px,3vw,34px);margin-bottom:13px}
+.wp>p{font-size:15px;margin-bottom:28px;max-width:42ch}
+.wp li{display:flex;gap:14px;padding:13px 0;border-top:1px solid var(--edge);font-size:14.2px}
+.wp li i{flex:none;width:20px;height:20px;border-radius:7px;display:grid;place-items:center;font-size:10px;margin-top:2px;font-style:normal}
+.wp.hot li i{background:rgba(139,124,246,.2);color:var(--vi)}
+.wp.alt li i{background:rgba(251,191,36,.18);color:var(--am)}
+.wp ul{margin-bottom:30px}
+
+/* ── CTA ── */
+.cta{padding:clamp(48px,7vw,92px) clamp(28px,5vw,68px);border-radius:36px;text-align:center}
+.cta::before{content:"";position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(60% 70% at 20% 6%,rgba(34,211,238,.24),transparent 60%),
+  radial-gradient(60% 70% at 82% 96%,rgba(244,114,182,.2),transparent 60%),
+  radial-gradient(50% 60% at 50% 50%,rgba(139,124,246,.16),transparent 68%)}
+.cta .in{position:relative;z-index:2}
+.cta h2{margin-bottom:18px}
+.cta .sb{max-width:50ch;margin:0 auto 44px;font-size:17px}
+.dr{display:grid;gap:13px;max-width:660px;margin-inline:auto;text-align:left}
+.door{display:flex;align-items:center;justify-content:space-between;gap:20px;border-radius:18px;
+  border:1px solid var(--edge);background:rgba(255,255,255,.03);padding:21px 25px;transition:.3s var(--sp);width:100%}
+.door:hover{background:rgba(255,255,255,.08);border-color:var(--edge-2);transform:translateY(-3px)}
+.door.hot{border-color:rgba(139,124,246,.45);background:linear-gradient(100deg,rgba(139,124,246,.2),rgba(34,211,238,.1))}
+.door .l{display:flex;align-items:center;gap:17px}
+.door .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none;font-size:17px}
+.door .t{font-size:16.5px;font-weight:600;color:var(--hi);letter-spacing:-.02em}
+.door .d{font-size:12.8px;color:var(--tx2);margin-top:2px}
+.door .ar{font-size:19px;color:var(--tx2);transition:.25s}
+.door:hover .ar{color:var(--cy);transform:translateX(5px)}
+
+/* ── footer ── */
+.ft{border-top:1px solid var(--edge);margin-top:clamp(70px,9vw,120px);padding-block:48px 42px}
+.ftt{display:grid;gap:36px;margin-bottom:40px}
+@media(min-width:860px){.ftt{grid-template-columns:1.4fr 1fr 1fr;gap:50px}}
+.ft h5{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--tx2);margin-bottom:18px}
+.fl{display:grid;gap:11px}
+.fl a{font-size:14px;color:var(--tx);transition:.2s;width:fit-content}
+.fl a:hover{color:var(--cy)}
+.fb2{padding-top:28px;border-top:1px solid var(--edge);display:flex;flex-wrap:wrap;gap:16px;
+  justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--tx2)}
+
+.rv{opacity:0;transform:translateY(34px) scale(.985);filter:blur(6px);
+  transition:opacity .9s ease,transform .9s var(--sp),filter .9s ease}
+.rv.in{opacity:1;transform:none;filter:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv{opacity:1;transform:none;filter:none}
+}
+</style>
+</head>
+<body>
+
+<canvas id="aurora"></canvas>
+<div class="noise"></div><div class="vig"></div>
+
+<header class="nav" id="nav">
+  <div class="wrap"><div class="bar">
+    <div class="brand"><span class="mk">◈</span> The Forgotten Mind</div>
+    <nav class="nlk"><a href="#about">About</a><a href="#work">Work</a><a href="#ways">Two ways in</a><a href="#enter">Enter</a></nav>
+    <div style="display:flex;gap:9px"><button class="btn gh" style="padding:11px 20px;font-size:13px">Codex</button>
+    <button class="btn sol" style="padding:11px 22px;font-size:13px">Enter <span class="a">→</span></button></div>
+  </div></div>
+</header>
+
+<main>
+<section class="hero wrap">
+  <div class="hg">
+    <div>
+      <div class="eyebrow rv in"><i></i> Available for work · 2026</div>
+      <h1 class="xl rv in d1">A portfolio you <span class="gr">walk through</span>, not scroll.</h1>
+      <p class="sub rv in d2">A world was built out of one developer's memory — then it broke. Every project, every skill, every failure is scattered across it as something you can pick up. <b>Or skip the world entirely and read the archive in ninety seconds.</b></p>
+      <div class="acts rv in d3">
+        <button class="btn sol">Enter the world <span class="a">→</span></button>
+        <button class="btn gh">I have five minutes</button>
+      </div>
+    </div>
+
+    <div class="orbit par rv in d2" data-par="14">
+      <div class="ringB"></div><div class="ringA"></div>
+      <div class="orbCore"></div>
+      <div class="orbGlass"><div><div class="n">26%</div><div class="l">World restored</div></div></div>
+      <div class="chipF c1 par" data-par="26"><span class="ic" style="background:rgba(34,211,238,.18);color:var(--cy)">◈</span><span><span class="t">Memory recovered</span><br><span class="s">SKILL · 26 / 100</span></span></div>
+      <div class="chipF c2 par" data-par="-22"><span class="ic" style="background:rgba(251,191,36,.18);color:var(--am)">⌘</span><span><span class="t">Codex · 1 keypress</span><br><span class="s">ANY TIME</span></span></div>
+      <div class="chipF c3 par" data-par="34"><span class="ic" style="background:rgba(244,114,182,.18);color:var(--pk)">♪</span><span><span class="t">Live engine</span><br><span class="s">60 FPS</span></span></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="glass st rv in d3"><div class="n">6+</div><div class="k">Years shipping</div></div>
+    <div class="glass st rv in d4"><div class="n">10</div><div class="k">Live projects</div></div>
+    <div class="glass st rv in d4"><div class="n">19</div><div class="k">Places</div></div>
+    <div class="glass st rv in d5"><div class="n">60<span style="font-size:.5em">fps</span></div><div class="k">Enforced</div></div>
+  </div>
+</section>
+
+<section class="sec wrap">
+  <div class="shead ctr rv">
+    <div class="eyebrow"><i></i> What you're looking at</div>
+    <h2 class="lg">Three sentences, so nobody<br>has to <span class="gr">guess.</span></h2>
+    <p class="lede" style="margin-inline:auto">Most portfolios open with a hero image and a job title. This one owes you a straight answer first — what follows is unusual, and your time is not free.</p>
+  </div>
+  <div class="g3">
+    <article class="glass fb tilt rv"><span class="no">01</span>
+      <div class="ic" style="background:rgba(34,211,238,.13);color:var(--cy);box-shadow:0 14px 34px -16px rgba(34,211,238,.9)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4h16v14H4z"/><path d="M4 9h16M9 9v9"/></svg></div>
+      <h3>It is a portfolio.</h3><p>Ten projects that shipped. Every demo runs live — not a screenshot. Every project names one real thing that went wrong, because a career where nothing broke is a career that did not happen.</p></article>
+    <article class="glass fb tilt rv d1"><span class="no">02</span>
+      <div class="ic" style="background:rgba(139,124,246,.13);color:var(--vi);box-shadow:0 14px 34px -16px rgba(139,124,246,.9)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div>
+      <h3>It is also a world.</h3><p>Nineteen places, sixteen puzzles, a guardian made of light that remembers your last visit. Everything you recover repairs a piece of the world — watch the forest come back as you read.</p></article>
+    <article class="glass fb tilt rv d2"><span class="no">03</span>
+      <div class="ic" style="background:rgba(251,191,36,.13);color:var(--am);box-shadow:0 14px 34px -16px rgba(251,191,36,.9)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <h3>You never have to play it.</h3><p>One key opens the entire archive at any moment, with nothing withheld and no penalty. Here to check a stack and leave? That is a legitimate visit and it is designed for.</p></article>
+  </div>
+</section>
+
+<section class="sec wrap" id="about">
+  <div class="ab">
+    <div class="glass pf rv">
+      <div class="in">
+        <svg viewBox="0 0 300 360" aria-hidden="true">
+          <ellipse cx="150" cy="128" rx="52" ry="60" fill="rgba(255,255,255,.1)"/>
+          <path d="M56 360 V302 q0 -74 94 -74 t94 74 V360Z" fill="rgba(255,255,255,.1)"/>
+          <circle cx="150" cy="128" r="52" fill="none" stroke="rgba(34,211,238,.35)" stroke-width="1.4"/>
+        </svg>
+        <div class="cap">portrait · 4:5 · replace</div>
+      </div>
+    </div>
+    <div>
+      <div class="eyebrow rv"><i></i> About</div>
+      <h2 class="lg rv d1" style="margin-bottom:24px">I build things that keep working <span class="gr">after I leave the room.</span></h2>
+      <p class="qt rv d1">“The parts nobody photographs — error handling, migration paths, the second week after launch — decide whether software is trustworthy at 3 a.m.”</p>
+      <p class="rv d2">Six years of shipping software other people depend on: scheduling systems, internal tools, the unglamorous layer underneath a product. I have owned things end to end and handed things over cleanly, which is a different and underrated skill.</p>
+      <p class="rv d2">This site exists because a bullet list never conveyed any of that. So I put the whole thing somewhere you can walk through — then made very sure you could skip the walk.</p>
+      <div class="sk rv d3">
+        <div><div class="tp"><span class="nm">Frontend · React / TS</span><span class="pc">92%</span></div><div class="tr"><i class="a" data-w="92"></i></div></div>
+        <div><div class="tp"><span class="nm">Backend · Node / Go</span><span class="pc">88%</span></div><div class="tr"><i class="b" data-w="88"></i></div></div>
+        <div><div class="tp"><span class="nm">Data · Postgres / Redis</span><span class="pc">80%</span></div><div class="tr"><i class="c" data-w="80"></i></div></div>
+        <div><div class="tp"><span class="nm">Infra · Docker / TF</span><span class="pc">72%</span></div><div class="tr"><i class="d" data-w="72"></i></div></div>
+      </div>
+      <div class="tg rv d4"><span>Next.js</span><span>Three.js</span><span>GraphQL</span><span>Testing</span><span>CI/CD</span><span>Accessibility</span><span>Performance</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap" id="work">
+  <div class="shead ctr rv">
+    <div class="eyebrow"><i></i> Selected work</div>
+    <h2 class="lg">Three of ten, before you<br>commit to <span class="gr">anything.</span></h2>
+  </div>
+  <div class="wk">
+    <article class="glass wc tilt rv">
+      <div class="tp"><svg viewBox="0 0 400 250" preserveAspectRatio="none"><g stroke="rgba(34,211,238,.5)" stroke-width="1.6" fill="none"><path d="M30 200 L100 148 L170 172 L240 104 L310 130 L370 68"/></g><g fill="#22D3EE"><circle cx="100" cy="148" r="4"/><circle cx="240" cy="104" r="4"/><circle cx="370" cy="68" r="5"/></g></svg>
+        <div class="gl" style="background:radial-gradient(60% 60% at 40% 36%,rgba(34,211,238,.3),transparent 70%)"></div>
+        <span class="tag">2024</span><span class="lv">Live</span></div>
+      <div class="bd"><div class="rl">Sole engineer</div><h3>Scheduling Engine</h3>
+        <p class="ds">Queue-backed appointment system for a clinic network, with a retry path that finally stopped losing bookings.</p>
+        <div class="mt"><div><div class="v">8,400</div><div class="k">Users</div></div><div><div class="v">84ms</div><div class="k">p95</div></div><div><div class="v">99.9%</div><div class="k">Uptime</div></div></div>
+        <div class="ch"><span style="color:#22D3EE;border-color:rgba(34,211,238,.4)">TypeScript</span><span style="color:#FBBF24;border-color:rgba(251,191,36,.4)">Node</span><span style="color:#8B7CF6;border-color:rgba(139,124,246,.4)">Postgres</span></div>
+        <div class="bk"><b>What broke</b><span>Retries were not idempotent. For nine days we double-booked one clinic every Tuesday.</span></div></div>
+    </article>
+
+    <article class="glass wc tilt rv d1">
+      <div class="tp"><svg viewBox="0 0 400 250" preserveAspectRatio="none"><g fill="none" stroke="rgba(139,124,246,.5)" stroke-width="1.6"><circle cx="200" cy="125" r="72"/><circle cx="200" cy="125" r="44"/><path d="M200 30 V220 M105 125 H295"/></g><g fill="#8B7CF6"><circle cx="200" cy="53" r="5"/><circle cx="264" cy="162" r="4"/></g></svg>
+        <div class="gl" style="background:radial-gradient(60% 60% at 50% 40%,rgba(139,124,246,.3),transparent 70%)"></div>
+        <span class="tag">2023</span><span class="lv">Live</span></div>
+      <div class="bd"><div class="rl">Lead · team of three</div><h3>Atlas</h3>
+        <p class="ds">Internal mapping tool that replaced a forty-tab spreadsheet nobody could edit without breaking someone else's column.</p>
+        <div class="mt"><div><div class="v">3</div><div class="k">Engineers</div></div><div><div class="v">−72%</div><div class="k">Task time</div></div><div><div class="v">40</div><div class="k">Tabs killed</div></div></div>
+        <div class="ch"><span style="color:#22D3EE;border-color:rgba(34,211,238,.4)">React</span><span style="color:#F472B6;border-color:rgba(244,114,182,.4)">D3</span><span style="color:#FBBF24;border-color:rgba(251,191,36,.4)">Go</span></div>
+        <div class="bk"><b>What broke</b><span>I designed for the power user first. Adoption sat at 11% until we rebuilt onboarding.</span></div></div>
+    </article>
+
+    <article class="glass wc tilt rv d2">
+      <div class="tp"><svg viewBox="0 0 400 250" preserveAspectRatio="none"><g fill="rgba(52,211,153,.28)"><rect x="50" y="152" width="44" height="70" rx="5"/><rect x="112" y="118" width="44" height="104" rx="5"/><rect x="174" y="84" width="44" height="138" rx="5"/><rect x="236" y="128" width="44" height="94" rx="5"/><rect x="298" y="60" width="44" height="162" rx="5"/></g><path d="M72 152 L134 118 L196 84 L258 128 L320 60" stroke="#34D399" stroke-width="2" fill="none"/></svg>
+        <div class="gl" style="background:radial-gradient(60% 60% at 50% 40%,rgba(52,211,153,.24),transparent 70%)"></div>
+        <span class="tag">2022</span><span class="lv">Live</span></div>
+      <div class="bd"><div class="rl">Sole engineer</div><h3>Ledger</h3>
+        <p class="ds">Double-entry accounting service handling marketplace reconciliation, with an audit trail that survived a real external audit.</p>
+        <div class="mt"><div><div class="v">1.2M</div><div class="k">Entries</div></div><div><div class="v">0</div><div class="k">Drift</div></div><div><div class="v">100%</div><div class="k">Audit</div></div></div>
+        <div class="ch"><span style="color:#FBBF24;border-color:rgba(251,191,36,.4)">Go</span><span style="color:#8B7CF6;border-color:rgba(139,124,246,.4)">Postgres</span><span style="color:#34D399;border-color:rgba(52,211,153,.4)">Terraform</span></div>
+        <div class="bk"><b>What broke</b><span>I stored money as floats for two months. Rewriting that taught me more than the rest of the project.</span></div></div>
+    </article>
+  </div>
+</section>
+
+<section class="sec wrap" id="ways">
+  <div class="shead ctr rv">
+    <div class="eyebrow"><i></i> Two ways in</div>
+    <h2 class="lg">Same archive.<br>Different <span class="gr">door.</span></h2>
+  </div>
+  <div class="wy">
+    <article class="glass wp hot rv"><span class="rb">Full experience</span>
+      <div class="tm">20–60 MINUTES</div><h3>Walk through it</h3>
+      <p>Third-person, real-time, with sound. You explore, solve, and watch the place repair itself around what you find.</p>
+      <ul>
+        <li><i>✦</i><span>Projects appear as machines you can actually run</span></li>
+        <li><i>✦</i><span>A guardian answers questions in plain language</span></li>
+        <li><i>✦</i><span>Every puzzle is skippable after three minutes</span></li>
+        <li><i>✦</i><span>Nothing can be failed or permanently missed</span></li>
+      </ul>
+      <button class="btn sol" style="width:100%;justify-content:center">Enter the world <span class="a">→</span></button>
+    </article>
+    <article class="glass wp alt rv d1">
+      <div class="tm">90 SECONDS</div><h3>Read it straight</h3>
+      <p>A plain, fast, printable archive. Loads in under a second, works with the network off, holds every fact the world contains.</p>
+      <ul>
+        <li><i>✦</i><span>Full project pages with code and architecture</span></li>
+        <li><i>✦</i><span>Résumé and one-page PDF, one click</span></li>
+        <li><i>✦</i><span>Screen-reader complete, keyboard complete</span></li>
+        <li><i>✦</i><span>Contact details without finishing anything</span></li>
+      </ul>
+      <button class="btn gh" style="width:100%;justify-content:center">Open the Codex</button>
+    </article>
+  </div>
+</section>
+
+<section class="sec wrap" id="enter" style="padding-top:0">
+  <div class="glass cta rv">
+    <div class="in">
+      <div class="eyebrow"><i></i> Pick a door</div>
+      <h2 class="lg">The gate is unlocked <span class="gr">either way.</span></h2>
+      <p class="sb">Choose the one that matches the time you actually have. Neither is the lesser version — they hold exactly the same content.</p>
+      <div class="dr">
+        <button class="door hot"><span class="l"><span class="ic" style="background:linear-gradient(135deg,var(--cy),var(--vi));color:#07091A">◈</span><span><span class="t">Enter the world</span><span class="d">20–60 minutes · headphones · saves automatically</span></span></span><span class="ar">→</span></button>
+        <button class="door"><span class="l"><span class="ic" style="background:rgba(251,191,36,.16);color:var(--am)">⌘</span><span><span class="t">I have five minutes</span><span class="d">Codex · portfolio, résumé, contact · no puzzles</span></span></span><span class="ar">→</span></button>
+        <button class="door"><span class="l"><span class="ic" style="background:rgba(255,255,255,.07)">↺</span><span><span class="t">Continue where you stopped</span><span class="d">42 / 100 recovered · 3 days ago</span></span></span><span class="ar">→</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="ft">
+  <div class="wrap">
+    <div class="ftt">
+      <div><div class="brand"><span class="mk">◈</span> The Forgotten Mind</div>
+        <p style="max-width:36ch;margin-top:16px;font-size:14px">A world built out of one developer's memory. Walk through it, or read the archive — both hold the same thing.</p></div>
+      <div><h5>Explore</h5><div class="fl"><a href="#about">About</a><a href="#work">Work</a><a href="#ways">Two ways in</a><a href="#enter">Enter</a></div></div>
+      <div><h5>Archive</h5><div class="fl"><a href="#">Projects</a><a href="#">Skills</a><a href="#">Résumé (PDF)</a><a href="#">Contact</a></div></div>
+    </div>
+    <div class="fb2"><span>© 2026 · Design 02 · Aurora Glass</span><span>EN / العربية</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── aurora mesh ── */
+  var cv=document.getElementById('aurora'),ctx=cv.getContext('2d'),W=0,H=0,raf=null;
+  var COL=[[34,211,238],[139,124,246],[244,114,182],[251,191,36],[52,211,153]];
+  var blobs=[];
+  function size(){W=cv.width=innerWidth*.5;H=cv.height=innerHeight*.5;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px'}
+  function seed(){blobs=[];for(var i=0;i<6;i++){blobs.push({
+    x:Math.random()*W,y:Math.random()*H,r:(.28+Math.random()*.3)*Math.min(W,H),
+    vx:(Math.random()-.5)*.16,vy:(Math.random()-.5)*.16,c:COL[i%COL.length],a:.30+Math.random()*.2})}}
+  function paint(anim){
+    ctx.fillStyle='#050610';ctx.fillRect(0,0,W,H);
+    ctx.globalCompositeOperation='lighter';
+    for(var i=0;i<blobs.length;i++){var b=blobs[i];
+      if(anim){b.x+=b.vx;b.y+=b.vy;
+        if(b.x<-b.r*.4||b.x>W+b.r*.4)b.vx*=-1;
+        if(b.y<-b.r*.4||b.y>H+b.r*.4)b.vy*=-1}
+      var g=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+      g.addColorStop(0,'rgba('+b.c[0]+','+b.c[1]+','+b.c[2]+','+b.a+')');
+      g.addColorStop(1,'rgba('+b.c[0]+','+b.c[1]+','+b.c[2]+',0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,6.2832);ctx.fill()}
+    ctx.globalCompositeOperation='source-over';
+    if(anim)raf=requestAnimationFrame(function(){paint(true)})}
+  function boot(){size();seed();if(raf)cancelAnimationFrame(raf);paint(!reduced)}
+  boot();
+  var rz;addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(boot,180)},{passive:true});
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden&&raf){cancelAnimationFrame(raf);raf=null}
+    else if(!document.hidden&&!reduced&&!raf)paint(true)});
+
+  /* ── nav ── */
+  var nav=document.getElementById('nav'),tk=false;
+  addEventListener('scroll',function(){if(!tk){tk=true;requestAnimationFrame(function(){
+    nav.classList.toggle('stuck',scrollY>24);tk=false})}},{passive:true});
+
+  /* ── reveal ── */
+  var rv=document.querySelectorAll('.rv:not(.in)');
+  if(reduced||!('IntersectionObserver' in window)){rv.forEach(function(e){e.classList.add('in')})}
+  else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});rv.forEach(function(e){io.observe(e)})}
+
+  /* ── skill bars ── */
+  var bars=document.querySelectorAll('.sk .tr i');
+  function fill(e){e.style.width=e.dataset.w+'%'}
+  if(reduced||!('IntersectionObserver' in window)){bars.forEach(fill)}
+  else{var io2=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){setTimeout(function(){fill(e.target)},150);io2.unobserve(e.target)}})},{threshold:.6});bars.forEach(function(e){io2.observe(e)})}
+
+  if(reduced)return;
+
+  /* ── mouse parallax ── */
+  var pars=document.querySelectorAll('.par'),mx=0,my=0,cx=0,cy=0;
+  addEventListener('pointermove',function(e){mx=(e.clientX/innerWidth-.5);my=(e.clientY/innerHeight-.5)},{passive:true});
+  (function loop(){cx+=(mx-cx)*.07;cy+=(my-cy)*.07;
+    pars.forEach(function(el){var d=+el.dataset.par||10;
+      el.style.transform='translate3d('+(cx*d).toFixed(2)+'px,'+(cy*d).toFixed(2)+'px,0)'});
+    requestAnimationFrame(loop)})();
+
+  /* ── 3D tilt ── */
+  document.querySelectorAll('.tilt').forEach(function(el){
+    el.addEventListener('pointermove',function(e){
+      var r=el.getBoundingClientRect();
+      var px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+      el.style.transform='perspective(900px) rotateY('+(px*7).toFixed(2)+'deg) rotateX('+(-py*7).toFixed(2)+'deg) translateY(-5px)'});
+    el.addEventListener('pointerleave',function(){el.style.transform=''});
+  });
+})();
+</script>
+</body>
+</html>

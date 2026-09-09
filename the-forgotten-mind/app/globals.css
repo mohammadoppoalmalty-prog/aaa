@@ -1,0 +1,92 @@
+@import '../src/generated/tokens.css';
+@import '../src/generated/tokens.tailwind.css';
+@import 'tailwindcss';
+
+/* ── base ──────────────────────────────────────────────────────────────────
+   Everything below consumes the semantic tier only. If a rule here needs a
+   raw value, the value is missing from tokens.json — that is the fix.      */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--tfm-color-canvas);
+  color: var(--tfm-color-text-body);
+  font-family: var(--tfm-type-family-ui);
+  font-size: var(--tfm-type-body);
+  line-height: var(--tfm-type-leading-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:where(h1, h2, h3, h4, p, figure, blockquote, ul, ol) {
+  margin: 0;
+}
+
+:where(ul, ol):where([role='list']) {
+  padding: 0;
+  list-style: none;
+}
+
+:where(img, svg, canvas, video) {
+  display: block;
+  max-inline-size: 100%;
+}
+
+:where(a) {
+  color: inherit;
+  text-decoration-color: var(--tfm-color-border-strong);
+  text-underline-offset: 2px;
+}
+
+:where(button) {
+  font: inherit;
+  color: inherit;
+}
+
+/* One visible focus treatment for the whole product, on both layers. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--tfm-color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--tfm-radius-control);
+}
+
+/* Vertical rhythm by the owl pattern — no per-element margins, so no collapse bugs. */
+.flow > * + * {
+  margin-block-start: var(--flow, var(--tfm-space-md));
+}
+
+.prose {
+  max-inline-size: var(--tfm-type-measure);
+}
+
+/* Skip links and screen-reader-only labels; the world leans on these heavily. */
+.sr-only {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

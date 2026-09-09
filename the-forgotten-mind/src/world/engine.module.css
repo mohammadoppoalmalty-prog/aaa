@@ -1,0 +1,38 @@
+.stage {
+  position: fixed;
+  inset: 0;
+  background: var(--tfm-color-canvas);
+}
+
+.stage canvas {
+  touch-action: none;
+}
+
+.legend {
+  position: fixed;
+  inset-block-end: var(--tfm-space-md);
+  inset-inline: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  padding-inline: var(--tfm-space-md);
+  pointer-events: none;
+}
+
+.legend p {
+  padding: var(--tfm-space-xs) var(--tfm-space-md);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-pill);
+  background: var(--tfm-perf-hud-bg);
+  backdrop-filter: blur(var(--tfm-effect-blur-panel));
+  color: var(--tfm-color-text-muted);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+.legend kbd {
+  color: var(--tfm-color-text-high);
+  font: inherit;
+}
