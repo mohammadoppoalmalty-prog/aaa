@@ -14,11 +14,11 @@ import styles from './puzzle.module.css';
 /**
  * The sheet every puzzle is played on.
  *
- * Thirteen puzzles, one shell. What the shell owns is everything that is the
+ * Sixteen puzzles, one shell. What the shell owns is everything that is the
  * same in all of them and easy to get subtly wrong in each: the dialog and its
  * focus, the live region that announces what changed, the escalating hints, the
  * skip policy, and paying out the rewards exactly once. What each board owns is
- * only its own controls.
+ *  only its own controls.
  *
  * The board is handed `state` and an `act` function and nothing else. It cannot
  * reach the store, so it cannot pay itself out twice or forget to.
@@ -122,14 +122,14 @@ export function PuzzlePanel<State, Input>({
           <BoardView state={state} act={act} solved={solved} announce={setMessage} />
         </div>
 
-        {/* Every board's changes are narrated here rather than thirteen times. */}
+        {/* Every board's changes are narrated here rather than sixteen times. */}
         <p role="status" aria-live="polite" className={styles.note}>
           {solved ? 'Solved.' : message}
         </p>
 
         {hint ? <p className={styles.hint}>{hint}</p> : null}
 
-        {solved ? <p className={styles.solved}>It holds. Something further in has come loose.</p> : null}
+        {solved ? <p className={styles.solved}>{puzzle.solvedLine}</p> : null}
 
         <div className={styles.actions}>
           {!solved && hintsTaken < puzzle.hints.length ? (

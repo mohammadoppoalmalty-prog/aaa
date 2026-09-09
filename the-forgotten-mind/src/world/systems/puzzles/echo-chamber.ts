@@ -64,5 +64,7 @@ export const echoChamber: PuzzleDefinition<EchoChamberState, ChamberInput> = reg
     'A mistake costs you nothing but the run. Listen again.',
   ],
 
+  solvedLine: 'The cave repeats you once and then lets it go. It has been waiting a long time to be answered.',
+
   rewards: { memories: ['bio-05', 'lesson-05'], fragment: true },
 });

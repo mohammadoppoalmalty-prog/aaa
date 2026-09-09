@@ -92,5 +92,7 @@ export const constellation: PuzzleDefinition<ConstellationState, ConstellationIn
     'Compare two at a time. You do not have to see the whole order at once.',
   ],
 
+  solvedLine: 'Faintest to brightest, and the shape is there. It always was, under an order you could not see.',
+
   rewards: { memories: ['bio-07', 'lesson-08'], fragment: true },
 });

@@ -99,6 +99,8 @@ export const cursorRitual: PuzzleDefinition<RitualState, RitualInput> = register
     'Two are lower than the rest, near where the arch meets the ground.',
   ],
 
+  solvedLine: 'The glyphs hold their light. The gate was never locked — it was only unlit.',
+
   rewards: { memories: ['bio-01'] },
 });
 

@@ -100,8 +100,12 @@ test('the fountain can be solved, and says what it becomes', async ({ page }) =>
   await expect(page.locator('.tfm-prompt')).toContainText('grate');
   await page.keyboard.press('KeyE');
 
-  const grate = page.getByRole('dialog', { name: 'The fountain pipes' });
+  /* The Fountain plays on the same sheet as the other fifteen now, so it
+     follows the same skip policy: the mercy arrives once the game has said
+     everything it has, rather than on its own private timer. */
+  const grate = page.getByRole('dialog', { name: 'The Fountain' });
   await expect(grate).toBeVisible();
+  for (let i = 0; i < 3; i += 1) await grate.getByRole('button', { name: /Ask/ }).click();
   await grate.getByRole('button', { name: 'Solve it for me' }).click();
   await expect(grate).toContainText('its level is how much of him you have remembered');
 });

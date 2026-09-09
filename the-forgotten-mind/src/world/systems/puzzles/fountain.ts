@@ -253,5 +253,7 @@ export const fountain: PuzzleDefinition<FountainState, FountainInput> = register
     'A pipe pointing at a wall is not a pipe. Follow the wet ones and find where they stop.',
   ],
 
+  solvedLine: 'Water. From here the fountain reads the world back to you — its level is how much of him you have remembered.',
+
   rewards: { memories: ['bio-04', 'story-02'], fragment: true },
 });

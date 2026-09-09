@@ -147,5 +147,7 @@ export const gravityBridge: PuzzleDefinition<BridgeState, BridgeInput> = registe
     'Both shores are fixed. Work inward from them.',
   ],
 
+  solvedLine: 'The islands hold their heights. You can walk it now, and it will not drift while you do.',
+
   rewards: { memories: ['career-03', 'lesson-07'], fragment: true },
 });

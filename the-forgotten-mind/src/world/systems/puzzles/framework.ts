@@ -43,6 +43,14 @@ export interface PuzzleDefinition<State, Input> {
   solve(state: State): State;
   /** Escalating, never solving it outright until the last one. */
   readonly hints: readonly string[];
+  /**
+   * What the world says this puzzle became.
+   *
+   * Required, and per-puzzle, because one shared "solved!" for sixteen puzzles
+   * throws away the only moment each of them has earned. A lantern catching and
+   * a tower opening are not the same event and should not read as one.
+   */
+  readonly solvedLine: string;
   readonly rewards: PuzzleReward;
   /** Seconds a competent player should need. Used only to time the skip offer. */
   readonly targetSeconds: number;

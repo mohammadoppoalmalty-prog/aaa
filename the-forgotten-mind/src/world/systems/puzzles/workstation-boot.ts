@@ -103,5 +103,7 @@ export const workstationBoot: PuzzleDefinition<BootState, BootInput> = register(
     'There is more than one working order. You only need one of them.',
   ],
 
+  solvedLine: 'It comes up clean. Whatever he was building, the machine still remembers how to start.',
+
   rewards: { memories: ['project-01', 'skill-02'], fragment: true },
 });

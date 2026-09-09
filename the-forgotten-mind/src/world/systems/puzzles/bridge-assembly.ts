@@ -128,5 +128,7 @@ export const bridgeAssembly: PuzzleDefinition<AssemblyState, AssemblyInput> = re
     'Start with the longest piece. It only fits in so many places.',
   ],
 
+  solvedLine: 'Every span laid, nothing spare. It takes your weight on the first step.',
+
   rewards: { memories: ['project-03', 'career-04'], fragment: true },
 });

@@ -92,5 +92,7 @@ export const atticOrder: PuzzleDefinition<AtticState, AtticInput> = register({
     'Oldest at the bottom, the way they went up.',
   ],
 
+  solvedLine: 'The years run straight. Whatever else this house forgot, it knows its own order now.',
+
   rewards: { memories: ['bio-03', 'story-01'], fragment: true },
 });

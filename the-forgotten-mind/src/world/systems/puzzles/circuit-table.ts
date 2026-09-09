@@ -69,5 +69,7 @@ export const circuitTable: PuzzleDefinition<CircuitState, CircuitInput> = regist
     'Work from one end: fix the leftmost lamp, then never touch that switch again.',
   ],
 
+  solvedLine: 'Seven lamps lit, and the table hums like it is thinking again.',
+
   rewards: { memories: ['project-02', 'skill-04'], fragment: true },
 });

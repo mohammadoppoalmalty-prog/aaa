@@ -103,5 +103,7 @@ export const coreEngine: PuzzleDefinition<EngineState, EngineInput> = register({
     'Work down the plate in order. Each rule only uses dials above it.',
   ],
 
+  solvedLine: 'The numbers agree. The tower opens, and what is at the top of it is not another puzzle.',
+
   rewards: { memories: ['career-05', 'project-04'], fragment: true },
 });

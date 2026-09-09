@@ -89,5 +89,7 @@ export const mirrorAltar: PuzzleDefinition<AltarState, AltarInput> = register({
     'Twelve turns of any ring puts everything back exactly as it was.',
   ],
 
+  solvedLine: 'Three notches in a line. The altar opens the way old things open — without hurrying.',
+
   rewards: { memories: ['lesson-06', 'bio-06'], fragment: true },
 });

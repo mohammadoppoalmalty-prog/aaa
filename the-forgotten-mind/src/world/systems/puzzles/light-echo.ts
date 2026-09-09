@@ -94,5 +94,7 @@ export const lightEcho: PuzzleDefinition<EchoState, EchoInput> = register({
     'All three face the same way when this is right.',
   ],
 
+  solvedLine: 'Three lanterns catch at once, and the path ahead has edges again.',
+
   rewards: { memories: ['bio-02', 'lesson-01'], fragment: true },
 });

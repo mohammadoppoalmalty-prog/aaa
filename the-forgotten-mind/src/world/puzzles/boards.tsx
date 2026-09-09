@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { Board } from './PuzzlePanel';
+import { FountainBoard } from './FountainBoard';
 import { cls } from '@/lib/css';
 import styles from './puzzle.module.css';
 import {
@@ -619,6 +620,7 @@ export const EngineBoard: Board<EngineState, EngineInput> = ({ state, act, annou
    otherwise costs a generic parameter on every call site to buy nothing. */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const BOARDS: Readonly<Record<string, Board<any, any>>> = {
+  fountain: FountainBoard,
   'attic-order': AtticBoard,
   'tool-bench': BenchBoard,
   'circuit-table': CircuitBoard,

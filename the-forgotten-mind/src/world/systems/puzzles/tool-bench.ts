@@ -120,5 +120,7 @@ export const toolBench: PuzzleDefinition<BenchState, BenchInput> = register({
     'Start with the shape you are surest of and work outward.',
   ],
 
+  solvedLine: 'Every socket full and nothing left on the floor. It looks like someone still works here.',
+
   rewards: { memories: ['skill-01', 'lesson-02'], fragment: true },
 });

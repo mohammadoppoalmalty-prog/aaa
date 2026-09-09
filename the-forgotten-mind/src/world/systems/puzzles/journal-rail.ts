@@ -78,5 +78,7 @@ export const journalRail: PuzzleDefinition<RailState, RailInput> = register({
     'The gap belongs at the end, not the beginning.',
   ],
 
+  solvedLine: 'The plates run in order and the gap sits at the end, where a gap belongs.',
+
   rewards: { memories: ['career-01', 'career-02'], fragment: true },
 });

@@ -22,7 +22,6 @@ import { DebugPanel } from './DebugPanel';
 import { Memories, type MoteSpec } from './entities/Memories';
 import { CompanionCat } from './entities/CompanionCat';
 import { FountainAnchor } from './entities/FountainAnchor';
-import { FountainGrate } from './puzzles/FountainGrate';
 import { LightEcho } from './puzzles/LightEcho';
 import { LumaPresence } from './entities/LumaPresence';
 import { Hud } from './Hud';
@@ -73,7 +72,6 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
   const ritual = useGame((s) => s.save.puzzles['cursor-ritual']);
   const catFollows = useGame((s) => s.save.hasCat);
   const fountainState = useGame((s) => s.save.puzzles.fountain);
-  const [grateOpen, setGrateOpen] = useState(false);
   /* Which puzzle sheet is open, if any. The three that were built before the
      shell keep their own panels; everything else opens through this. */
   const [openPuzzle, setOpenPuzzle] = useState<string | null>(null);
@@ -196,7 +194,7 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
                 <ForgottenVillage fountainRunning={fountainState === 'solved' || fountainState === 'skipped'} />
                 <FountainAnchor
                   solved={fountainState === 'solved' || fountainState === 'skipped'}
-                  onOpen={() => setGrateOpen(true)}
+                  onOpen={() => setOpenPuzzle('fountain')}
                 />
               </>
             ) : null}
@@ -232,8 +230,6 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
                 key={area.id}
                 start={[0, 1.5, 4]}
                 reducedMotion={reducedMotion}
-                /* Only rooms have walls to end up behind. */
-                {...(area.kind === 'interior' || area.kind === 'cave' ? { bounds: area.size } : {})}
               />
             ) : (
               <Flythrough seconds={flythrough} />
@@ -252,8 +248,6 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
       {area.id === 'contact-tower' && towerRunning ? (
         <EndingCaption captionRef={endingCaption} done={endingDone} />
       ) : null}
-
-      {grateOpen ? <FountainGrate onClose={() => setGrateOpen(false)} /> : null}
 
       {openPuzzle !== null && BOARDS[openPuzzle] !== undefined ? (
         <PuzzlePanel

@@ -110,6 +110,18 @@ describe('every puzzle in the registry', () => {
     }
   });
 
+  it('says what it became, in its own words', () => {
+    /* One shared "solved!" for sixteen puzzles throws away the only moment each
+       of them earns. A lantern catching and a tower opening are not the same
+       event, and the sheet reads this line straight out of the definition. */
+    const seen = new Set<string>();
+    for (const puzzle of puzzles) {
+      expect(puzzle.solvedLine.length, `${puzzle.id} has no solved line`).toBeGreaterThan(25);
+      expect(seen.has(puzzle.solvedLine), `${puzzle.id} reuses another puzzle's line`).toBe(false);
+      seen.add(puzzle.solvedLine);
+    }
+  });
+
   it('grants each memory to exactly one puzzle', () => {
     // Two puzzles paying out the same memory means one of them pays out nothing.
     const seen = new Map<string, string>();

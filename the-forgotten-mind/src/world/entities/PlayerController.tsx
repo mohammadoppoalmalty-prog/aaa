@@ -36,8 +36,10 @@ const LOOK_SENSITIVITY = 0.0028;
 const CAM_DISTANCE = 4.5;
 const CAM_HEIGHT = 1.8;
 const CAM_STIFFNESS = 6.5;
-/** How far inside a wall the camera is allowed to get before it is held back. */
-const CAM_MARGIN = 0.8;
+/** How far short of a wall the camera stops, so it never clips through one. */
+const CAM_MARGIN = 0.35;
+/** Closer than this the character fills the frame; better to clip a little. */
+const CAM_MIN_DISTANCE = 1.1;
 
 interface Keys {
   forward: boolean;
@@ -69,18 +71,9 @@ export interface PlayerControllerProps {
   readonly start?: readonly [number, number, number];
   /** Halved spring and no camera bob when the visitor asked for less motion. */
   readonly reducedMotion?: boolean;
-  /**
-   * The walls the camera must stay inside, as [width, depth] in metres.
-   *
-   * A room is usually smaller than the camera's four and a half metres of
-   * follow distance, so in every interior in this game the camera ended up
-   * *outside the building*, filming the back of a wall. The player saw a black
-   * screen with a working interaction prompt floating in it.
-   */
-  readonly bounds?: readonly [number, number];
 }
 
-export function PlayerController({ start = [0, 2, 0], reducedMotion = false, bounds }: PlayerControllerProps) {
+export function PlayerController({ start = [0, 2, 0], reducedMotion = false }: PlayerControllerProps) {
   const body = useRef<RapierRigidBody>(null);
   const collider = useRef<RapierCollider>(null);
   const mesh = useRef<THREE.Group>(null);
@@ -173,6 +166,8 @@ export function PlayerController({ start = [0, 2, 0], reducedMotion = false, bou
   const desired = useRef(new THREE.Vector3());
   const camTarget = useRef(new THREE.Vector3());
   const camLook = useRef(new THREE.Vector3());
+  const camEye = useRef(new THREE.Vector3());
+  const camDir = useRef(new THREE.Vector3());
   /** The authoritative kinematic target — see the note in the frame loop. */
   const target = useRef(new THREE.Vector3(start[0], start[1], start[2]));
 
@@ -231,14 +226,40 @@ export function PlayerController({ start = [0, 2, 0], reducedMotion = false, bou
       target.current.z + Math.cos(yaw.current) * CAM_DISTANCE,
     );
 
-    /* Held inside the walls. Pulling the camera in rather than pushing the
-       player around keeps the controls honest — the character still goes where
-       it was told, the view just stops leaving the room. */
-    if (bounds) {
-      const limitX = bounds[0] / 2 - CAM_MARGIN;
-      const limitZ = bounds[1] / 2 - CAM_MARGIN;
-      camTarget.current.x = Math.max(-limitX, Math.min(limitX, camTarget.current.x));
-      camTarget.current.z = Math.max(-limitZ, Math.min(limitZ, camTarget.current.z));
+    /* Camera collision, properly. Cast from the character's head out to where
+       the camera wants to be; if anything solid is in the way, stop short of it.
+       Pulling the camera in rather than pushing the player around keeps the
+       controls honest — the character still goes where it was told.
+
+       The first version of this clamped the camera to the area's declared size.
+       That fixed the symptom in an empty room and did nothing about a pillar in
+       the middle of one, which is the same bug with better manners: what put the
+       camera outside the building was geometry, so geometry has to answer it.
+
+       The ray starts at head height, not at the feet, or it catches the floor on
+       every downward angle and slams the camera into the character. */
+    camEye.current.set(target.current.x, target.current.y + CAM_HEIGHT, target.current.z);
+    camDir.current.copy(camTarget.current).sub(camEye.current);
+    const reach = camDir.current.length();
+
+    if (reach > 0.01) {
+      camDir.current.divideScalar(reach);
+      const ray = new rapier.Ray(camEye.current, camDir.current);
+      /* Solid, so a camera that starts inside a wall is pushed out of it rather
+         than told it hit nothing. The player's own collider is excluded, or the
+         character's body stops the ray at zero and the game plays from inside
+         its own head. */
+      const hit = world.castRay(ray, reach, true, undefined, undefined, col);
+      if (hit !== null) {
+        /* Never past the thing that was just hit. A minimum distance applied
+           with `max` does exactly that whenever the wall is nearer than the
+           minimum — which is how "camera collision" turned a small room black:
+           it detected the wall and then placed the camera inside it. A camera
+           uncomfortably close to the character is a bad shot; a camera inside
+           geometry is no shot at all. */
+        const stop = Math.min(Math.max(CAM_MIN_DISTANCE, hit.timeOfImpact - CAM_MARGIN), hit.timeOfImpact);
+        camTarget.current.copy(camEye.current).addScaledVector(camDir.current, Math.max(0.2, stop));
+      }
     }
     camera.position.lerp(camTarget.current, 1 - Math.exp(-stiffness * delta));
     camLook.current.set(target.current.x, target.current.y + 1, target.current.z);

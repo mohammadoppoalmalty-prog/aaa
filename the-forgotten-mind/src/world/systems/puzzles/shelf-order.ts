@@ -108,5 +108,7 @@ export const shelfOrder: PuzzleDefinition<ShelfState, ShelfInput> = register({
     'Empty a shelf completely before you start filling it.',
   ],
 
+  solvedLine: 'Three shelves, three subjects. The room stops being a pile and starts being a library.',
+
   rewards: { memories: ['skill-03', 'lesson-03'], fragment: true },
 });

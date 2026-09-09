@@ -128,5 +128,7 @@ export const lightReflection: PuzzleDefinition<ReflectionState, ReflectionInput>
     'Every mirror on this water is part of the answer. None of them is scenery.',
   ],
 
+  solvedLine: 'The beam finds the crystal, and the whole lake goes bright underneath it.',
+
   rewards: { memories: ['bio-08', 'lesson-04'], fragment: true },
 });
