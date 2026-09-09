@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-09-09T14:23:58.448Z",
+  "ktx2": false,
+  "models": {
+    "gate-arch-test": {
+      "name": "gate-arch-test",
+      "sourceBytes": 438068,
+      "lods": [
+        {
+          "lod": "lod0",
+          "triangles": 15360,
+          "materials": 1,
+          "meshes": 1,
+          "textureBytes": 0,
+          "bytes": 25536
+        },
+        {
+          "lod": "lod1",
+          "triangles": 6911,
+          "materials": 1,
+          "meshes": 1,
+          "textureBytes": 0,
+          "bytes": 20096
+        },
+        {
+          "lod": "lod2",
+          "triangles": 2764,
+          "materials": 1,
+          "meshes": 1,
+          "textureBytes": 0,
+          "bytes": 10084
+        }
+      ]
+    }
+  }
+}

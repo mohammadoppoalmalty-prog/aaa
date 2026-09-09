@@ -40,7 +40,11 @@ for (const dir of SCAN) {
 
   for (const file of walk(resolve(root, dir))) {
     const rel = relative(root, file).replace(/\\/g, '/');
-    const lines = readFileSync(file, 'utf8').split('\n');
+    /* Comments are prose — a note explaining *why* a rule uses 44px is not a
+       violation. Blank them out while keeping every newline, so the line
+       numbers a failure reports still point at the right line. */
+    const source = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, (c) => c.replace(/[^\n]/g, ' '));
+    const lines = source.split('\n');
 
     lines.forEach((line, i) => {
       if (line.includes('token-lint-ignore')) return;

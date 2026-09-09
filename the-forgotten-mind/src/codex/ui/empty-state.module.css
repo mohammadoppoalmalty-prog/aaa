@@ -1,0 +1,28 @@
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--tfm-space-sm);
+  padding: var(--tfm-space-2xl) var(--tfm-space-lg);
+  border: 1px dashed var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-panel);
+  text-align: center;
+}
+
+.glyph {
+  font-size: var(--tfm-type-title);
+  color: var(--tfm-color-accent);
+  line-height: 1;
+}
+
+.headline {
+  font-size: var(--tfm-type-lede);
+  color: var(--tfm-color-text-high);
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+.body {
+  max-inline-size: 42ch;
+  color: var(--tfm-color-text-body);
+  text-wrap: pretty;
+}

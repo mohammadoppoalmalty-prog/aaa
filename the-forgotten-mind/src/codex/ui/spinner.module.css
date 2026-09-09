@@ -1,0 +1,30 @@
+.spinner {
+  display: inline-grid;
+  place-items: center;
+}
+
+.ring {
+  inline-size: 100%;
+  block-size: 100%;
+  border: 2px solid var(--tfm-color-border-strong);
+  border-block-start-color: currentColor;
+  border-radius: var(--tfm-radius-pill);
+  animation: spin 720ms linear infinite;
+}
+
+@keyframes spin {
+  to { rotate: 360deg; }
+}
+
+/* Reduced motion gets a pulse instead of a spin: still clearly "working",
+   with no rotation. */
+@media (prefers-reduced-motion: reduce) {
+  .ring {
+    animation: pulse 1.4s ease-in-out infinite;
+    border-block-start-color: currentColor;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 1; }
+  }
+}

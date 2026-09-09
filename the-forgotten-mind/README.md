@@ -18,15 +18,18 @@ each of these decisions becomes a rewrite if it is deferred.
 | The quality-tier system and its live adapter, unit-tested without a GPU | ✅ |
 | Grey-box world: Rapier kinematic capsule, third-person spring camera, blockout geometry | ✅ |
 | Perf HUD (`H`) — fps, frame time, draw calls, triangles, geo/tex, heap | ✅ |
-| `/debug` world inspector | ✅ shell + the controls that have something to control |
+| `/debug` world inspector + the in-world panel (`/world?debug=1`) | ✅ restoration scrub, tier switch, disposal readout |
 | CI gate · token lint | ✅ |
 | CI gate · offset-pagination ban | ✅ |
 | CI gate · React-commit-count | ✅ |
 | CI gate · memory-leak | ✅ baseline |
 | `webglcontextlost` handling | ✅ guard in place (in-fiction copy lands with LUMA) |
-| Storybook + the component state matrix | ⬜ next |
-| Asset pipeline (`gltf-transform`, Draco + KTX2) | ⬜ next |
-| The Codex, the memory system, LUMA, the 19 areas | ⬜ Phase 1+ |
+| Storybook + a11y addon + the component state matrix | ✅ |
+| Asset pipeline (`gltf-transform`, Draco, LOD0/1/2) | ✅ |
+| Perf regression (90s flythrough, p50/p95/p99, baseline diff) | ✅ |
+| `uRestoration` bus + DisposalRegistry | ✅ (pulled forward — both are architectural) |
+| **Phase 1 · started** — content contract (zod), content lint, Codex shell + memories + projects routes | ✅ |
+| Phase 1 · save system, memory system, Gate/Forest/Village, two puzzles, LUMA | ⬜ |
 
 ## Getting started
 
@@ -38,6 +41,8 @@ npm run dev          # tokens are rebuilt first, automatically
 - `/` — the title screen, two doors, zero client JavaScript
 - `/world` — the grey-box. `WASD` move · `Shift` run · `Q`/`E` or right-drag turn · `H` perf HUD
 - `/debug` — quality tiers, switches, and the live palette
+- `/world?debug=1` — the in-world inspector: restoration scrub, tier switch, disposal readout (` ` ` to hide)
+- `/world?perf=90` — the automated flythrough the perf gate drives
 - `/codex` — Layer 2, written in Phase 1
 
 ## The token pipeline
@@ -80,9 +85,38 @@ they are cheap.
 | Memory-leak | `npx playwright test e2e/memory-leak.spec.ts` | undisposed GPU resources across world mounts |
 
 ```bash
-npm run verify     # types, unit tests, and both static gates
+npm run verify     # lint, types, unit tests, and both static gates
 npm run e2e        # the runtime gates, against a production build
+npm run perf       # the 90-second flythrough, diffed against the baseline
+npm run assets     # compress every model in assets/source and report its budget
+npm run storybook  # the component state matrix, with the a11y panel
 ```
+
+## The asset pipeline
+
+`assets/source/*.glb` → `public/models/*.{lod0,lod1,lod2}.glb`, via dedup → prune →
+instance → weld → simplify → Draco, with the report diffed against the previous
+run in `assets/manifest.json`. LODs are cut to 100 / 45 / 18 % triangles.
+
+On the test model: **428 KB → 25 KB** at LOD0, and the duplicate material and
+unused node are gone. KTX2 needs the `toktx` binary from KTX-Software on PATH;
+without it the pipeline compresses textures to WebP and says so in the report
+rather than failing.
+
+## The perf gate
+
+`npm run perf` drives a fixed 90-second camera spline and records p50/p95/p99 frame
+time and peak draw calls. Two separate questions, deliberately not conflated:
+
+- **Does the world meet its budget?** Only answerable on the machine the budget was
+  written for. Enforced with `--strict` (or `PERF_MACHINE=ci`).
+- **Did this commit make it slower?** Answerable anywhere, by diffing against
+  `perf-baseline.json` recorded on the same machine. This is the default check.
+
+It compares **p50**, not p95: two runs of identical code move p95 by tens of
+percent, and a gate that goes red on a rerun is a gate that gets switched off.
+Vsync is disabled during measurement — with it on, p50 pins to the refresh
+interval and the number describes the compositor rather than the world.
 
 ## Architecture rules
 
@@ -92,11 +126,29 @@ are not style preferences and CI enforces the first one.
 1. **React never renders per frame.** Per-frame mutation happens on refs inside
    `useFrame`. Zustand is read transiently. A commit during gameplay is a bug.
 2. **One uniform drives the world.** `uRestoration` is a single shared uniform
-   injected into every material — changing restoration costs one float write, not
-   a scene traversal. (Lands in Phase 1.)
+   injected into every material via `onBeforeCompile` — changing restoration costs
+   one float write, not a scene traversal. Scrub it live at `/world?debug=1`.
 3. **Everything is instanced or batched.** Target: under 180 draw calls in the
    heaviest area. The perf HUD colours that number red at 180 so the budget is
    visible while building, not at the end.
+
+## The content layer
+
+`content/schema.ts` is the contract. The loader, the Codex and `npm run content`
+all import it, so what is authored and what is rendered cannot drift.
+
+Two rules in it are editorial, and they are why it is worth having:
+
+- **`whatBroke` is required on every project.** A portfolio in which nothing ever
+  went wrong is not credible. The build fails without it.
+- **Everything is written twice.** `narratorLine` (≤25 words, voiced in the world)
+  and the MDX body (100–300 words, factual, recruiter-readable) describe the same
+  work. That is the two-layer architecture at the content level.
+
+Every entry in `content/` today is `draft: true` — a template with the real
+fields and `REPLACE` where the career goes. Drafts never reach a visitor, and the
+lint fails any *published* entry that still contains placeholder text. **Filling
+these in is the one task that cannot be done from the repository.**
 
 ## Layout
 
@@ -108,5 +160,6 @@ src/generated/  token outputs — generated, committed, checked by CI
 tokens/         tokens.json, the single source of truth
 scripts/        the token pipeline and the static gates
 tests/          vitest — pure logic, no browser
+content/        MDX + the zod contract — the single source both layers read
 e2e/            playwright — the runtime gates
 ```

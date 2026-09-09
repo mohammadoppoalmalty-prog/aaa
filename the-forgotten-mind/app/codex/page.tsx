@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import styles from './codex.module.css';
+import { allMemories, allProjects } from '@/content/loader';
+import { MemoryCard } from '@/codex/ui/MemoryCard';
+import { EmptyState } from '@/codex/ui/EmptyState';
+import styles from './index.module.css';
 
 export const metadata: Metadata = {
   title: 'The Codex',
@@ -9,30 +11,50 @@ export const metadata: Metadata = {
 };
 
 /**
- * Layer 2, Phase 0.
+ * The Codex index — the hundred-memory grid.
  *
- * The Codex is the project's spine and is built in full in Phase 1, from the
- * MDX in `content/`. This page exists now for one reason: the title screen
- * offers a door labelled "I have five minutes", and a door that opens onto a
- * 404 is worse than no door. It says what is here and what is not.
+ * Statically generated from `content/`. Locked entries render as silhouettes
+ * with the reveal offer, so the page is never a dead end; unlocking is the
+ * Reveal Contract and arrives with the save system.
  */
-export default function CodexPage() {
+export default function CodexIndex() {
+  const memories = allMemories();
+  const projects = allProjects();
+
   return (
-    <main className={styles.page}>
-      <p className={styles.eyebrow}>Layer two · the archive</p>
-      <h1 className={styles.title}>The Codex</h1>
-      <p className={styles.lede}>
-        Everything the world contains is written down here — projects with their architecture and what broke in them,
-        the work history, the skills at the level they are actually held, and how to reach me. It loads in under a
-        second and needs no WebGL, because the people with the least time deserve the most direct route.
-      </p>
-      <p className={styles.status}>
-        <b>Not written yet.</b> The Codex is authored from <code>content/</code> and lands in Phase 1, alongside the
-        vertical slice. This build is Phase 0 — the foundation the rest stands on.
-      </p>
-      <p className={styles.back}>
-        <Link href="/">← Back to the gate</Link> · <Link href="/debug">World inspector</Link>
-      </p>
-    </main>
+    <div className={styles.page}>
+      <header className={styles.head}>
+        <p className={styles.eyebrow}>Layer two · the archive</p>
+        <h1 className={styles.title}>Everything the world remembers</h1>
+        <p className={styles.lede}>
+          A hundred memories, ten projects, and the failures attached to each of them. The world hides these behind a
+          walk; this page does not hide them behind anything.
+        </p>
+      </header>
+
+      {memories.length === 0 ? (
+        <EmptyState
+          headline="Nothing authored yet"
+          body="The memory grid renders from content/memories. Every entry there is still a template — the schema is in place and the build refuses anything half-written."
+          actionLabel={projects.length === 0 ? undefined : 'See the projects'}
+        />
+      ) : (
+        <ul className={styles.grid} role="list">
+          {memories.map((memory) => (
+            <li key={memory.data.id}>
+              <MemoryCard
+                id={memory.data.id}
+                title={memory.data.title}
+                category={memory.data.category}
+                year={memory.data.year}
+                excerpt={memory.body.split('\n\n')[0]}
+                /* Everything is locked until the save system lands in this phase. */
+                locked
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

@@ -36,6 +36,10 @@
   --tfm-space-24: 96px;
   --tfm-space-32: 128px;
 
+  --tfm-width-card-min: 280px;
+  --tfm-width-content: 72rem;
+  --tfm-width-reading: 52rem;
+
   --tfm-blur-panel: 8px;
   --tfm-blur-scrim: 18px;
 
@@ -124,6 +128,10 @@
   --tfm-type-leading-body: var(--tfm-leading-body);
   --tfm-type-leading-title: var(--tfm-leading-tight);
   --tfm-type-measure: var(--tfm-measure-prose);
+
+  --tfm-layout-card-min: var(--tfm-width-card-min);
+  --tfm-layout-content: var(--tfm-width-content);
+  --tfm-layout-reading: var(--tfm-width-reading);
 
   --tfm-effect-blur-panel: var(--tfm-blur-panel);
   --tfm-effect-blur-scrim: var(--tfm-blur-scrim);

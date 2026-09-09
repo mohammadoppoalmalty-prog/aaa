@@ -1,0 +1,99 @@
+.panel {
+  position: fixed;
+  inset-block-start: var(--tfm-space-sm);
+  inset-inline-end: var(--tfm-space-sm);
+  z-index: 45;
+  display: grid;
+  gap: var(--tfm-space-xs);
+  inline-size: min(20rem, calc(100vw - var(--tfm-space-lg)));
+  padding: var(--tfm-space-sm) var(--tfm-space-md);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-control);
+  background: var(--tfm-perf-hud-bg);
+  backdrop-filter: blur(var(--tfm-effect-blur-panel));
+  color: var(--tfm-color-text-body);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+}
+
+.collapsed {
+  inline-size: auto;
+  cursor: pointer;
+  color: var(--tfm-color-text-muted);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--tfm-color-text-muted);
+}
+
+.close {
+  border: 0;
+  background: none;
+  color: var(--tfm-color-text-muted);
+  cursor: pointer;
+  font-size: var(--tfm-type-body);
+  line-height: 1;
+}
+
+.field {
+  display: grid;
+  gap: var(--tfm-space-xs);
+  padding-block-start: var(--tfm-space-xs);
+  border-block-start: 1px solid var(--tfm-color-border-subtle);
+}
+
+.field b {
+  color: var(--tfm-color-accent);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.field input[type='range'] {
+  inline-size: 100%;
+  accent-color: var(--tfm-color-accent);
+}
+
+.tiers {
+  display: flex;
+  gap: 2px;
+}
+
+.tier {
+  flex: 1;
+  padding-block: var(--tfm-space-xs);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-control);
+  background: none;
+  color: var(--tfm-color-text-muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.on {
+  background: var(--tfm-color-accent);
+  border-color: var(--tfm-color-accent);
+  color: var(--tfm-button-primary-fg);
+}
+
+.readout {
+  color: var(--tfm-color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.hint {
+  color: var(--tfm-color-text-muted);
+}
+
+.hint kbd {
+  color: var(--tfm-color-text-high);
+  font: inherit;
+}
+
+.hint a {
+  color: var(--tfm-color-accent);
+}

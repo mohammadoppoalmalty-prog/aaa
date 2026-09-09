@@ -1,7 +1,15 @@
 'use client';
 
+import type * as THREE from 'three';
 import { RigidBody } from '@react-three/rapier';
 import { tokens } from '@/generated/tokens';
+import { bindRestoration } from '../systems/restoration';
+
+/* Every surface opts into the one restoration uniform, so scrubbing the world
+   from forgotten to whole costs a single float write. */
+const bind = (material: THREE.Material | null) => {
+  if (material) bindRestoration(material);
+};
 
 /**
  * The Phase-0 grey-box: an empty plane with just enough geometry to prove the
@@ -22,7 +30,7 @@ export function Blockout() {
       <RigidBody type="fixed" colliders="cuboid">
         <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
           <boxGeometry args={[HALF * 2, HALF * 2, 0.1]} />
-          <meshStandardMaterial color={GROUND} roughness={0.95} />
+          <meshStandardMaterial ref={bind} color={GROUND} roughness={0.95} />
         </mesh>
       </RigidBody>
 
@@ -56,7 +64,7 @@ function Steps({ position, rise }: { position: [number, number, number]; rise: n
         <RigidBody key={i} type="fixed" colliders="cuboid">
           <mesh castShadow receiveShadow position={[0, rise * i + rise / 2, -i * 0.6]}>
             <boxGeometry args={[2.4, rise, 0.6]} />
-            <meshStandardMaterial color={PROP} roughness={0.9} />
+            <meshStandardMaterial ref={bind} color={PROP} roughness={0.9} />
           </mesh>
         </RigidBody>
       ))}
@@ -70,7 +78,7 @@ function Ramp({ position, degrees }: { position: [number, number, number]; degre
     <RigidBody type="fixed" colliders="cuboid" position={position} rotation={[-radians, 0, 0]}>
       <mesh castShadow receiveShadow>
         <boxGeometry args={[3, 0.2, 6]} />
-        <meshStandardMaterial color={PROP} roughness={0.9} />
+        <meshStandardMaterial ref={bind} color={PROP} roughness={0.9} />
       </mesh>
     </RigidBody>
   );
@@ -81,7 +89,7 @@ function Wall({ position }: { position: [number, number, number] }) {
     <RigidBody type="fixed" colliders="cuboid" position={position}>
       <mesh castShadow receiveShadow position={[0, 1.2, 0]}>
         <boxGeometry args={[0.3, 2.4, 3]} />
-        <meshStandardMaterial color={PROP} roughness={0.9} />
+        <meshStandardMaterial ref={bind} color={PROP} roughness={0.9} />
       </mesh>
     </RigidBody>
   );

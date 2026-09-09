@@ -1,0 +1,12 @@
+{
+  "done": true,
+  "frames": 8426,
+  "seconds": 90.01229999999981,
+  "fps": 93.60942893360149,
+  "p50": 7.900000000372529,
+  "p95": 29.200000000186265,
+  "p99": 53.10000000055879,
+  "maxDrawCalls": 12,
+  "maxTriangles": 132,
+  "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 620 (0x00005917) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+}

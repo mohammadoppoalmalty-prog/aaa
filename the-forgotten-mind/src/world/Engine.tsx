@@ -8,6 +8,8 @@ import { getGPUTier } from 'detect-gpu';
 import { PerfHud, PerfSampler } from './PerfHud';
 import { Blockout } from './greybox/Blockout';
 import { PlayerController } from './entities/PlayerController';
+import { Flythrough } from './Flythrough';
+import { DebugPanel } from './DebugPanel';
 import { settingsFor, tierFromGpuTier } from './quality';
 import { useSettings } from '@/state/settings';
 import { tokens } from '@/generated/tokens';
@@ -56,6 +58,16 @@ export function Engine() {
     return () => window.removeEventListener('keydown', onKey);
   }, [togglePerfHud]);
 
+  /* `?perf=90` swaps the player for the automated flythrough. The engine is
+     already client-only, so reading the URL here is cheaper than pulling the
+     router in for one string. */
+  const { flythrough, debug } = useMemo(() => {
+    const params = new URLSearchParams(window.location.search);
+    const raw = params.get('perf');
+    const seconds = raw === null ? null : Number.isFinite(Number(raw)) && Number(raw) > 0 ? Number(raw) : 90;
+    return { flythrough: seconds, debug: params.has('debug') };
+  }, []);
+
   const dpr = useMemo<[number, number]>(
     () => [1, Math.min(2, q.resolutionScale * 2)],
     [q.resolutionScale],
@@ -102,12 +114,17 @@ export function Engine() {
         <Suspense fallback={null}>
           <Physics gravity={[0, -18, 0]} timeStep="vary">
             <Blockout />
-            <PlayerController start={[0, 1.5, 4]} reducedMotion={reducedMotion} />
+            {flythrough === null ? (
+              <PlayerController start={[0, 1.5, 4]} reducedMotion={reducedMotion} />
+            ) : (
+              <Flythrough seconds={flythrough} />
+            )}
           </Physics>
         </Suspense>
       </Canvas>
 
       <PerfHud />
+      {debug ? <DebugPanel /> : null}
       <Legend />
     </div>
   );

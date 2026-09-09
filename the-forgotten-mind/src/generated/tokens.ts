@@ -39,6 +39,11 @@ export const tokens = {
       "24": { var: "var(--tfm-space-24)", value: "96px" },
       "32": { var: "var(--tfm-space-32)", value: "128px" },
     },
+    width: {
+      "card-min": { var: "var(--tfm-width-card-min)", value: "280px" },
+      content: { var: "var(--tfm-width-content)", value: "72rem" },
+      reading: { var: "var(--tfm-width-reading)", value: "52rem" },
+    },
     blur: {
       panel: { var: "var(--tfm-blur-panel)", value: "8px" },
       scrim: { var: "var(--tfm-blur-scrim)", value: "18px" },
@@ -139,6 +144,11 @@ export const tokens = {
       "leading-body": { var: "var(--tfm-type-leading-body)", value: "1.62" },
       "leading-title": { var: "var(--tfm-type-leading-title)", value: "1.08" },
       measure: { var: "var(--tfm-type-measure)", value: "68ch" },
+    },
+    layout: {
+      "card-min": { var: "var(--tfm-layout-card-min)", value: "280px" },
+      content: { var: "var(--tfm-layout-content)", value: "72rem" },
+      reading: { var: "var(--tfm-layout-reading)", value: "52rem" },
     },
     effect: {
       "blur-panel": { var: "var(--tfm-effect-blur-panel)", value: "8px" },

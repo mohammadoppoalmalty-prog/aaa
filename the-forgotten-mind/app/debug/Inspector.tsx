@@ -7,7 +7,6 @@ import { tokens, tokenVersion } from '@/generated/tokens';
 import styles from './inspector.module.css';
 
 const PENDING = [
-  ['Restoration scrub', 'Phase 1 · with the uRestoration bus'],
   ['Area teleport', 'Phase 1 · with the Director'],
   ['Memory grant / revoke', 'Phase 1 · with the memory system'],
   ['Weather force', 'Phase 2 · with the seeded weather'],
@@ -31,8 +30,8 @@ export function Inspector() {
       <header className={styles.head}>
         <h1>World inspector</h1>
         <p>
-          Ember tokens v{tokenVersion} · <Link href="/world">open the world</Link> ·{' '}
-          <Link href="/">title screen</Link>
+          Ember tokens v{tokenVersion} · <Link href="/world?debug=1">open the world with the scrub</Link> ·{' '}
+          <Link href="/world?perf=90&amp;debug=1">run the flythrough</Link> · <Link href="/">title screen</Link>
         </p>
       </header>
 

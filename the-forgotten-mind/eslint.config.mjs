@@ -4,7 +4,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['.next/**', 'node_modules/**', 'src/generated/**', 'playwright-report/**', 'next-env.d.ts'] },
+  { ignores: ['.next/**', 'node_modules/**', 'src/generated/**', 'playwright-report/**', 'storybook-static/**', 'public/**', 'next-env.d.ts'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -28,7 +28,9 @@ export default tseslint.config(
   },
   {
     files: ['scripts/**/*.mjs', '*.config.{mjs,ts}'],
-    languageOptions: { globals: globals.node },
+    /* Scripts run in Node, but the callbacks they hand to page.evaluate run in
+       the browser — both sets of globals are legitimate in these files. */
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
     rules: { 'no-console': 'off' },
   },
 );

@@ -1,0 +1,40 @@
+.page {
+  display: grid;
+  gap: var(--tfm-space-xl);
+}
+
+.head {
+  display: grid;
+  gap: var(--tfm-space-sm);
+}
+
+.eyebrow {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--tfm-color-text-muted);
+}
+
+.title {
+  font-size: var(--tfm-type-display);
+  line-height: var(--tfm-type-leading-title);
+  letter-spacing: -0.045em;
+  font-weight: 300;
+  color: var(--tfm-color-text-high);
+  text-wrap: balance;
+}
+
+.lede {
+  max-inline-size: var(--tfm-type-measure);
+  font-size: var(--tfm-type-lede);
+  text-wrap: pretty;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--tfm-layout-card-min), 1fr));
+  gap: var(--tfm-space-md);
+  margin: 0;
+  padding: 0;
+}

@@ -25,6 +25,8 @@ jobs:
       - name: Tokens are committed and up to date
         # A generated file that drifts from its source is worse than no pipeline.
         run: git diff --exit-code -- src/generated
+      - name: Content lint
+        run: npm run content
       - run: npm run lint
       - run: npm run types
       - run: npm run test
@@ -32,6 +34,10 @@ jobs:
         run: npm run gate:tokens
       - name: Gate · offset-pagination ban
         run: npm run gate:pagination
+      - name: Asset pipeline · compress the test model and report its budget
+        run: node scripts/make-test-model.mjs && npm run assets:check
+      - name: Storybook builds
+        run: npm run build-storybook -- --quiet
 
   runtime:
     name: react-commit-count · memory-leak · smoke

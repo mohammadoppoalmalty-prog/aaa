@@ -17,7 +17,7 @@ test('the five-minute door reaches the Codex', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('link', { name: /I have five minutes/ }).click();
   await expect(page).toHaveURL(/\/codex$/);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('The Codex');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Everything the world remembers');
 });
 
 test('the world mounts a WebGL canvas', async ({ page }) => {
@@ -35,4 +35,20 @@ test('the perf HUD toggles with H', async ({ page }) => {
   await expect(page.getByRole('status', { name: 'Performance' })).toBeVisible();
   await page.keyboard.press('KeyH');
   await expect(page.getByRole('status', { name: 'Performance' })).toBeHidden();
+});
+
+test('the world inspector scrubs restoration', async ({ page }) => {
+  await page.goto('/world?debug=1');
+  await expect(page.locator('canvas')).toBeVisible({ timeout: 30_000 });
+
+  const panel = page.getByRole('complementary', { name: 'World inspector' });
+  await expect(panel).toBeVisible();
+
+  const scrub = panel.getByRole('slider');
+  await scrub.fill('1');
+  await expect(panel.getByText('restoration')).toContainText('1.00');
+
+  // The panel hides on backtick and comes back, so it never blocks a screenshot.
+  await page.keyboard.press('Backquote');
+  await expect(panel).toBeHidden();
 });

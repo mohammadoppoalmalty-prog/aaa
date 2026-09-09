@@ -1,0 +1,76 @@
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tfm-space-xs);
+  padding: var(--tfm-button-pad-block) var(--tfm-button-pad-inline);
+  border: 1px solid transparent;
+  border-radius: var(--tfm-button-radius);
+  font: inherit;
+  line-height: 1.2;
+  cursor: pointer;
+  /* AAA 2.5.5 — a 44px target, met by min-size rather than by padding alone,
+     so a short label does not produce a small button. */
+  min-block-size: 2.75rem;
+  min-inline-size: 2.75rem;
+  transition:
+    background-color var(--tfm-motion-hover) var(--tfm-motion-ease-enter),
+    border-color var(--tfm-motion-hover) var(--tfm-motion-ease-enter),
+    translate var(--tfm-motion-hover) var(--tfm-motion-ease-enter);
+}
+
+.md { font-size: var(--tfm-type-body); }
+.lg { font-size: var(--tfm-type-lede); padding-inline: var(--tfm-space-xl); }
+
+.primary {
+  background: var(--tfm-button-primary-bg);
+  color: var(--tfm-button-primary-fg);
+}
+
+.ghost {
+  border-color: var(--tfm-button-ghost-border);
+  color: var(--tfm-color-text-high);
+}
+
+.quiet {
+  color: var(--tfm-color-text-body);
+}
+
+/* Hover is never the only affordance — it does not exist on touch. */
+.primary:hover:not([aria-disabled='true']) { background: var(--tfm-color-accent-deep); }
+.ghost:hover:not([aria-disabled='true']),
+.quiet:hover:not([aria-disabled='true']) {
+  background: var(--tfm-color-surface-glass);
+  border-color: var(--tfm-color-border-strong);
+}
+
+.pressed:not([aria-disabled='true']) { translate: 0 2px; }
+
+.button[aria-disabled='true'] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.button[aria-pressed='true'] {
+  background: var(--tfm-color-accent);
+  color: var(--tfm-button-primary-fg);
+  border-color: var(--tfm-color-accent);
+}
+
+.label {
+  display: inline-block;
+  text-align: center;
+  transition: opacity var(--tfm-motion-hover) var(--tfm-motion-ease-enter);
+}
+
+/* Opacity, not visibility or display: the label must stay in the accessibility
+   tree while the spinner is showing, so the control keeps its name. */
+.hidden { opacity: 0; }
+
+.loader {
+  position: absolute;
+  inset-block: 0;
+  display: grid;
+  place-items: center;
+}

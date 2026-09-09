@@ -1,0 +1,36 @@
+name: Perf regression
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  pull_request:
+    paths:
+      - 'src/world/**'
+      - 'app/world/**'
+      - 'scripts/perf-regression.mjs'
+  workflow_dispatch:
+
+jobs:
+  flythrough:
+    name: 90-second flythrough
+    # The budgets in GDD Part 12 are written for a fixed machine. A shared CI
+    # runner has no GPU, so this job measures and reports; `--strict` belongs on
+    # the dedicated perf machine, where PERF_MACHINE=ci is set in the runner env.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - name: Flythrough
+        run: node scripts/perf-regression.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: perf-baseline
+          path: perf-baseline.json
+          retention-days: 30
