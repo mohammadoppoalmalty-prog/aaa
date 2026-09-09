@@ -45,7 +45,7 @@ const hash = (text: string): number => {
   return h >>> 0;
 };
 
-export function GreyboxArea({ spec }: { spec: AreaSpec }) {
+export function GreyboxArea({ spec, landmarks: showLandmarks = true }: { spec: AreaSpec; landmarks?: boolean }) {
   const [width, depth] = spec.size;
   const interior = spec.kind === 'interior' || spec.kind === 'cave';
 
@@ -109,7 +109,7 @@ export function GreyboxArea({ spec }: { spec: AreaSpec }) {
         </RigidBody>
       ))}
 
-      {landmarks.map((mark, index) => (
+      {(showLandmarks ? landmarks : []).map((mark, index) => (
         <RigidBody key={index} type="fixed" colliders="cuboid">
           <mesh castShadow receiveShadow position={[mark.x, mark.h / 2, mark.z]}>
             <boxGeometry args={[mark.w, mark.h, mark.d]} />

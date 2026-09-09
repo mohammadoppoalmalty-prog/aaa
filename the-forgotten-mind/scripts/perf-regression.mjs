@@ -28,6 +28,11 @@ const arg = (name, fallback) => {
 const has = (name) => process.argv.includes(`--${name}`);
 
 const SECONDS = Number(arg('seconds', process.env.PERF_SECONDS ?? 90));
+/* Which area to fly through, and how healed it is while doing so. A budget is
+   only meaningful against the heaviest thing the world can show, and for this
+   project that is a fully restored area rather than a bare one. */
+const AREA = String(arg('area', 'gate'));
+const RESTORED = process.argv.includes('--bare') ? 0 : 1;
 const PORT = Number(arg('port', 3111));
 const BUDGET = {
   p95: Number(process.env.PERF_MAX_P95 ?? 18),
@@ -89,14 +94,26 @@ async function measure() {
 
   /* High tier, pinned. The adapter exists to protect a visitor's frame rate;
      letting it drop a tier mid-run would measure the adapter, not the world. */
-  await page.addInitScript(() => {
-    try {
-      localStorage.setItem(
-        'tfm.settings.v1',
-        JSON.stringify({ quality: 'high', qualityManual: true, showPerfHud: false }),
-      );
-    } catch { /* storage unavailable — the defaults are close enough to report on */ }
-  });
+  await page.addInitScript(
+    ([area, restored]) => {
+      try {
+        localStorage.setItem(
+          'tfm.settings.v1',
+          JSON.stringify({ quality: 'high', qualityManual: true, showPerfHud: false }),
+        );
+        localStorage.setItem(
+          'tfm.save.v1',
+          JSON.stringify({
+            version: 1, seed: 1, createdAt: 0, updatedAt: 0, playtimeMs: 0,
+            memories: [], revealedAll: restored === 1, area,
+            position: [0, 1.5, 4], yaw: 0, luma: { stage: 0, turns: [] }, hasCat: false,
+            puzzles: { 'cursor-ritual': 'solved' },
+          }),
+        );
+      } catch { /* storage unavailable — the defaults are close enough to report on */ }
+    },
+    [AREA, RESTORED],
+  );
 
   await page.goto(`http://127.0.0.1:${PORT}/world?perf=${SECONDS}`);
 
@@ -119,23 +136,37 @@ async function measure() {
 const report = await withServer(measure);
 const software = /swiftshader|llvmpipe|software/i.test(report.renderer);
 
-console.log('\nperf regression · flythrough');
+console.log(`\nperf regression · flythrough · ${AREA}${RESTORED ? ' · fully restored' : ' · bare'}`);
 console.log(`  renderer     ${report.renderer}${software ? '  (software — budgets are advisory)' : ''}`);
 console.log(`  duration     ${report.seconds.toFixed(1)} s over ${report.frames} frames`);
 console.log(`  fps          ${report.fps.toFixed(1)}`);
 console.log(`  p50 / p95 / p99   ${ms(report.p50)} / ${ms(report.p95)} / ${ms(report.p99)}`);
 console.log(`  draw calls   ${report.maxDrawCalls} peak   ·   triangles ${(report.maxTriangles / 1000).toFixed(0)}k peak`);
 
-if (existsSync(BASELINE)) {
-  const before = JSON.parse(readFileSync(BASELINE, 'utf8'));
+/* Baselines are keyed by area. The Gate is an empty plaza and a restored Forest
+   is a hundred and twenty trees; comparing one against the other says nothing,
+   and a single shared baseline quietly did exactly that. */
+const readBaselines = () => {
+  if (!existsSync(BASELINE)) return {};
+  const parsed = JSON.parse(readFileSync(BASELINE, 'utf8'));
+  // A file from before areas were keyed held one report: it was the Gate's.
+  return typeof parsed.renderer === 'string' ? { gate: parsed } : parsed;
+};
+
+const baselines = readBaselines();
+const before = baselines[AREA];
+
+if (before) {
   const delta = report.p95 - before.p95;
   const sign = delta >= 0 ? '+' : '';
-  console.log(`  vs baseline  p95 ${sign}${delta.toFixed(2)} ms  (was ${ms(before.p95)}, ${before.renderer})`);
+  console.log(`  vs baseline  p95 ${sign}${delta.toFixed(2)} ms  (was ${ms(before.p95)} in ${AREA})`);
+} else {
+  console.log(`  vs baseline  none recorded for ${AREA} yet`);
 }
 
 if (has('update')) {
-  writeFileSync(BASELINE, JSON.stringify(report, null, 2) + '\n');
-  console.log(`\n  baseline written to perf-baseline.json`);
+  writeFileSync(BASELINE, JSON.stringify({ ...baselines, [AREA]: report }, null, 2) + '\n');
+  console.log(`\n  baseline for ${AREA} written to perf-baseline.json`);
 }
 
 /* Two different questions, and conflating them makes the gate useless.
@@ -178,8 +209,7 @@ if (strict && !(software && !SOFTWARE_RENDERER_IS_FINE)) {
    it, and both are printed either way. */
 const REGRESSION = { p50: 1.15, p95: 1.5 };
 
-if (!has('update') && existsSync(BASELINE)) {
-  const before = JSON.parse(readFileSync(BASELINE, 'utf8'));
+if (!has('update') && before) {
   const pct = (now, then) => (((now - then) / then) * 100).toFixed(0);
 
   if (before.renderer !== report.renderer) {

@@ -46,7 +46,8 @@ real career content in `content/`.
 | **Phase 1** — the Fountain, playable, and the cat | ✅ |
 | **Phase 1** — the Overture (screen 00): heals as you scroll, doors pinned throughout | ✅ |
 | **Phase 1** — the Memory Forest: LUMA arrives and speaks, Light Echo in its scene, the cat | ✅ |
-| Phase 1 · art pass — the Forest and the Village as places, not blockouts | ⬜ |
+| **Phase 1** — the Forest heals: canopy, fog and fireflies driven by restoration | ✅ 20 draw calls fully restored, against a budget of 180 |
+| Phase 1 · art pass — the Village as a place, and real art for the Forest | ⬜ |
 | Phase 1 · the cat, the Overture, LUMA's arrival, the other 13 puzzles | ⬜ |
 
 ## Getting started
@@ -133,7 +134,14 @@ time and peak draw calls. Two separate questions, deliberately not conflated:
 - **Does the world meet its budget?** Only answerable on the machine the budget was
   written for. Enforced with `--strict` (or `PERF_MACHINE=ci`).
 - **Did this commit make it slower?** Answerable anywhere, by diffing against
-  `perf-baseline.json` recorded on the same machine. This is the default check.
+  `perf-baseline.json` recorded on the same machine, **per area** — the Gate is an
+  empty plaza and a restored Forest is a hundred and twenty trees, so one shared
+  baseline compares things that have nothing to do with each other.
+
+```bash
+npm run perf -- --area memory-forest          # the heaviest area, fully restored
+npm run perf -- --area memory-forest --bare   # and the same area at 0%
+```
 
 It compares **p50**, not p95: two runs of identical code move p95 by tens of
 percent, and a gate that goes red on a rerun is a gate that gets switched off.

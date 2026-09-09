@@ -8,6 +8,7 @@ import { getGPUTier } from 'detect-gpu';
 import { PerfHud, PerfSampler } from './PerfHud';
 import { Blockout } from './greybox/Blockout';
 import { GreyboxArea } from './areas/GreyboxArea';
+import { MemoryForest } from './areas/MemoryForest';
 import { AREA_SPECS, type AreaId } from './areas/manifest';
 import { providePuzzleRewards, useGame } from '@/state/game';
 import { PlayerController } from './entities/PlayerController';
@@ -151,7 +152,10 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
 
         <Suspense fallback={null}>
           <Physics gravity={[0, -18, 0]} timeStep="vary">
-            <GreyboxArea key={area.id} spec={area} />
+            {/* The Forest is dressed, so it does not want the generic massing
+                the other eighteen blockouts still use. */}
+            <GreyboxArea key={area.id} spec={area} landmarks={area.id !== 'memory-forest'} />
+            {area.id === 'memory-forest' ? <MemoryForest /> : null}
             {/* The controller calibration geometry — steps at and above the
                 autostep height, ramps either side of the slope limit — lives in
                 the Gate, where the tutorial already teaches movement. */}
