@@ -9,6 +9,7 @@ import { PerfHud, PerfSampler } from './PerfHud';
 import { Blockout } from './greybox/Blockout';
 import { GreyboxArea } from './areas/GreyboxArea';
 import { MemoryForest } from './areas/MemoryForest';
+import { puzzleSpot } from './areas/layout';
 import { ForgottenVillage } from './areas/ForgottenVillage';
 
 /** Areas with real dressing. The rest are still honest grey-box blockouts. */
@@ -26,6 +27,9 @@ import { LightEcho } from './puzzles/LightEcho';
 import { LumaPresence } from './entities/LumaPresence';
 import { Hud } from './Hud';
 import { CursorRitual } from './puzzles/CursorRitual';
+import { PuzzleStation } from './entities/PuzzleStation';
+import { PuzzlePanel } from './puzzles/PuzzlePanel';
+import { BOARDS } from './puzzles/boards';
 import { registry } from './systems/puzzles';
 import { Luma } from './Luma';
 import { InteractionSystem } from './InteractionSystem';
@@ -69,6 +73,9 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
   const catFollows = useGame((s) => s.save.hasCat);
   const fountainState = useGame((s) => s.save.puzzles.fountain);
   const [grateOpen, setGrateOpen] = useState(false);
+  /* Which puzzle sheet is open, if any. The three that were built before the
+     shell keep their own panels; everything else opens through this. */
+  const [openPuzzle, setOpenPuzzle] = useState<string | null>(null);
   const area = AREA_SPECS[areaId as AreaId] ?? AREA_SPECS.gate;
 
   /* Detect once, and never over a manual choice. */
@@ -184,6 +191,15 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
               </>
             ) : null}
 
+            {/* Every other area's puzzle stands on a station of its own. */}
+            {area.puzzle !== null && BOARDS[area.puzzle] !== undefined ? (
+              <PuzzleStation
+                puzzleId={area.puzzle}
+                position={puzzleSpot(area)}
+                onOpen={() => setOpenPuzzle(area.puzzle)}
+              />
+            ) : null}
+
             {/* Off the path, in the Forest, doing nothing at all. */}
             {area.id === 'memory-forest' || catFollows ? (
               <CompanionCat
@@ -192,7 +208,13 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
               />
             ) : null}
             {flythrough === null ? (
-              <PlayerController key={area.id} start={[0, 1.5, 4]} reducedMotion={reducedMotion} />
+              <PlayerController
+                key={area.id}
+                start={[0, 1.5, 4]}
+                reducedMotion={reducedMotion}
+                /* Only rooms have walls to end up behind. */
+                {...(area.kind === 'interior' || area.kind === 'cave' ? { bounds: area.size } : {})}
+              />
             ) : (
               <Flythrough seconds={flythrough} />
             )}
@@ -208,6 +230,14 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
       ) : null}
 
       {grateOpen ? <FountainGrate onClose={() => setGrateOpen(false)} /> : null}
+
+      {openPuzzle !== null && BOARDS[openPuzzle] !== undefined ? (
+        <PuzzlePanel
+          id={openPuzzle}
+          board={BOARDS[openPuzzle]!}
+          onClose={() => setOpenPuzzle(null)}
+        />
+      ) : null}
 
       <Hud total={total} />
       <Luma intents={lumaIntents} total={total} />

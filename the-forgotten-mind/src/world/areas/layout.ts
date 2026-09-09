@@ -41,3 +41,27 @@ export function exitRing(spec: AreaSpec): readonly ExitPlacement[] {
     };
   });
 }
+
+/**
+ * Where an area's puzzle stands.
+ *
+ * Shared for the same reason `exitRing` is: the blockout has to keep this spot
+ * clear of its scattered massing, and if the two disagreed by a metre the
+ * puzzle would be inside a pillar. It happened, and only a screenshot found it.
+ *
+ * Set back from the middle so the player walks *to* it, and never so far back
+ * that it lands in the rim where the doors are.
+ */
+export function puzzleSpot(spec: AreaSpec): readonly [number, number, number] {
+  /* Off-axis, deliberately. Straight back from the middle is exactly where the
+     first door stands — the ring starts at the top — so in a 15 m room the
+     station ended up two metres from the way out. Placed at 135° it sits
+     between doors in every area in the atlas, which the tests check rather
+     than assume. */
+  const reach = Math.min(Math.min(spec.size[0], spec.size[1]) * 0.18, 6);
+  const angle = (Math.PI * 3) / 4;
+  return [Math.cos(angle) * reach, 0, Math.sin(angle) * reach] as const;
+}
+
+/** How much room the station needs. Nothing else may be generated inside it. */
+export const PUZZLE_CLEARANCE = 4;

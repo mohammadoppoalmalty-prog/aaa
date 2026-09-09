@@ -25,7 +25,7 @@ export { shelfOrder, SUBJECTS, SHELF_COUNT } from './shelf-order';
 export type { Subject, Book, ShelfState, ShelfInput } from './shelf-order';
 export { journalRail, PLATE_COUNT } from './journal-rail';
 export type { RailState, RailInput } from './journal-rail';
-export { lightReflection, trace, GRID as REFLECTION_GRID } from './light-reflection';
+export { lightReflection, trace, GRID as GRID_REFLECTION } from './light-reflection';
 export type { Tilt, Mirror, ReflectionState, ReflectionInput } from './light-reflection';
 export { echoChamber, STONE_COUNT, PHRASE_LENGTH } from './echo-chamber';
 export type { EchoChamberState, ChamberInput } from './echo-chamber';

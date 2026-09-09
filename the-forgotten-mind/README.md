@@ -49,7 +49,8 @@ real career content in `content/`.
 | **Phase 1** — the Forest heals: canopy, fog and fireflies driven by restoration | ✅ 20 draw calls fully restored, against a budget of 180 |
 | **Phase 1** — the Village as a place: a building per way out, lit windows as its meter | ✅ 20 draw calls |
 | Phase 1 · art pass — real art for the Forest and Village | ⬜ |
-| Phase 1 · in-world scenes for the 13 puzzles beyond the Gate, Forest and Village | ⬜ state machines done and tested; each needs its scene |
+| **Phase 1** — all sixteen puzzles playable in the world | ✅ one sheet, thirteen boards, every one reachable and finishable |
+| Phase 1 · art pass — real models for the world and its puzzle stations | ⬜ |
 
 ## Getting started
 

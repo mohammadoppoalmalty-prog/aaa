@@ -36,6 +36,8 @@ const LOOK_SENSITIVITY = 0.0028;
 const CAM_DISTANCE = 4.5;
 const CAM_HEIGHT = 1.8;
 const CAM_STIFFNESS = 6.5;
+/** How far inside a wall the camera is allowed to get before it is held back. */
+const CAM_MARGIN = 0.8;
 
 interface Keys {
   forward: boolean;
@@ -67,9 +69,18 @@ export interface PlayerControllerProps {
   readonly start?: readonly [number, number, number];
   /** Halved spring and no camera bob when the visitor asked for less motion. */
   readonly reducedMotion?: boolean;
+  /**
+   * The walls the camera must stay inside, as [width, depth] in metres.
+   *
+   * A room is usually smaller than the camera's four and a half metres of
+   * follow distance, so in every interior in this game the camera ended up
+   * *outside the building*, filming the back of a wall. The player saw a black
+   * screen with a working interaction prompt floating in it.
+   */
+  readonly bounds?: readonly [number, number];
 }
 
-export function PlayerController({ start = [0, 2, 0], reducedMotion = false }: PlayerControllerProps) {
+export function PlayerController({ start = [0, 2, 0], reducedMotion = false, bounds }: PlayerControllerProps) {
   const body = useRef<RapierRigidBody>(null);
   const collider = useRef<RapierCollider>(null);
   const mesh = useRef<THREE.Group>(null);
@@ -219,6 +230,16 @@ export function PlayerController({ start = [0, 2, 0], reducedMotion = false }: P
       target.current.y + CAM_HEIGHT,
       target.current.z + Math.cos(yaw.current) * CAM_DISTANCE,
     );
+
+    /* Held inside the walls. Pulling the camera in rather than pushing the
+       player around keeps the controls honest — the character still goes where
+       it was told, the view just stops leaving the room. */
+    if (bounds) {
+      const limitX = bounds[0] / 2 - CAM_MARGIN;
+      const limitZ = bounds[1] / 2 - CAM_MARGIN;
+      camTarget.current.x = Math.max(-limitX, Math.min(limitX, camTarget.current.x));
+      camTarget.current.z = Math.max(-limitZ, Math.min(limitZ, camTarget.current.z));
+    }
     camera.position.lerp(camTarget.current, 1 - Math.exp(-stiffness * delta));
     camLook.current.set(target.current.x, target.current.y + 1, target.current.z);
     camera.lookAt(camLook.current);

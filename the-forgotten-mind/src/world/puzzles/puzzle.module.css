@@ -1,0 +1,202 @@
+/* The shared puzzle sheet.
+   One stylesheet for thirteen boards, because they are all the same object: a
+   panel you crouch over, a few controls, and a line of text telling you where
+   you are. Thirteen bespoke stylesheets would drift apart within a month. */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  display: grid;
+  place-items: center;
+  padding: var(--tfm-space-md);
+  background: color-mix(in oklch, var(--tfm-color-canvas) 78%, transparent);
+  backdrop-filter: blur(var(--tfm-effect-blur-scrim));
+}
+
+.sheet {
+  display: grid;
+  gap: var(--tfm-space-md);
+  inline-size: min(44rem, 100%);
+  max-block-size: 88vh;
+  overflow-y: auto;
+  padding: var(--tfm-space-xl);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-panel);
+  background: var(--tfm-color-canvas-raised);
+}
+
+.head {
+  display: grid;
+  gap: var(--tfm-space-xs);
+  font-size: var(--tfm-type-lede);
+  color: var(--tfm-color-text-high);
+}
+
+.head span,
+.label,
+.note {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.12em;
+  color: var(--tfm-color-text-muted);
+  text-transform: uppercase;
+}
+
+/* The premise, in LUMA's voice. Not uppercase, because it is spoken aloud. */
+.premise {
+  margin: 0;
+  font-size: var(--tfm-type-body);
+  font-style: italic;
+  color: var(--tfm-color-text-body);
+}
+
+.board {
+  display: grid;
+  gap: var(--tfm-space-sm);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--tfm-space-xs);
+  align-items: center;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--tfm-space-sm);
+}
+
+.column {
+  display: grid;
+  gap: var(--tfm-space-xs);
+  align-content: start;
+  padding: var(--tfm-space-sm);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-panel);
+}
+
+/* A control. Everything a player can touch, in all thirteen, is one of these. */
+.tile {
+  min-inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  padding: var(--tfm-space-xs) var(--tfm-space-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tfm-space-xs);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  color: var(--tfm-color-text-body);
+  background: var(--tfm-color-surface-glass);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-control);
+  cursor: pointer;
+}
+
+.tile:hover {
+  background: var(--tfm-color-surface-glass-strong);
+  color: var(--tfm-color-text-high);
+}
+
+.tile:focus-visible {
+  outline: 2px solid var(--tfm-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.tile[aria-pressed='true'],
+.picked {
+  border-color: var(--tfm-color-accent);
+  color: var(--tfm-color-accent);
+}
+
+/* On, lit, wet, correct — whatever this particular puzzle calls it. */
+.on {
+  border-color: var(--tfm-color-state-success);
+  color: var(--tfm-color-state-success);
+  background: color-mix(in oklch, var(--tfm-color-state-success) 14%, transparent);
+}
+
+.grid {
+  display: grid;
+  gap: 2px;
+  justify-content: start;
+}
+
+.stack {
+  display: grid;
+  gap: var(--tfm-space-xs);
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  gap: var(--tfm-space-xs);
+  padding: var(--tfm-space-xs) var(--tfm-space-sm);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-control);
+  font-size: var(--tfm-type-label);
+  color: var(--tfm-color-text-body);
+}
+
+.line strong {
+  color: var(--tfm-color-text-high);
+}
+
+.grow {
+  flex: 1 1 auto;
+}
+
+.hint {
+  margin: 0;
+  padding: var(--tfm-space-sm);
+  border-inline-start: 2px solid var(--tfm-color-accent);
+  font-size: var(--tfm-type-label);
+  color: var(--tfm-color-text-body);
+  background: var(--tfm-color-surface-glass);
+}
+
+.solved {
+  margin: 0;
+  font-size: var(--tfm-type-body);
+  color: var(--tfm-color-state-success);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--tfm-space-xs);
+  padding-block-start: var(--tfm-space-sm);
+  border-block-start: 1px solid var(--tfm-color-border-subtle);
+}
+
+.actions button {
+  padding: var(--tfm-space-xs) var(--tfm-space-md);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tfm-color-text-body);
+  background: transparent;
+  border: 1px solid var(--tfm-color-border-strong);
+  border-radius: var(--tfm-radius-control);
+  cursor: pointer;
+}
+
+.actions button:hover {
+  color: var(--tfm-color-text-high);
+  border-color: var(--tfm-color-accent);
+}
+
+.actions button:focus-visible {
+  outline: 2px solid var(--tfm-color-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrim {
+    backdrop-filter: none;
+  }
+}

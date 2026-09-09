@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { AREA_SPECS, type AreaId } from '../src/world/areas/manifest';
-import { exitRing } from '../src/world/areas/layout';
+import { exitRing, puzzleSpot, PUZZLE_CLEARANCE } from '../src/world/areas/layout';
 import { villageDressing } from '../src/world/areas/dressing';
 
 const ids = Object.keys(AREA_SPECS) as AreaId[];
@@ -68,6 +68,33 @@ describe('the village, as the player sees it', () => {
   it('never lights more buildings than exist', () => {
     for (const r of [0, 0.5, 1, 5]) {
       expect(villageDressing(r, houses, true).litBuildings).toBeLessThanOrEqual(houses);
+    }
+  });
+});
+
+describe('where a puzzle stands', () => {
+  it('is inside its area, for every area that has one', () => {
+    for (const id of ids) {
+      const spec = AREA_SPECS[id];
+      if (spec.puzzle === null) continue;
+      const [x, , z] = puzzleSpot(spec);
+      expect(Math.abs(x)).toBeLessThan(spec.size[0] / 2 - PUZZLE_CLEARANCE);
+      expect(Math.abs(z)).toBeLessThan(spec.size[1] / 2 - PUZZLE_CLEARANCE);
+    }
+  });
+
+  it('never stands in a doorway', () => {
+    // A station on top of an exit blocks the way out of the area it is in.
+    for (const id of ids) {
+      const spec = AREA_SPECS[id];
+      if (spec.puzzle === null) continue;
+      const [x, , z] = puzzleSpot(spec);
+      for (const exit of exitRing(spec)) {
+        const gap = Math.hypot(x - exit.position[0], z - exit.position[2]);
+        expect(gap, `${spec.id}: the ${exit.to} door is ${gap.toFixed(1)}m from the puzzle`).toBeGreaterThan(
+          PUZZLE_CLEARANCE,
+        );
+      }
     }
   });
 });

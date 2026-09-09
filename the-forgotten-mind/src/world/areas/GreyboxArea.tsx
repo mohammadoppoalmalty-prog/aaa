@@ -6,7 +6,7 @@ import type * as THREE from 'three';
 import { tokens } from '@/generated/tokens';
 import { bindRestoration } from '../systems/restoration';
 import { type AreaSpec } from './manifest';
-import { exitRing } from './layout';
+import { exitRing, puzzleSpot, PUZZLE_CLEARANCE } from './layout';
 import { ExitMarker } from './ExitMarker';
 
 /**
@@ -55,6 +55,8 @@ export function GreyboxArea({ spec, landmarks: showLandmarks = true }: { spec: A
   const landmarks = useMemo(() => {
     const random = seeded(hash(spec.id));
     const count = Math.round(Math.min(26, Math.max(4, (width * depth) / 420)));
+    const [spotX, , spotZ] = puzzleSpot(spec);
+
     return Array.from({ length: count }, () => {
       const height = 2 + random() * (interior ? 2 : 9);
       return {
@@ -64,8 +66,14 @@ export function GreyboxArea({ spec, landmarks: showLandmarks = true }: { spec: A
         d: 1.4 + random() * (interior ? 1.6 : 5),
         h: height,
       };
-    });
-  }, [spec.id, width, depth, interior]);
+      /* Massing is scattered, the puzzle station is not, so without this the two
+         eventually occupy the same cubic metre — a table inside a pillar, which
+         no test noticed and one screenshot did. */
+    }).filter(
+      (mark) =>
+        spec.puzzle === null || Math.hypot(mark.x - spotX, mark.z - spotZ) > PUZZLE_CLEARANCE + mark.w / 2,
+    );
+  }, [spec, width, depth, interior]);
 
   /* Exits sit on the rim, spread around it, so a player can see every way out
      from the middle of the area — the single most useful property of a blockout.
