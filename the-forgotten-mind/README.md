@@ -36,7 +36,7 @@ real career content in `content/`.
 | **Phase 1** — the Impatience Detector and the skip path | ✅ |
 | **Phase 1** — all 19 areas as walkable blockouts, generated from the atlas | ✅ |
 | **Phase 1** — the Director: residency, gating, routing — pure and tested | ✅ |
-| **Phase 1** — puzzle framework + Cursor Ritual, Light Echo, The Fountain | ✅ proved solvable across 100 seeds each |
+| **Phase 1** — all sixteen puzzles, as pure state machines | ✅ 1,600 boards proved solvable, every seed, every puzzle |
 | **Phase 1** — LUMA's scripted tree, with the golden-question eval as a unit test | ✅ |
 | **Phase 1** — Codex sections: memories, projects, skills, experience, contact | ✅ |
 | **Phase 1** — RUM (`web-vitals` → `/api/telemetry`), anonymous, DNT-respecting | ✅ |
@@ -49,7 +49,7 @@ real career content in `content/`.
 | **Phase 1** — the Forest heals: canopy, fog and fireflies driven by restoration | ✅ 20 draw calls fully restored, against a budget of 180 |
 | **Phase 1** — the Village as a place: a building per way out, lit windows as its meter | ✅ 20 draw calls |
 | Phase 1 · art pass — real art for the Forest and Village | ⬜ |
-| Phase 1 · the cat, the Overture, LUMA's arrival, the other 13 puzzles | ⬜ |
+| Phase 1 · in-world scenes for the 13 puzzles beyond the Gate, Forest and Village | ⬜ state machines done and tested; each needs its scene |
 
 ## Getting started
 
