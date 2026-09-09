@@ -28,6 +28,7 @@ import { LumaPresence } from './entities/LumaPresence';
 import { Hud } from './Hud';
 import { CursorRitual } from './puzzles/CursorRitual';
 import { PuzzleStation } from './entities/PuzzleStation';
+import { TheEnding, EndingCaption } from './entities/TheEnding';
 import { PuzzlePanel } from './puzzles/PuzzlePanel';
 import { BOARDS } from './puzzles/boards';
 import { registry } from './systems/puzzles';
@@ -76,6 +77,15 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
   /* Which puzzle sheet is open, if any. The three that were built before the
      shell keep their own panels; everything else opens through this. */
   const [openPuzzle, setOpenPuzzle] = useState<string | null>(null);
+
+  /* The ending. It plays in the Contact Tower once the Engine is running, and
+     the caption lives out here in the DOM while the room that speaks it lives
+     inside the canvas — so the last thing this world says is reachable by a
+     screen reader. */
+  const engineState = useGame((s) => s.save.puzzles['core-engine']);
+  const towerRunning = engineState === 'solved' || engineState === 'skipped';
+  const endingCaption = useRef<HTMLParagraphElement>(null);
+  const [endingDone, setEndingDone] = useState(false);
   const area = AREA_SPECS[areaId as AreaId] ?? AREA_SPECS.gate;
 
   /* Detect once, and never over a manual choice. */
@@ -191,8 +201,18 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
               </>
             ) : null}
 
+            {area.id === 'contact-tower' && towerRunning ? (
+              <TheEnding captionRef={endingCaption} onFinished={() => setEndingDone(true)} />
+            ) : null}
+
             {/* Every other area's puzzle stands on a station of its own. */}
-            {area.puzzle !== null && BOARDS[area.puzzle] !== undefined ? (
+            {/* The Engine's station stands down once the tower is running: during
+                the ending the only thing worth naming in this room is the way
+                out of it, and two prompts competing is just noise over the last
+                thing this world says. */}
+            {area.puzzle !== null &&
+            BOARDS[area.puzzle] !== undefined &&
+            !(area.id === 'contact-tower' && towerRunning) ? (
               <PuzzleStation
                 puzzleId={area.puzzle}
                 position={puzzleSpot(area)}
@@ -227,6 +247,10 @@ export function Engine({ motes, total, lumaIntents }: EngineProps) {
           arrivals. */}
       {area.id === 'gate' && ritual === undefined && flythrough === null && !debug ? (
         <CursorRitual onDone={() => undefined} />
+      ) : null}
+
+      {area.id === 'contact-tower' && towerRunning ? (
+        <EndingCaption captionRef={endingCaption} done={endingDone} />
       ) : null}
 
       {grateOpen ? <FountainGrate onClose={() => setGrateOpen(false)} /> : null}

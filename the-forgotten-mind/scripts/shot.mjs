@@ -24,6 +24,8 @@ const RESTORATION = Number(arg('restoration', 1));
 const OUT = resolve(root, String(arg('out', `shot-${AREA}-${Math.round(RESTORATION * 100)}.png`)));
 const PORT = Number(arg('port', 3117));
 const YAW = Number(arg('yaw', 0));
+/* How long to let the world settle. The ending speaks for half a minute. */
+const WAIT = Number(arg('wait', 4000));
 
 const server = spawn('npx', ['next', 'start', '--port', String(PORT)], {
   cwd: root,
@@ -59,7 +61,7 @@ try {
             memories: [], revealedAll: restoration >= 1, area,
             position: [0, 1.5, 14], yaw,
             luma: { stage: 0, turns: [] }, hasCat: false,
-            puzzles: { 'cursor-ritual': 'solved', fountain: 'solved' },
+            puzzles: { 'cursor-ritual': 'solved', fountain: 'solved', 'core-engine': 'solved' },
           }),
         );
       } catch { /* a screenshot of the defaults is still worth looking at */ }
@@ -70,7 +72,7 @@ try {
   await page.goto(`http://127.0.0.1:${PORT}/world`);
   await page.locator('canvas').waitFor({ state: 'visible', timeout: 60_000 });
   // Let the first frames, the fog and the instance matrices settle.
-  await page.waitForTimeout(4000);
+  await page.waitForTimeout(WAIT);
   await page.screenshot({ path: OUT });
   await browser.close();
 

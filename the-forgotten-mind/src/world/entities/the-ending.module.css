@@ -1,0 +1,69 @@
+/* The ending's subtitles.
+   Pinned low and centred, over a backing dark enough to read against a lit
+   room — the same subtitle-safe treatment LUMA's arrival uses, because it is
+   the same voice finishing the same sentence. */
+
+.stage {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 30vh;
+  z-index: 30;
+  display: grid;
+  justify-items: center;
+  gap: var(--tfm-space-md);
+  padding-inline: var(--tfm-space-md);
+  pointer-events: none;
+}
+
+.line {
+  margin: 0;
+  max-inline-size: 42rem;
+  min-block-size: 3.2em;
+  padding: var(--tfm-space-sm) var(--tfm-space-md);
+  text-align: center;
+  font-size: var(--tfm-type-lede);
+  line-height: var(--tfm-type-leading-body);
+  color: var(--tfm-color-text-high);
+  background: color-mix(in oklch, var(--tfm-color-canvas) 72%, transparent);
+  border-radius: var(--tfm-radius-panel);
+}
+
+.out {
+  display: grid;
+  justify-items: center;
+  gap: var(--tfm-space-sm);
+  max-inline-size: 42rem;
+  /* The one thing on this screen a visitor may touch. */
+  pointer-events: auto;
+}
+
+.invitation {
+  margin: 0;
+  text-align: center;
+  font-size: var(--tfm-type-body);
+  color: var(--tfm-color-text-body);
+  background: color-mix(in oklch, var(--tfm-color-canvas) 72%, transparent);
+  padding: var(--tfm-space-sm) var(--tfm-space-md);
+  border-radius: var(--tfm-radius-panel);
+}
+
+.door {
+  padding: var(--tfm-space-sm) var(--tfm-space-xl);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--tfm-color-canvas);
+  background: var(--tfm-color-accent);
+  border-radius: var(--tfm-radius-control);
+}
+
+.door:hover {
+  background: var(--tfm-color-accent-deep);
+}
+
+.door:focus-visible {
+  outline: 2px solid var(--tfm-color-focus-ring);
+  outline-offset: 2px;
+}
