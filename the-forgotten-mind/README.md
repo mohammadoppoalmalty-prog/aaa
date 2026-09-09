@@ -5,9 +5,10 @@ A portfolio built as two co-existing layers over one source of truth: **the worl
 design is [GDD.md](../GDD.md); the engineering charter is [STANDARDS.md](../STANDARDS.md);
 the visual language is design 06, *The Assembly*.
 
-**This repository is Phase 0 — the foundation.** What is here is the architecture
-everything else is built on, and nothing more. Phase 0 exists precisely because
-each of these decisions becomes a rewrite if it is deferred.
+**Phase 0 is complete; Phase 1 is well under way.** The foundation exists because
+every decision in it becomes a rewrite if deferred. What is missing is stated as
+plainly as what is here — including the one thing that cannot be scaffolded: the
+real career content in `content/`.
 
 ## What works today
 
@@ -29,7 +30,18 @@ each of these decisions becomes a rewrite if it is deferred.
 | Perf regression (90s flythrough, p50/p95/p99, baseline diff) | ✅ |
 | `uRestoration` bus + DisposalRegistry | ✅ (pulled forward — both are architectural) |
 | **Phase 1 · started** — content contract (zod), content lint, Codex shell + memories + projects routes | ✅ |
-| Phase 1 · save system, memory system, Gate/Forest/Village, two puzzles, LUMA | ⬜ |
+| **Phase 1** — save system (versioned, migrated, flushed on pagehide) | ✅ |
+| **Phase 1** — the Reveal Contract, end to end and covered by a test | ✅ |
+| **Phase 1** — memory motes, one InstancedMesh, restoration driven by progress | ✅ |
+| **Phase 1** — the Impatience Detector and the skip path | ✅ |
+| **Phase 1** — all 19 areas as walkable blockouts, generated from the atlas | ✅ |
+| **Phase 1** — the Director: residency, gating, routing — pure and tested | ✅ |
+| **Phase 1** — puzzle framework + Cursor Ritual, Light Echo, The Fountain | ✅ proved solvable across 100 seeds each |
+| **Phase 1** — LUMA's scripted tree, with the golden-question eval as a unit test | ✅ |
+| **Phase 1** — Codex sections: memories, projects, skills, experience, contact | ✅ |
+| **Phase 1** — RUM (`web-vitals` → `/api/telemetry`), anonymous, DNT-respecting | ✅ |
+| Phase 1 · art pass — the Forest and the Village as places, not blockouts | ⬜ |
+| Phase 1 · the cat, the Overture, LUMA's arrival, the other 13 puzzles | ⬜ |
 
 ## Getting started
 
@@ -43,7 +55,8 @@ npm run dev          # tokens are rebuilt first, automatically
 - `/debug` — quality tiers, switches, and the live palette
 - `/world?debug=1` — the in-world inspector: restoration scrub, tier switch, disposal readout (` ` ` to hide)
 - `/world?perf=90` — the automated flythrough the perf gate drives
-- `/codex` — Layer 2, written in Phase 1
+- `/codex` — the memory grid, projects, skills, experience, contact
+- In the world: `E` interact · `L` LUMA · `H` perf HUD · backtick opens the inspector with `?debug=1`
 
 ## The token pipeline
 
@@ -83,6 +96,8 @@ they are cheap.
 | Offset-pagination ban | `npm run gate:pagination` | a paginated list that duplicates and skips rows as it grows |
 | React-commit-count | `npx playwright test e2e/react-commits.spec.ts` | a re-render during gameplay — the classic R3F performance collapse |
 | Memory-leak | `npx playwright test e2e/memory-leak.spec.ts` | undisposed GPU resources across world mounts |
+| Bundle budgets | `npx size-limit` | the Codex creeping past its 20 KB of JavaScript |
+| Content lint | `npm run content` | a project without a stated failure; placeholder text in a published entry |
 
 ```bash
 npm run verify     # lint, types, unit tests, and both static gates

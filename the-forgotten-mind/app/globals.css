@@ -90,3 +90,26 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* The world's interaction prompt. Created imperatively by the memory system so
+   that showing it costs a `textContent` write rather than a React commit. */
+.tfm-prompt {
+  position: fixed;
+  inset-block-end: 22vh;
+  inset-inline: 0;
+  z-index: 34;
+  margin-inline: auto;
+  inline-size: fit-content;
+  max-inline-size: calc(100% - var(--tfm-space-lg));
+  padding: var(--tfm-space-xs) var(--tfm-space-md);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-pill);
+  background: var(--tfm-perf-hud-bg);
+  backdrop-filter: blur(var(--tfm-effect-blur-panel));
+  color: var(--tfm-color-memory-restored);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.14em;
+  text-align: center;
+  pointer-events: none;
+}

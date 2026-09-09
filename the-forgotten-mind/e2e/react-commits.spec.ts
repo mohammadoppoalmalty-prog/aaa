@@ -38,6 +38,13 @@ const PIN_QUALITY = `
     localStorage.setItem('tfm.settings.v1', JSON.stringify({
       quality: 'low', qualityManual: true, showPerfHud: false,
     }));
+    /* Start after the Gate's ritual: this gate measures gameplay, and the
+       arrival is a screen the player has already passed by then. */
+    localStorage.setItem('tfm.save.v1', JSON.stringify({
+      version: 1, seed: 1, createdAt: 0, updatedAt: 0, playtimeMs: 0,
+      memories: [], revealedAll: false, area: 'gate', position: [0, 1.5, 4], yaw: 0,
+      luma: { stage: 0, turns: [] }, puzzles: { 'cursor-ritual': 'solved' },
+    }));
   } catch {}
 `;
 
@@ -46,18 +53,27 @@ test('gameplay produces no React commits', async ({ page }) => {
   await page.addInitScript(HOOK);
   await page.goto('/world');
 
-  // Let the engine mount, detect the GPU, and settle. Commits here are expected.
-  await page.waitForTimeout(4000);
+  /* Let the engine mount and settle. Commits here are expected and ignored: the
+     engine mounts, the save hydrates, and the HUD's memory counter shows itself
+     for four seconds and then hides again. Six seconds clears all of it, so what
+     is measured afterwards is gameplay and nothing else. */
+  await page.waitForTimeout(6000);
   const warm = await page.evaluate(() => (globalThis as { __tfmCommits?: { commits: number } }).__tfmCommits?.commits ?? -1);
   expect(warm, 'the DevTools hook was not installed before React started').toBeGreaterThan(0);
 
-  // Ten seconds of actual gameplay: walking, running, turning.
+  /* Ten seconds of gameplay: walking, running, turning, strafing.
+
+     Deliberately no `E`. `E` interacts when a memory is within reach, and
+     recovering one is a state change a visitor asked for — a legitimate commit
+     that would mask the thing this gate exists to catch. Movement is what must
+     be free. */
   await page.keyboard.down('KeyW');
   await page.keyboard.down('ShiftLeft');
   for (let i = 0; i < 10; i += 1) {
-    await page.keyboard.down(i % 2 === 0 ? 'KeyQ' : 'KeyE');
+    const key = i % 2 === 0 ? 'KeyQ' : i % 3 === 0 ? 'KeyA' : 'KeyD';
+    await page.keyboard.down(key);
     await page.waitForTimeout(1000);
-    await page.keyboard.up(i % 2 === 0 ? 'KeyQ' : 'KeyE');
+    await page.keyboard.up(key);
   }
   await page.keyboard.up('ShiftLeft');
   await page.keyboard.up('KeyW');

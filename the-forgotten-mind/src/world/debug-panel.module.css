@@ -97,3 +97,13 @@
 .hint a {
   color: var(--tfm-color-accent);
 }
+
+.field select {
+  inline-size: 100%;
+  padding: var(--tfm-space-xs);
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-control);
+  background: var(--tfm-color-canvas);
+  color: var(--tfm-color-text-high);
+  font: inherit;
+}

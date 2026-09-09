@@ -1,0 +1,39 @@
+.wrap {
+  display: grid;
+  gap: var(--tfm-space-md);
+}
+
+.counter {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tfm-color-text-muted);
+}
+
+.counter b {
+  color: var(--tfm-color-memory-restored);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.reveal {
+  border: 0;
+  padding: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--tfm-color-accent);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--tfm-layout-card-min), 1fr));
+  gap: var(--tfm-space-md);
+  margin: 0;
+  padding: 0;
+}

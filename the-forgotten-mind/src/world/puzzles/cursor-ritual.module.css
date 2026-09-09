@@ -1,0 +1,101 @@
+/* The Cursor Ritual. Black, except where the light is. */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  --x: 50%;
+  --y: 50%;
+  background: var(--tfm-color-canvas);
+  cursor: none;
+  overflow: hidden;
+  transition: background var(--tfm-motion-cinematic) var(--tfm-motion-ease-enter);
+}
+
+/* The two-metre circle the cursor carries. It is the only instruction. */
+.light {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    18vmin 18vmin at var(--x) var(--y),
+    color-mix(in oklch, var(--tfm-color-accent) 26%, transparent),
+    transparent 70%
+  );
+}
+
+.glyph {
+  position: absolute;
+  inline-size: 2.4rem;
+  block-size: 2.4rem;
+  margin: -1.2rem 0 0 -1.2rem;
+  border: 1px solid var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-pill);
+  /* Unlit glyphs are nearly invisible: found by sweeping, not by reading. */
+  opacity: 0.14;
+  transition:
+    opacity var(--tfm-motion-reveal) var(--tfm-motion-ease-enter),
+    box-shadow var(--tfm-motion-reveal) var(--tfm-motion-ease-enter),
+    border-color var(--tfm-motion-reveal) var(--tfm-motion-ease-enter);
+}
+
+.lit {
+  opacity: 1;
+  border-color: var(--tfm-color-memory-restored);
+  box-shadow: 0 0 2.4rem color-mix(in oklch, var(--tfm-color-memory-restored) 60%, transparent);
+}
+
+.opened {
+  background: color-mix(in oklch, var(--tfm-color-accent) 8%, var(--tfm-color-canvas));
+}
+
+.count,
+.hint {
+  position: absolute;
+  inset-inline: 0;
+  text-align: center;
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.3em;
+  color: var(--tfm-color-text-muted);
+}
+
+.count { inset-block-end: 18vh; }
+.hint {
+  inset-block-end: 12vh;
+  letter-spacing: 0.06em;
+  color: var(--tfm-color-text-body);
+  font-style: italic;
+}
+
+.aside {
+  position: absolute;
+  inset-block-end: var(--tfm-space-lg);
+  inset-inline: 0;
+  display: flex;
+  gap: var(--tfm-space-md);
+  justify-content: center;
+  cursor: default;
+}
+
+.aside button {
+  padding: var(--tfm-button-pad-block) var(--tfm-button-pad-inline);
+  border: 1px solid var(--tfm-button-ghost-border);
+  border-radius: var(--tfm-button-radius);
+  background: none;
+  color: var(--tfm-color-text-muted);
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.14em;
+  cursor: pointer;
+}
+
+.aside button:hover {
+  color: var(--tfm-color-text-high);
+  border-color: var(--tfm-color-border-strong);
+}
+
+/* Reduced motion keeps every ignition, and removes only their easing. */
+@media (prefers-reduced-motion: reduce) {
+  .glyph { transition: none; }
+}

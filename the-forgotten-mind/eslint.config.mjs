@@ -19,7 +19,12 @@ export default tseslint.config(
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
     rules: {
       '@typescript-eslint/consistent-type-imports': ['warn', { fixStyle: 'inline-type-imports' }],
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        /* `const { dropped: _dropped, ...rest }` is the idiomatic way to omit a
+           key; ignoring rest siblings is what makes it legal. */
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_', ignoreRestSiblings: true },
+      ],
       /* The architecture's first rule, as far as a linter can see it: nothing
          in a per-frame path may allocate a new object literal per call. The
          real enforcement is the React-commit-count gate in e2e/. */

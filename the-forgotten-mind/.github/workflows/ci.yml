@@ -36,6 +36,8 @@ jobs:
         run: npm run gate:pagination
       - name: Asset pipeline · compress the test model and report its budget
         run: node scripts/make-test-model.mjs && npm run assets:check
+      - name: Bundle budgets (GDD Part 12)
+        run: npm run build && npx size-limit
       - name: Storybook builds
         run: npm run build-storybook -- --quiet
 

@@ -1,0 +1,173 @@
+{
+  "$comment": "LUMA's scripted responses. GDD targets 120; these are the navigational and structural ones, which are the answers that do not depend on career content being authored yet. The rest arrive with content/memories and content/projects. Every entry is written in LUMA's voice: it never oversells, and it never invents a fact about the developer.",
+  "$version": "0.1.0",
+  "intents": [
+    {
+      "id": "who-are-you",
+      "cues": ["who", "you", "luma", "what", "are"],
+      "requires": [["who", "what"], ["you", "luma"]],
+      "stage": 0,
+      "answer": "I am what is left of the part of him that kept notes. I remember where things are. I do not always remember why."
+    },
+    {
+      "id": "what-is-this",
+      "cues": ["what", "this", "place", "world", "site", "here"],
+      "requires": [["what", "where"], ["this", "place", "world", "site", "here"]],
+      "stage": 0,
+      "answer": "A portfolio, built as a world. Everything in it is also written down, plainly, in the Codex — you never have to play to read it.",
+      "codex": "/codex"
+    },
+    {
+      "id": "how-do-i-move",
+      "cues": ["move", "walk", "control", "how", "run", "keys"],
+      "requires": [["move", "walk", "control", "run", "keys"]],
+      "stage": 0,
+      "answer": "W, A, S and D carry you. Hold shift and you hurry. Q and E turn you, and E takes hold of whatever is close enough to name."
+    },
+    {
+      "id": "skip",
+      "cues": ["skip", "hurry", "fast", "quick", "time", "shortcut", "impatient", "minutes", "five", "only"],
+      "requires": [["skip", "hurry", "fast", "quick", "shortcut", "impatient", "time", "minutes"]],
+      "stage": 0,
+      "priority": 1.5,
+      "answer": "Then do not walk. Ask me to open the Codex and everything opens at once — all of it, with nothing held back and nothing asked in return.",
+      "codex": "/codex"
+    },
+    {
+      "id": "projects",
+      "cues": ["project", "work", "built", "build", "shipped", "portfolio"],
+      "requires": [["project", "work", "built", "build", "made", "shipped", "portfolio"]],
+      "stage": 0,
+      "answer": "Ten of them, and each one names what broke in it. The Studio holds the machines; the Codex holds the write-ups.",
+      "codex": "/codex/projects"
+    },
+    {
+      "id": "what-broke",
+      "cues": ["broke", "fail", "failure", "wrong", "mistake", "worst"],
+      "requires": [["broke", "fail", "failure", "wrong", "mistake", "worst"]],
+      "stage": 0,
+      "priority": 1.6,
+      "answer": "Every project here carries its own failure, written by him, on purpose. A portfolio where nothing ever went wrong is a portfolio you cannot check.",
+      "codex": "/codex/projects"
+    },
+    {
+      "id": "skills",
+      "cues": ["skill", "stack", "language", "tech", "know", "framework", "tools"],
+      "requires": [["skill", "stack", "language", "tech", "framework", "tools"]],
+      "stage": 0,
+      "answer": "Not as a row of percentages. Three honest levels: what he leads, what he works in, and what he would rather someone better than him held.",
+      "codex": "/codex/skills"
+    },
+    {
+      "id": "experience",
+      "cues": ["experience", "job", "worked", "work", "employer", "history", "career", "where"],
+      "requires": [["experience", "job", "employer", "history", "career", "worked"]],
+      "stage": 0,
+      "priority": 1.2,
+      "answer": "On a rail of hanging journals in the Archive, one for every year he turned up. Three of them are sealed; those are the ones that cost something.",
+      "codex": "/codex/experience"
+    },
+    {
+      "id": "contact",
+      "cues": ["contact", "email", "hire", "reach", "talk", "message", "cv", "resume"],
+      "requires": [["contact", "email", "hire", "reach", "message", "cv", "resume"]],
+      "stage": 0,
+      "answer": "The Tower, at the top, on brass. Or the Codex, at the bottom, in text. Both reach the same person.",
+      "codex": "/codex/contact"
+    },
+    {
+      "id": "memories",
+      "cues": ["memory", "memories", "collect", "find", "recover", "how", "many"],
+      "requires": [["memory", "memories", "recover", "collect"]],
+      "stage": 0,
+      "answer": "A hundred of them, scattered where they happened. Each one you find opens its page in the Codex, permanently.",
+      "codex": "/codex"
+    },
+    {
+      "id": "lost",
+      "cues": ["lost", "where", "stuck", "go", "next", "should"],
+      "requires": [["lost", "stuck", "next"]],
+      "stage": 0,
+      "answer": "Every way out of a place stands on its edge, lit if it is open and grey if it is not. The grey ones say what they are waiting for."
+    },
+    {
+      "id": "locked",
+      "cues": ["locked", "closed", "blocked", "open", "gate", "cannot", "why"],
+      "requires": [["locked", "closed", "blocked", "gate"]],
+      "stage": 0,
+      "answer": "Two things open doors here: how much of him you have remembered, and how many Fragments you carry. Nothing else, and no keys to fetch."
+    },
+    {
+      "id": "fragments",
+      "cues": ["fragment", "core", "eight", "piece"],
+      "requires": [["fragment", "core"]],
+      "stage": 1,
+      "answer": "Eight. One waits at the end of each of the buildings that mattered. The Tower will not open for seven."
+    },
+    {
+      "id": "puzzle-help",
+      "cues": ["puzzle", "hint", "help", "solve", "stuck", "clue"],
+      "requires": [["puzzle", "hint", "clue", "solve"]],
+      "stage": 0,
+      "answer": "Ask a puzzle for a hint and it will give you one, then another, then the answer. Wait three minutes and it will offer to solve itself and still pay you."
+    },
+    {
+      "id": "save",
+      "cues": ["save", "progress", "lost", "again", "return", "back"],
+      "requires": [["save", "progress"]],
+      "stage": 0,
+      "answer": "Everything you do is kept the moment you look away. Come back on this machine and you will be standing where you left."
+    },
+    {
+      "id": "cat",
+      "cues": ["cat", "animal", "pet", "grey"],
+      "requires": [["cat", "pet", "animal"]],
+      "stage": 1,
+      "answer": "There is a cat. It is off the path, in the Forest. It does nothing at all, and it is the thing people remember."
+    },
+    {
+      "id": "why-a-game",
+      "cues": ["why", "game", "bother", "point", "instead", "normal"],
+      "requires": [["why", "point"], ["game", "this", "instead", "normal"]],
+      "stage": 1,
+      "answer": "Because a list of jobs tells you what someone did, and a world tells you how they think. The list is here too. He did not make you choose."
+    },
+    {
+      "id": "restoration",
+      "cues": ["restore", "restoration", "heal", "colour", "color", "change", "percent"],
+      "requires": [["restore", "restoration", "heal", "percent"]],
+      "stage": 1,
+      "answer": "You are doing it now. Every memory you take back warms a little of this. At the fountain you can watch the number rise."
+    },
+    {
+      "id": "accessibility",
+      "cues": ["accessible", "accessibility", "keyboard", "screen", "reader", "blind", "motion"],
+      "requires": [["accessible", "accessibility", "keyboard", "reader", "motion"]],
+      "stage": 0,
+      "answer": "All of it can be walked from a keyboard, and all of it can be read without walking. The Codex is the whole of me, in text.",
+      "codex": "/accessibility"
+    },
+    {
+      "id": "who-made-you",
+      "cues": ["made", "make", "who", "this", "developer", "author", "behind"],
+      "requires": [["made", "make", "author", "behind"], ["who", "you", "this", "him", "developer"]],
+      "stage": 1,
+      "answer": "He did, in the evenings, over months. The Codex has his name, his history and his email. I only have his notes."
+    },
+    {
+      "id": "ai",
+      "cues": ["ai", "model", "claude", "gpt", "chatbot", "real"],
+      "requires": [["ai", "model", "chatbot", "claude", "gpt"]],
+      "stage": 0,
+      "answer": "Right now, no. What you are hearing is written down in advance, by him, and I will not pretend otherwise."
+    },
+    {
+      "id": "how-long",
+      "cues": ["long", "time", "minutes", "hours", "take", "finish"],
+      "requires": [["long", "minutes", "hours", "finish"]],
+      "stage": 0,
+      "answer": "Twenty minutes to see it. An hour or two to finish it. Ninety seconds if you take the Codex, and that is a real answer, not a lesser one.",
+      "codex": "/codex"
+    }
+  ]
+}

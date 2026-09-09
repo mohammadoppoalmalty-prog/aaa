@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { getRestoration, liveChunks, registrySize, setRestoration } from './systems/restoration';
 import { QUALITY_TIERS } from './quality';
+import { ALL_AREAS } from './areas/manifest';
 import { useSettings } from '@/state/settings';
+import { useGame } from '@/state/game';
 import { stats } from './stats';
 import { cls } from '@/lib/css';
 import styles from './debug-panel.module.css';
@@ -18,6 +20,8 @@ import styles from './debug-panel.module.css';
  */
 export function DebugPanel() {
   const quality = useSettings((s) => s.quality);
+  const areaId = useGame((s) => s.save.area);
+  const setArea = useGame((s) => s.setArea);
   const setQuality = useSettings((s) => s.setQuality);
   const [restoration, setLocal] = useState(getRestoration);
   const [open, setOpen] = useState(true);
@@ -78,6 +82,17 @@ export function DebugPanel() {
             setRestoration(value);
           }}
         />
+      </label>
+
+      <label className={styles.field}>
+        <span>area</span>
+        <select value={areaId} onChange={(event) => setArea(event.currentTarget.value)}>
+          {ALL_AREAS.map((area) => (
+            <option key={area.id} value={area.id}>
+              {area.name}
+            </option>
+          ))}
+        </select>
       </label>
 
       <div className={styles.field}>

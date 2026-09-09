@@ -38,3 +38,24 @@
   margin: 0;
   padding: 0;
 }
+
+.jump {
+  font-family: var(--tfm-type-family-data);
+  font-size: var(--tfm-type-label);
+  letter-spacing: 0.1em;
+  color: var(--tfm-color-accent);
+}
+
+.scaffold {
+  max-inline-size: var(--tfm-type-measure);
+  padding: var(--tfm-space-sm) var(--tfm-space-md);
+  border: 1px dashed var(--tfm-color-border-subtle);
+  border-radius: var(--tfm-radius-control);
+  font-size: var(--tfm-type-label);
+  color: var(--tfm-color-text-muted);
+}
+
+.scaffold b {
+  color: var(--tfm-color-state-warning);
+  font-weight: 500;
+}

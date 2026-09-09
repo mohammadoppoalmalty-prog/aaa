@@ -7,7 +7,6 @@ import { tokens, tokenVersion } from '@/generated/tokens';
 import styles from './inspector.module.css';
 
 const PENDING = [
-  ['Area teleport', 'Phase 1 · with the Director'],
   ['Memory grant / revoke', 'Phase 1 · with the memory system'],
   ['Weather force', 'Phase 2 · with the seeded weather'],
   ['Puzzle override', 'Phase 1 · with the puzzle framework'],

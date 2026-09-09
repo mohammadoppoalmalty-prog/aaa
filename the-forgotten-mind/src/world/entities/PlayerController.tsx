@@ -5,6 +5,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, RigidBody, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
 import { tokens } from '@/generated/tokens';
+import { interactable, playerPosition, playerYaw, publishPlayerDebug } from '../systems/player';
 
 /* The same palette the Codex's CSS reads — one source, two renderers. */
 const ACCENT = tokens.semantic.color.accent.hex;
@@ -87,6 +88,8 @@ export function PlayerController({ start = [0, 2, 0], reducedMotion = false }: P
   const yaw = useRef(0);
   const verticalVelocity = useRef(0);
 
+  useEffect(publishPlayerDebug, []);
+
   /* ── input ─────────────────────────────────────────────────────────────── */
   useEffect(() => {
     const onKey = (down: boolean) => (event: KeyboardEvent) => {
@@ -159,6 +162,8 @@ export function PlayerController({ start = [0, 2, 0], reducedMotion = false }: P
   const desired = useRef(new THREE.Vector3());
   const camTarget = useRef(new THREE.Vector3());
   const camLook = useRef(new THREE.Vector3());
+  /** The authoritative kinematic target — see the note in the frame loop. */
+  const target = useRef(new THREE.Vector3(start[0], start[1], start[2]));
 
   useFrame((_, rawDelta) => {
     const rb = body.current;
@@ -171,7 +176,8 @@ export function PlayerController({ start = [0, 2, 0], reducedMotion = false }: P
     const k = keys.current;
 
     if (k.turnLeft) yaw.current += TURN_RATE * delta;
-    if (k.turnRight) yaw.current -= TURN_RATE * delta;
+    // E turns only when there is nothing to interact with — see systems/player.
+    if (k.turnRight && interactable.current === null) yaw.current -= TURN_RATE * delta;
 
     const forward = (k.forward ? 1 : 0) - (k.back ? 1 : 0);
     const strafe = (k.right ? 1 : 0) - (k.left ? 1 : 0);
@@ -190,21 +196,31 @@ export function PlayerController({ start = [0, 2, 0], reducedMotion = false }: P
     const moved = ctrl.computedMovement();
     if (ctrl.computedGrounded()) verticalVelocity.current = 0;
 
-    const at = rb.translation();
-    rb.setNextKinematicTranslation({ x: at.x + moved.x, y: at.y + moved.y, z: at.z + moved.z });
+    /* The target is accumulated here rather than read back from the body.
+       A kinematic body's translation only updates when the physics world steps,
+       so on any frame that outruns a step, `rb.translation()` is last step's
+       position — and `stale + moved` silently discards every frame of movement
+       but the last. That reads as a character walking at a third of its speed
+       and is almost impossible to spot by eye. */
+    target.current.add(moved as THREE.Vector3);
+    rb.setNextKinematicTranslation(target.current);
 
     if (mesh.current) mesh.current.rotation.y = yaw.current;
+
+    // Published for every system that needs proximity, so none of them traverses.
+    playerPosition.copy(target.current);
+    playerYaw.value = yaw.current;
 
     /* Spring-damped follow. Reduced Motion halves the spring, which removes the
        overshoot that causes most of the sickness reports on third-person cameras. */
     const stiffness = reducedMotion ? CAM_STIFFNESS / 2 : CAM_STIFFNESS;
     camTarget.current.set(
-      at.x + Math.sin(yaw.current) * CAM_DISTANCE,
-      at.y + CAM_HEIGHT,
-      at.z + Math.cos(yaw.current) * CAM_DISTANCE,
+      target.current.x + Math.sin(yaw.current) * CAM_DISTANCE,
+      target.current.y + CAM_HEIGHT,
+      target.current.z + Math.cos(yaw.current) * CAM_DISTANCE,
     );
     camera.position.lerp(camTarget.current, 1 - Math.exp(-stiffness * delta));
-    camLook.current.set(at.x, at.y + 1, at.z);
+    camLook.current.set(target.current.x, target.current.y + 1, target.current.z);
     camera.lookAt(camLook.current);
   });
 

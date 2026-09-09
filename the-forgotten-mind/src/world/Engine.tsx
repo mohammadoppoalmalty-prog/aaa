@@ -7,9 +7,18 @@ import * as THREE from 'three';
 import { getGPUTier } from 'detect-gpu';
 import { PerfHud, PerfSampler } from './PerfHud';
 import { Blockout } from './greybox/Blockout';
+import { GreyboxArea } from './areas/GreyboxArea';
+import { AREA_SPECS, type AreaId } from './areas/manifest';
+import { providePuzzleRewards, useGame } from '@/state/game';
 import { PlayerController } from './entities/PlayerController';
 import { Flythrough } from './Flythrough';
 import { DebugPanel } from './DebugPanel';
+import { Memories, type MoteSpec } from './entities/Memories';
+import { Hud } from './Hud';
+import { CursorRitual } from './puzzles/CursorRitual';
+import { registry } from './systems/puzzles';
+import { Luma } from './Luma';
+import type { LumaIntent } from './systems/luma/fallback';
 import { settingsFor, tierFromGpuTier } from './quality';
 import { useSettings } from '@/state/settings';
 import { tokens } from '@/generated/tokens';
@@ -20,7 +29,19 @@ import styles from './engine.module.css';
  * things a WebGL page must survive — an unbenchmarkable GPU and a lost context.
  */
 
-export function Engine() {
+export interface EngineProps {
+  /** Where the recoverable memories stand, and how many exist in total. */
+  readonly motes: readonly MoteSpec[];
+  readonly total: number;
+  /** LUMA's scripted tree, loaded on the server so the world ships no parser. */
+  readonly lumaIntents: readonly LumaIntent[];
+}
+
+/* Teach the shared store what puzzles pay out, now that the world is the one
+   asking. Module scope, so it happens once per load rather than per render. */
+providePuzzleRewards((id) => registry.get(id)?.rewards);
+
+export function Engine({ motes, total, lumaIntents }: EngineProps) {
   const quality = useSettings((s) => s.quality);
   const qualityManual = useSettings((s) => s.qualityManual);
   const setQuality = useSettings((s) => s.setQuality);
@@ -28,6 +49,12 @@ export function Engine() {
   const setReducedMotion = useSettings((s) => s.setReducedMotion);
   const togglePerfHud = useSettings((s) => s.togglePerfHud);
   const q = settingsFor(quality);
+
+  /* Which area is mounted is a property of the save, so returning to the world
+     puts the player back where they left it rather than at the gate. */
+  const areaId = useGame((s) => s.save.area);
+  const ritual = useGame((s) => s.save.puzzles['cursor-ritual']);
+  const area = AREA_SPECS[areaId as AreaId] ?? AREA_SPECS.gate;
 
   /* Detect once, and never over a manual choice. */
   useEffect(() => {
@@ -113,9 +140,14 @@ export function Engine() {
 
         <Suspense fallback={null}>
           <Physics gravity={[0, -18, 0]} timeStep="vary">
-            <Blockout />
+            <GreyboxArea key={area.id} spec={area} />
+            {/* The controller calibration geometry — steps at and above the
+                autostep height, ramps either side of the slope limit — lives in
+                the Gate, where the tutorial already teaches movement. */}
+            {area.id === 'gate' ? <Blockout /> : null}
+            <Memories motes={motes.filter((mote) => mote.area === area.id)} total={total} />
             {flythrough === null ? (
-              <PlayerController start={[0, 1.5, 4]} reducedMotion={reducedMotion} />
+              <PlayerController key={area.id} start={[0, 1.5, 4]} reducedMotion={reducedMotion} />
             ) : (
               <Flythrough seconds={flythrough} />
             )}
@@ -123,6 +155,15 @@ export function Engine() {
         </Suspense>
       </Canvas>
 
+      {/* The Gate opens with the ritual, once per save. The flythrough and the
+          inspector skip it: a measurement run and a debugging session are not
+          arrivals. */}
+      {area.id === 'gate' && ritual === undefined && flythrough === null && !debug ? (
+        <CursorRitual onDone={() => undefined} />
+      ) : null}
+
+      <Hud total={total} />
+      <Luma intents={lumaIntents} total={total} />
       <PerfHud />
       {debug ? <DebugPanel /> : null}
       <Legend />

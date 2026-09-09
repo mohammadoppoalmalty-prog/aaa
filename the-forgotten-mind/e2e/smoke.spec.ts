@@ -1,5 +1,17 @@
 import { expect, test } from '@playwright/test';
 
+/* The Gate's ritual is an arrival, not a screen these tests are about; they
+   start on the far side of it, as a returning visitor does. */
+const pastTheRitual = `
+  try {
+    localStorage.setItem('tfm.save.v1', JSON.stringify({
+      version: 1, seed: 1, createdAt: 0, updatedAt: 0, playtimeMs: 0,
+      memories: [], revealedAll: false, area: 'gate', position: [0, 1.5, 4], yaw: 0,
+      luma: { stage: 0, turns: [] }, puzzles: { 'cursor-ritual': 'solved' },
+    }));
+  } catch {}
+`;
+
 /* The title screen is the one page every visitor sees. Its two doors and its
    zero-JavaScript promise are the things worth asserting on every commit. */
 
@@ -21,6 +33,7 @@ test('the five-minute door reaches the Codex', async ({ page }) => {
 });
 
 test('the world mounts a WebGL canvas', async ({ page }) => {
+  await page.addInitScript(pastTheRitual);
   await page.goto('/world');
   const canvas = page.locator('canvas');
   await expect(canvas).toBeVisible({ timeout: 30_000 });
@@ -29,6 +42,7 @@ test('the world mounts a WebGL canvas', async ({ page }) => {
 });
 
 test('the perf HUD toggles with H', async ({ page }) => {
+  await page.addInitScript(pastTheRitual);
   await page.goto('/world');
   await expect(page.locator('canvas')).toBeVisible({ timeout: 30_000 });
   await page.keyboard.press('KeyH');
@@ -38,6 +52,7 @@ test('the perf HUD toggles with H', async ({ page }) => {
 });
 
 test('the world inspector scrubs restoration', async ({ page }) => {
+  await page.addInitScript(pastTheRitual);
   await page.goto('/world?debug=1');
   await expect(page.locator('canvas')).toBeVisible({ timeout: 30_000 });
 
